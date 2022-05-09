@@ -1,0 +1,12 @@
+.DS_Store
+/devserver
+/node_modules
+/out/
+/build
+/.svelte-kit
+/package
+public/static/*
+dist
+combined.log
+.env
+.env.*
