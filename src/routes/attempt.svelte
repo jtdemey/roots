@@ -2,7 +2,7 @@
 	export async function load() {
 		return {
 			status: 301,
-			redirect: "cinematic/intro"
+			redirect: "game/cinematic/intro"
 		};
 	}
 </script>
