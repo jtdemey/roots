@@ -19,7 +19,7 @@
 	main {
 		width: 100%;
 		height: 100%;
-    background: #090804;
+    background: hsl(48, 38%, 3%);
 		color: #f5f5f5;
 	}
 </style>

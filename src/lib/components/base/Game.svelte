@@ -1,7 +1,7 @@
 <script type="ts">
-	import type { GameEvent } from "../../models/GameEvent";
-	import { gameEvents, gameState, paused, tick } from "../../stores/game/GameStore";
+	import type { GameEvent } from "../../../models/GameEvent";
 	import { onMount } from "svelte";
+	import { gameEvents, gameState, paused, tick } from "$lib/stores/game/GameStore";
 	import { goto } from "$app/navigation";
 
 	onMount(() => {
@@ -9,7 +9,6 @@
 		const clock = setInterval(() => {
 			if ($paused) return;
 			$tick += 1;
-			console.log($tick);
 			if ($gameEvents.length < 1) return;
 			$gameEvents.forEach((event: GameEvent) => {
 				console.log(event)
@@ -27,5 +26,6 @@
 	div {
 		width: 100%;
 		height: 100%;
+		font-family: 'DM Serif Display', serif;
 	}
 </style>
