@@ -1,9 +1,9 @@
 <script type="ts">
-	import GameClock from "$lib/components/survive/GameClock.svelte";
+	import StatusBar from "$lib/components/survive/status/StatusBar.svelte";
 </script>
 
 <div>
-	<GameClock />
+	<StatusBar />
 	<slot />
 </div>
 

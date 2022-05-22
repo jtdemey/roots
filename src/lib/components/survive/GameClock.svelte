@@ -10,9 +10,22 @@
 </script>
 
 <div>
-  {formatTime(getTimeFromTick($tick))}
+	<span>
+		{formatTime(getTimeFromTick($tick))}
+	</span>
 </div>
 
 <style>
+	div {
+		width: 100%;
+		height: 40px;
+		display: flex;
+		align-items: center;
+	}
 
+	span {
+		padding-left: 1rem;
+		font-family: 'DM Serif Display', serif;
+		font-size: 1.1rem;
+	}
 </style>

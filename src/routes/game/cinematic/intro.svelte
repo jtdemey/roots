@@ -6,7 +6,10 @@
   import { goto } from "$app/navigation";
   import { onMount } from "svelte";
 
-  let endTimer: any, fadeOutTimer: any, skipPromptTimer: any;
+  const timers: any[] = [];
+
+  const addTimer = (delay: number, action: Function): number =>
+    timers.push(setTimeout(action, delay));
 
   const getFlyParams = (delay: number): object => ({
     delay,
@@ -19,7 +22,7 @@
   });
 
   const skipBtnOpacity = tweened(1, {
-    duration: 800 
+    duration: 800
   });
 
   const endCinematic = () => {
@@ -28,20 +31,14 @@
   };
 
   onMount(() => {
-    skipPromptTimer = setTimeout(() => {
+		addTimer(3000, () => {
       $skipBtnOpacity = 0;
-    }, 3000);
-    fadeOutTimer = setTimeout(() => {
+		});
+		addTimer(5000, () => {
       $cinematicOpacity = 0;
-    }, 6000);
-    endTimer = setTimeout(() => {
-			goto("/game/survive/console");
-    }, 8000);
-    return () => {
-      clearInterval(skipPromptTimer);
-      clearInterval(fadeOutTimer);
-      clearInterval(endTimer);
-    };
+		});
+		addTimer(7000, () => goto("/game/survive/console"));
+    return () => timers.forEach((timer: any) => clearInterval(timer));
   });
 </script>
 
@@ -71,9 +68,5 @@
     position: absolute;
     bottom: 2rem;
     font-family: "DM Sans", sans-serif;
-  }
-
-  .hidden {
-    display: none;
   }
 </style>
