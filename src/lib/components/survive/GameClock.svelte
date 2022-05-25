@@ -1,4 +1,5 @@
 <script type="ts">
+  import { fly } from "svelte/transition";
 	import { formatTime } from "$lib/utils/DateUtils";
 	import { tick } from "$lib/stores/game/GameStore";
 
@@ -10,7 +11,10 @@
 </script>
 
 <div>
-	<span>
+	<span in:fly={{
+    duration: 2000,
+    y: -6 
+  }}>
 		{formatTime(getTimeFromTick($tick))}
 	</span>
 </div>

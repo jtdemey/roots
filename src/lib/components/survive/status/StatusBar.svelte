@@ -14,7 +14,6 @@
 		height: 40px;
 		display: grid;
 		color: #fff;
-		grid-template-columns: 3fr 0.75fr 1.5fr 0.5fr;;
-		border-bottom: 1px solid #333333;
+		grid-template-columns: 3fr 0.75fr 1.5fr 0.5fr;
 	}
 </style>
