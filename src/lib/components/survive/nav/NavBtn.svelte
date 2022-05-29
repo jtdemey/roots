@@ -1,11 +1,18 @@
 <script type="ts">
-	export let alt = "A navigation button";
-	export let href = "/console";
-	export let isActive = false;
-	export let src = "$lib/assets/nav/console.svg";
+  import { fly } from "svelte/transition";
+
+	export let alt: string = "A navigation button";
+	export let fadeDelay: number = 270;
+	export let href: string = "/console";
+	export let isActive: boolean = false;
+	export let src: any = "$lib/assets/nav/console.svg";
 </script>
 
-<div>
+<div in:fly={{
+	delay: fadeDelay,
+	duration: 1000,
+	y: 8 
+}}>
 	<a href={href}>
 		<img alt={alt} class={isActive ? "active" : ""} src={src} />
 	</a>

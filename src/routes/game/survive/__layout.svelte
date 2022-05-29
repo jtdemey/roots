@@ -11,6 +11,8 @@
 
 <style>
 	div {
+		display: grid;
+		grid-template-rows: 40px 1fr 66px;
 		width: 100%;
 		min-height: 100%;
 	}

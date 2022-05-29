@@ -1,6 +1,6 @@
 <script type="ts">
   import { gameState } from "$lib/stores/game/GameStore";
-	import { GameStates } from "../data/game/GameStates";
+	import { GameStates } from "$lib/data/game/GameStates";
 </script>
 
 <div>

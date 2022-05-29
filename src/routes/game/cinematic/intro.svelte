@@ -1,8 +1,13 @@
 <script type="ts">
   import { tweened } from "svelte/motion";
   import { fade, fly } from "svelte/transition";
-  import { gameState } from "$lib/stores/game/GameStore";
-  import { GameStates } from "../../../data/game/GameStates";
+  import {
+    gameState,
+    tick,
+    registerGameEvent,
+    appendLine
+  } from "$lib/stores/game/GameStore";
+  import { GameStates } from "$lib/data/game/GameStates";
   import { goto } from "$app/navigation";
   import { onMount } from "svelte";
 
@@ -26,18 +31,22 @@
   });
 
   const endCinematic = () => {
+		registerGameEvent({
+			triggerTick: $tick + 10,
+			action: () => appendLine("hey thar")
+		});
     $gameState = GameStates.Explore;
     goto("/game/survive/console");
   };
 
   onMount(() => {
-		addTimer(3000, () => {
+    addTimer(3000, () => {
       $skipBtnOpacity = 0;
-		});
-		addTimer(5000, () => {
+    });
+    addTimer(5000, () => {
       $cinematicOpacity = 0;
-		});
-		addTimer(7000, () => goto("/game/survive/console"));
+    });
+    addTimer(7000, () => endCinematic());
     return () => timers.forEach((timer: any) => clearInterval(timer));
   });
 </script>

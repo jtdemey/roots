@@ -1,4 +1,4 @@
-import type { GameStates } from "src/data/game/GameStates";
+import type { GameStates } from "$lib/data/game/GameStates";
 
 export const preventNavigation = (
   gameState: GameStates,
