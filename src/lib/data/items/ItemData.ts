@@ -6,5 +6,6 @@ interface IItemData {
 }
 
 export const ItemData: IItemData = {
-  handwarmers: createItemMetadata("Handwarmers", "these are handwarmers.", true)
+  handwarmers: createItemMetadata("Handwarmers", "these are handwarmers.", true),
+  flashlight: createItemMetadata("Flashlight", "fadisofjos.", false)
 };

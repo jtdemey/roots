@@ -12,12 +12,14 @@ export interface Locale {
   name: string;
   comments: Comment[];
   containers: Container[];
+	display: string;
   enemies: Enemy[];
   meta: LocaleMetadata;
   exits: Exit[];
   features: Feature[];
   items: Item[];
 	loot: Loot[];
+	region: string;
 	spawn: Spawn[];
 	visits: number;
 	temperature: number;

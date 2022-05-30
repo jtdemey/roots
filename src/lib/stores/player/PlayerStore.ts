@@ -8,5 +8,6 @@ export const items = writable<Item[]>([ createItem("handwarmers", 2) ]);
 export const locale = writable<string>("car");
 export const lastLocale = writable<string>(undefined);
 export const maxHealth = writable<number>(100);
+export const region = writable<string>("forest");
 export const sanity = writable<number>(100);
 export const temperature = writable<number>(100);

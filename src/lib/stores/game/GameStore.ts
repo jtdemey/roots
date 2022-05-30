@@ -18,7 +18,6 @@ export const executeGameEvents = (
   const executedIndices: number[] = [];
   currentEvents.forEach((event: GameEvent, i: number) => {
     if (event.triggerTick <= currentTick) {
-      console.log("runnin " + i);
       event.action();
       executedIndices.push(i);
     }
