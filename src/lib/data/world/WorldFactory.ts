@@ -1,6 +1,8 @@
 import { nanoid } from "nanoid";
+import { writable, type Writable } from "svelte/store";
 import type { Comment } from "../../../models/Comment";
 import type { Container } from "../../../models/Container";
+import type { Enemy } from "../../../models/Enemy";
 import type { Exit } from "../../../models/Exit";
 import type { Feature } from "../../../models/Feature";
 import type { Item } from "../../../models/Item";
@@ -21,14 +23,14 @@ export const createComment = (
 export const createContainer = (
   name: string,
   description: string,
-  loot: Loot[],
+  loot: Writable<Loot[]>,
   locked: boolean = false
 ): Container => ({
   entityId: nanoid(),
   containerState: 0,
   name,
   description,
-  items: [],
+  items: writable([]),
   loot,
   locked
 });
@@ -62,30 +64,31 @@ export const createLocale = (
   y: number,
   z: number,
   overrides: any = {}
-): Locale =>
-  Object.assign(
-    {
-      name,
-      display,
-      comments: [],
-      containers: [],
-      coordinates: [x, y, z],
-      enemies: [],
-      enterPhrase: "You have entered a default locale.",
-      examinePhrase: "Looks like a default locale here.",
-      exitPhrase: "You have exited a default locale.",
-      exits: [],
-      features: [],
-      items: [],
-      loot: [],
-			region: "forest",
-      spawns: [],
-      visits: 0,
-      temperature: 0,
-      visibility: 0
-    },
-    overrides
-  );
+): Locale => {
+	return Object.assign(
+		{
+			name,
+			display: writable<string>(display),
+			comments: writable<Comment[]>([]),
+			containers: writable<Container[]>([]),
+			coordinates: writable<number[]>([x, y, z]),
+			enemies: writable<Enemy[]>([]),
+			enterPhrase: writable<string>("You have entered a default locale."),
+			examinePhrase: writable<string>("Looks like a default locale here."),
+			exitPhrase: writable<string>("You have exited a default locale."),
+			exits: writable<Exit[]>([]),
+			features: writable<Feature[]>([]),
+			items: writable<Item[]>([]),
+			loot: writable<Loot[]>([]),
+			region: writable<string>("forest"),
+			spawns: writable<Spawn[]>([]),
+			visits: writable<number>(0),
+			temperature: writable<number>(0),
+			visibility: writable<number>(0)
+		},
+		overrides
+	);
+};
 
 export const createItem = (name: string, amount: number): Item => ({
   entityId: nanoid(),

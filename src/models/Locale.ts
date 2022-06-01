@@ -1,3 +1,4 @@
+import type { Writable } from "svelte/store";
 import type { Comment } from "./Comment";
 import type { Container } from "./Container";
 import type { Enemy } from "./Enemy";
@@ -10,18 +11,18 @@ import type { Spawn } from "./Spawn";
 
 export interface Locale {
   name: string;
-  comments: Comment[];
-  containers: Container[];
-	display: string;
-  enemies: Enemy[];
-  meta: LocaleMetadata;
-  exits: Exit[];
-  features: Feature[];
-  items: Item[];
-	loot: Loot[];
-	region: string;
-	spawn: Spawn[];
-	visits: number;
-	temperature: number;
-	visibility: number;
+  comments: Writable<Comment[]>;
+  containers: Writable<Container[]>;
+	display: Writable<string>;
+  enemies: Writable<Enemy[]>;
+  meta: Writable<LocaleMetadata>;
+  exits: Writable<Exit[]>;
+  features: Writable<Feature[]>;
+  items: Writable<Item[]>;
+	loot: Writable<Loot[]>;
+	region: Writable<string>;
+	spawns: Writable<Spawn[]>;
+	visits: Writable<number>;
+	temperature: Writable<number>;
+	visibility: Writable<number>;
 }

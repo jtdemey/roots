@@ -1,30 +1,70 @@
-import type { GameEvent } from "../../../models/GameEvent";
-import { writable, type Writable } from "svelte/store";
+import { get, type Writable } from "svelte/store";
 import type { Locale } from "../../../models/Locale";
 import { World } from "$lib/data/world/World";
 import type { Container } from "../../../models/Container";
+import { ContainerStates } from "$lib/data/items/ContainerStates";
 
-export const gameWorld = writable<Locale[]>(World);
+export const GameWorld: Locale[] = World;
 
-const getLocale = (currentWorld: Locale[], localeName: string): Locale => {
-	const matchedLocales = currentWorld.filter((locale: Locale) => locale.name === localeName);
-	if (matchedLocales.length < 1) {
-		console.error(`getLocale: no locale ${localeName}`);
-		return currentWorld[0];
-	}
-	return matchedLocales[0];
+export const closeContainer = (
+  containersStore: Writable<Container[]>,
+  entityId: string
+): void => {
+  containersStore.update((containers: Container[]) => {
+    const matchingContainers: Container[] = containers.filter(
+      (container: Container) => container.entityId === entityId
+    );
+    if (matchingContainers.length < 1) {
+      console.error(`closeContainer: no container ${entityId}`);
+      return containers;
+    }
+		if (matchingContainers[0].containerState !== ContainerStates.Open) {
+			return containers;
+		}
+    return containers 
+      .filter((container: Container) => container.entityId !== entityId)
+      .concat([
+        {
+          ...matchingContainers[0],
+          containerState: ContainerStates.Unlocked
+        }
+      ]);
+  });
 };
 
-export const openContainer = (localeName: string, entityId: string) => {
-	gameWorld.update((world: Locale[]) => world.map((locale: Locale) => {
-		if (locale.name !== localeName) return locale;
-		const matchedContainers: Container[] = locale.containers.filter((container: Container) => container.entityId === entityId);
-		if (matchedContainers.length < 1) {
-			console.error(`openContainer: No container ${entityId} in ${localeName}`);
-			return locale;
+export const openContainer = (
+  containersStore: Writable<Container[]>,
+  entityId: string
+): void => {
+  containersStore.update((containers: Container[]) => {
+    const matchingContainers: Container[] = containers.filter(
+      (container: Container) => container.entityId === entityId
+    );
+		const otherContainers: Container[] = containers
+      .filter((container: Container) => container.entityId !== entityId)
+    if (matchingContainers.length < 1) {
+      console.error(`openContainer: no container ${entityId}`);
+      return containers;
+    }
+		if (matchingContainers[0].locked === true) {
+			return otherContainers 
+				.concat([
+					{
+						...matchingContainers[0],
+						containerState: ContainerStates.Locked
+					}
+				]);
 		}
-		return {
-			...locale
-		};
-	}))
+		const goodies = get(matchingContainers[0].loot);
+		if (goodies.length > 0) {
+
+		}
+    return otherContainers 
+      .concat([
+        {
+          ...matchingContainers[0],
+          containerState: ContainerStates.Open
+        }
+      ]);
+  });
 };
