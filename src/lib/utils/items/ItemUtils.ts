@@ -2,19 +2,24 @@ import { createItem } from "$lib/data/world/WorldFactory";
 import type { Item } from "../../../models/Item";
 import type { Loot } from "../../../models/Loot";
 
-export const rollLoot = (loot: Loot[]): Item[] => {
-	const result: Item[] = [];
-	loot.forEach((goodie: Loot) => {
-		if (goodie.probability === 1) {
-			let itemCt: number = 1;
-			if (Array.isArray(goodie.amount)) {
-				itemCt = goodie.amount[Math.floor(Math.random() * goodie.amount.length)];
-			}
-			result.push(createItem(goodie.name, itemCt));
-		}
-		const roll = Math.random();
-		if (roll < goodie.probability) return;
+const resolveItemAmount = (amount: number | number[]): number =>
+  Array.isArray(amount)
+    ? amount[Math.floor(Math.random() * amount.length)]
+    : amount;
 
-	});
-	return result;
+export const rollLoot = (containerId: string, loot: Loot[]): Item[] => {
+  const result: Item[] = [];
+  loot.forEach((goodie: Loot) => {
+    if (goodie.probability === 1) {
+      result.push(
+        createItem(goodie.name, resolveItemAmount(goodie.amount), containerId)
+      );
+    }
+    const roll = Math.random();
+    if (roll < goodie.probability) return;
+    result.push(
+      createItem(goodie.name, resolveItemAmount(goodie.amount), containerId)
+    );
+  });
+  return result;
 };

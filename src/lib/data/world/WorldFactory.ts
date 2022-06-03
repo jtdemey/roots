@@ -30,7 +30,6 @@ export const createContainer = (
   containerState: 0,
   name,
   description,
-  items: writable([]),
   loot,
   locked
 });
@@ -90,9 +89,10 @@ export const createLocale = (
 	);
 };
 
-export const createItem = (name: string, amount: number): Item => ({
+export const createItem = (name: string, amount: number, containerId: string | null = null): Item => ({
   entityId: nanoid(),
   amount,
+	containerId,
   name
 });
 

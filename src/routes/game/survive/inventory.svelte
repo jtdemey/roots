@@ -6,12 +6,18 @@
   import { consoleHeight } from "$lib/stores/ui/UIStore";
 	import { World } from "$lib/data/world/World";
   import ContainerList from "$lib/components/survive/inventory/ContainerList.svelte";
+	import LocaleItemList from "$lib/components/survive/inventory/LocaleItemList.svelte";
+	import InventoryList from "$lib/components/survive/inventory/InventoryList.svelte";
 
 	let displayName: string = "";
+	let selectedItemId: string = "";
+	
 	const localeName: string = $locale;
 
   const currentLocale: Locale = World.filter((loc: Locale) => loc.name === $locale)[0];
 	const unsub = currentLocale.display.subscribe((display: string) => displayName = display);
+
+	const setSelectedItemId = (entityId: string) => selectedItemId = entityId;
 
 	onDestroy(unsub);
 </script>
@@ -26,7 +32,8 @@
     >
       {displayName}
     </h3>
-		<ContainerList localeName={localeName} />
+		<ContainerList {localeName} {selectedItemId} {setSelectedItemId} />
+		<LocaleItemList {localeName} {selectedItemId} {setSelectedItemId} />
     <h3
       in:fly={{
         delay: 60,
@@ -36,6 +43,7 @@
     >
       Inventory
     </h3>
+		<InventoryList {selectedItemId} {setSelectedItemId} />
   </div>
 </section>
 
@@ -55,14 +63,5 @@
   h3 {
     margin: 0.5rem 0.15rem;
     font-size: 1.5rem;
-  }
-
-  ul {
-    font-family: "DM Sans", sans-serif;
-    list-style-type: none;
-  }
-
-  .m-b {
-    margin-bottom: 1rem;
   }
 </style>
