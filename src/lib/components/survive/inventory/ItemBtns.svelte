@@ -1,45 +1,39 @@
 <script type="ts">
-	import type { Item } from "../../../../models/Item";
-  import { fly } from "svelte/transition";
-	import { ItemData } from "$lib/data/items/ItemData";
+  import type { ItemBtn } from "../../../../models/ui/ItemBtn";
+  import { fade } from "svelte/transition";
 
-	interface ItemBtn {
-		text: string;
-		action: Function;
-	}
+  export let itemBtns: ItemBtn[];
 
-	export let item: Item;
-
-	const getItemBtns = (): ItemBtn[] => {
-		const result: ItemBtn[] = [{ text: "Drop", action: () => false }];
-		if (!item.name) return result;
-		const meta = ItemData[item.name];
-		if (meta.description) {
-			result.push({ text: "Examine", action: () => false });
-		}
-		if (meta.equipable) {
-			result.push({ text: "Equip", action: () => false });
-		}
-		return result;
-	};
-
-	const itemBtns = getItemBtns();
+	const getBtnColor = (itemBtn: ItemBtn) => itemBtn.color || "hsl(48, 4%, 20%)";
 </script>
 
-<div>
-	{#each itemBtns as btn, i}
-		<div in:fly={{
-			delay: i * 40
-		}} on:click={() => btn.action()}>{btn.text}</div>
-	{/each}
+<div class="btn">
+  {#each itemBtns as btn, i}
+    <div
+      in:fade={{
+        delay: i * 40,
+        duration: 200
+      }}
+      on:click={() => btn.action()}
+			style="background: {getBtnColor(btn)}"
+    >
+      {btn.text}
+    </div>
+  {/each}
 </div>
 
 <style>
-	div {
-		display: flex;
-	}
+  .btn {
+    display: flex;
+		margin: 0.15rem 0 0.2rem;
+  }
 
-	div > div {
-		padding: 0.25rem 1rem;
-	}
+  .btn > div {
+		height: 100%;
+    background: hsl(48, 4%, 20%);
+    margin-left: 0.5rem;
+    padding: 0.35rem;
+    border-radius: 2px;
+		box-shadow: 1px 1px 3px #222;
+  }
 </style>

@@ -1,6 +1,22 @@
-import { createItem } from "$lib/data/world/WorldFactory";
 import type { Item } from "../../../models/Item";
 import type { Loot } from "../../../models/Loot";
+import { createItem } from "$lib/data/world/WorldFactory";
+import { getItemMetadata } from "../selectors/ItemSelectors";
+
+export const getItemDisplayName = (item: Item): string => {
+  const displayName = getItemMetadata(item.name).display;
+  if (item.amount > 1) {
+    return `${displayName} (${item.amount})`;
+  }
+  return displayName;
+};
+
+export const makeItemBtnAction =
+  (cb: Function, setSelectedItemId: Function): Function =>
+  () => {
+    setSelectedItemId("");
+    cb();
+  };
 
 const resolveItemAmount = (amount: number | number[]): number =>
   Array.isArray(amount)

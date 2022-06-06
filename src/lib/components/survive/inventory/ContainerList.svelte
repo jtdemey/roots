@@ -12,6 +12,7 @@
   import { closeContainer, openContainer } from "$lib/stores/world/WorldStore";
   import { getContainers } from "$lib/utils/selectors/WorldSelectors";
 
+	export let getItemBtns: Function = () => [];
   export let localeName: string = "car";
   export let selectedItemId: string = "";
   export let setSelectedItemId: Function = () => false;
@@ -65,6 +66,7 @@
     {#if isOpen(container)}
       <ContainerItemList
         containerId={container.entityId}
+				{getItemBtns}
         {localeName}
         {selectedItemId}
         {setSelectedItemId}

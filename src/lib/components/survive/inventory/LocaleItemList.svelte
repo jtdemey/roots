@@ -2,10 +2,12 @@
   import type { Item } from "../../../../models/Item";
   import type { Writable } from "svelte/store";
   import { onDestroy } from "svelte";
-  import { getItemMetadata } from "$lib/utils/selectors/ItemSelectors";
+	import { getItemDisplayName } from "$lib/utils/items/ItemUtils";
   import { getLocaleItems } from "$lib/utils/selectors/WorldSelectors";
   import InventoryListItem from "./InventoryListItem.svelte";
+	import ItemBtns from "./ItemBtns.svelte";
 
+	export let getItemBtns: Function = () => [];
   export let localeName: string = "car";
   export let selectedItemId: string = "";
   export let setSelectedItemId: Function = () => false;
@@ -31,8 +33,11 @@
     <InventoryListItem
       animationStagger={i}
 			clickFunc={() => handleClick(localeItem.entityId)}
-      text={getItemMetadata(localeItem.name).display}
+      text={getItemDisplayName(localeItem)}
     />
+    {#if selectedItemId === localeItem.entityId}
+      <ItemBtns itemBtns={getItemBtns(localeItem)} />
+    {/if}
   {/each}
 </ul>
 

@@ -1,25 +1,53 @@
 <script type="ts">
+  import type { Item } from "../../../models/Item";
+  import type { ItemBtn } from "../../../models/ui/ItemBtn";
   import type { Locale } from "../../../models/Locale";
-	import { onDestroy } from "svelte";
+  import { onDestroy } from "svelte";
   import { fly } from "svelte/transition";
-  import { locale } from "$lib/stores/player/PlayerStore";
+  import { ItemData } from "$lib/data/items/ItemData";
+  import { World } from "$lib/data/world/World";
+  import { examineItem, locale, pickUpItem } from "$lib/stores/player/PlayerStore";
   import { consoleHeight } from "$lib/stores/ui/UIStore";
-	import { World } from "$lib/data/world/World";
+	import { makeItemBtnAction } from "$lib/utils/items/ItemUtils";
   import ContainerList from "$lib/components/survive/inventory/ContainerList.svelte";
-	import LocaleItemList from "$lib/components/survive/inventory/LocaleItemList.svelte";
-	import InventoryList from "$lib/components/survive/inventory/InventoryList.svelte";
+  import LocaleItemList from "$lib/components/survive/inventory/LocaleItemList.svelte";
+  import InventoryList from "$lib/components/survive/inventory/InventoryList.svelte";
 
-	let displayName: string = "";
-	let selectedItemId: string = "";
-	
-	const localeName: string = $locale;
+  let displayName: string = "";
+  let selectedItemId: string = "";
 
-  const currentLocale: Locale = World.filter((loc: Locale) => loc.name === $locale)[0];
-	const unsub = currentLocale.display.subscribe((display: string) => displayName = display);
+  const localeName: string = $locale;
 
-	const setSelectedItemId = (entityId: string) => selectedItemId = entityId;
+  const currentLocale: Locale = World.filter(
+    (loc: Locale) => loc.name === $locale
+  )[0];
+  const unsub = currentLocale.display.subscribe(
+    (display: string) => (displayName = display)
+  );
 
-	onDestroy(unsub);
+  const setSelectedItemId = (entityId: string) => (selectedItemId = entityId);
+
+  const getItemBtns = (item: Item): ItemBtn[] => {
+    const result: ItemBtn[] = [
+      {
+        color: "hsl(120, 18%, 22%)",
+        text: "Take",
+        action: makeItemBtnAction(() => pickUpItem(item.entityId, localeName), setSelectedItemId)
+      }
+    ];
+    if (!item.name) return result;
+    const meta = ItemData[item.name];
+    if (meta.description) {
+      result.push({
+        color: "hsl(210, 18%, 28%)",
+        text: "Examine",
+        action: makeItemBtnAction(() => examineItem(item), setSelectedItemId)
+      });
+    }
+    return result;
+  };
+
+  onDestroy(unsub);
 </script>
 
 <section style="max-height: {$consoleHeight}px">
@@ -32,8 +60,18 @@
     >
       {displayName}
     </h3>
-		<ContainerList {localeName} {selectedItemId} {setSelectedItemId} />
-		<LocaleItemList {localeName} {selectedItemId} {setSelectedItemId} />
+    <ContainerList
+      {getItemBtns}
+      {localeName}
+      {selectedItemId}
+      {setSelectedItemId}
+    />
+    <LocaleItemList
+      {getItemBtns}
+      {localeName}
+      {selectedItemId}
+      {setSelectedItemId}
+    />
     <h3
       in:fly={{
         delay: 60,
@@ -43,7 +81,7 @@
     >
       Inventory
     </h3>
-		<InventoryList {selectedItemId} {setSelectedItemId} />
+    <InventoryList {selectedItemId} {setSelectedItemId} />
   </div>
 </section>
 
