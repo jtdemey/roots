@@ -27,7 +27,7 @@
     result.push({
       color: "hsl(0, 30%, 18%)",
       text: "Drop",
-			action: makeItemBtnAction(() => dropItem(item), setSelectedItemId)
+			action: () => dropItem(item)
     });
     return result;
   };
@@ -37,7 +37,10 @@
       ? setSelectedItemId("")
       : setSelectedItemId(entityId);
 
-  const unsub = items.subscribe((newItems: Item[]) => (inventory = newItems));
+  const unsub = items.subscribe((newItems: Item[]) => {
+		console.log('inv refresh', newItems)
+		inventory = newItems;
+	});
 
   onDestroy(unsub);
 </script>

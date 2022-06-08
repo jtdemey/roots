@@ -1,9 +1,24 @@
-<script type="ts">
-  import { gameState } from "$lib/stores/game/GameStore";
+<script script type="ts">
+	import { onMount } from "svelte";
 	import { GameStates } from "$lib/data/game/GameStates";
+  import { gameState } from "$lib/stores/game/GameStore";
+	import { consoleHeight, isConsoleHeightSet } from "$lib/stores/ui/UIStore";
+
+	let menuContainer: any = undefined;
+
+	onMount(() => {
+		if (menuContainer) {
+			console.log(menuContainer.style)
+			if ($isConsoleHeightSet === false) {
+				console.log(menuContainer.clientHeight)
+				$consoleHeight = menuContainer.clientHeight - 106;
+				$isConsoleHeightSet = true;
+			}
+		}
+	});
 </script>
 
-<div>
+<div bind:this={menuContainer}>
 	<article>
 		<h1>The Devil's<br />Fingers</h1>
 		<section>

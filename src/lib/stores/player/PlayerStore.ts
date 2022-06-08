@@ -1,5 +1,6 @@
 import type { Container } from "../../../models/Container";
 import type { Item } from "../../../models/Item";
+import type { Locale } from "../../../models/Locale";
 import { goto } from "$app/navigation";
 import { get, writable } from "svelte/store";
 import { appendLine } from "../game/GameStore";
@@ -37,34 +38,21 @@ const addItemToInventory = (item: Item): void => {
       return;
     }
   }
-  items.update((playerItems: Item[]) => playerItems.concat([item]));
+  items.update((playerItems: Item[]) => playerItems.concat([createItem(item.name, item.amount, item.containerId)]));
 };
 
-export const dropItem = (item: Item): void => {
-  items.update((inventory: Item[]) => {
-    const targetItem = inventory.filter(
-      (thing: Item) => thing.entityId === item.entityId
-    )[0];
-    const otherItems = inventory.filter(
-      (thing: Item) => thing.entityId !== item.entityId
-    );
-    if (targetItem.amount > 1) {
-      targetItem.amount -= 1;
-      return otherItems.concat([targetItem]);
-    }
-    return otherItems;
-  });
-  const currentLocale = getLocale(get(locale));
-  currentLocale.items.update((localeItems: Item[]) => {
+const addItemToLocale = (targetLocale: Locale, item: Item) =>
+  targetLocale.items.update((localeItems: Item[]) => {
     if (localeItems.some((thing: Item) => thing.name === item.name)) {
       const isStackable = getItemMetadata(item.name).stackable;
       if (isStackable === true) {
         const matchingLocaleItems = localeItems.filter(
-          (thing: Item) => thing.name === item.name && thing.containerId === null
+          (thing: Item) =>
+            thing.name === item.name && thing.containerId === null
         );
         if (matchingLocaleItems.length > 0) {
           matchingLocaleItems[0].amount += 1;
-					console.log(matchingLocaleItems)
+          console.log(matchingLocaleItems);
           return localeItems
             .filter(
               (thing: Item) =>
@@ -74,9 +62,12 @@ export const dropItem = (item: Item): void => {
         }
       }
     }
-    item.amount = 1;
-    return localeItems.concat([item]);
+    return localeItems.concat([createItem(item.name, 1, item.containerId)]);
   });
+
+export const dropItem = (item: Item): void => {
+  removeItemFromInventory(item);
+  addItemToLocale(getLocale(get(locale)), item);
 };
 
 export const examineItem = (item: Item): void => {
@@ -97,3 +88,21 @@ export const pickUpItem = (entityId: string, localeName: string): void => {
     }
   });
 };
+
+const removeItemFromInventory = (item: Item) =>
+  items.update((inventory: Item[]) => {
+    const targetItem = inventory.filter(
+      (thing: Item) => thing.entityId === item.entityId
+    )[0];
+		console.log(`found target item`, targetItem)
+    const otherItems = inventory.filter(
+      (thing: Item) => thing.entityId !== item.entityId
+    );
+    if (targetItem.amount > 1) {
+      targetItem.amount -= 1;
+			console.log('combinin', otherItems.concat([targetItem]))
+      return otherItems.concat([targetItem]);
+    }
+		console.log('removed ', otherItems)
+    return otherItems;
+  });

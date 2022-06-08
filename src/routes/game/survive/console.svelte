@@ -2,16 +2,15 @@
 	import { onDestroy, onMount } from "svelte";
 	import { quartOut } from "svelte/easing";
 	import { tweened } from "svelte/motion";
-	import { writable } from "svelte/store";
   import { fly } from "svelte/transition";
 	import { consoleText, paused } from "$lib/stores/game/GameStore";
-	import { consoleHeight, isConsoleHeightSet } from "$lib/stores/ui/UIStore";
+	import { consoleHeight } from "$lib/stores/ui/UIStore";
 	import ConsoleLine from "$lib/components/survive/console/ConsoleLine.svelte";
 	import CommandLine from "$lib/components/survive/console/CommandLine.svelte";
 
 	let consolePane: any;
 
-  const paneYPos = tweened(600, {
+  const paneYPos = tweened(800, {
     duration: 400,
 		easing: quartOut
   });
@@ -29,13 +28,7 @@
 	const consoleUnsub = consoleText.subscribe((lines: string[]) => updatePaneYPos(lines));
 
 	onMount(() => {
-		if (consolePane) {
-			if ($isConsoleHeightSet === false) {
-				$consoleHeight = consolePane.clientHeight;
-				$isConsoleHeightSet = true;
-			}
-			updatePaneYPos($consoleText);
-		}
+		updatePaneYPos($consoleText);
 		if ($paused) {
 			$paused = false;
 		}

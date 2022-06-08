@@ -3,6 +3,8 @@ import type { Loot } from "../../../models/Loot";
 import { createItem } from "$lib/data/world/WorldFactory";
 import { getItemMetadata } from "../selectors/ItemSelectors";
 
+export const copyItem = (item: Item) => false;
+
 export const getItemDisplayName = (item: Item): string => {
   const displayName = getItemMetadata(item.name).display;
   if (item.amount > 1) {
