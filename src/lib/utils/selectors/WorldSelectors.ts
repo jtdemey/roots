@@ -10,6 +10,9 @@ export const getContainers = (localeName: string): Writable<Container[]> =>
 export const getLocaleItems = (localeName: string): Writable<Item[]> =>
 	getLocale(localeName).items;
 
+export const getLocaleTemperature = (localeName: string): Writable<number> =>
+	getLocale(localeName).temperature;
+
 export const getLocale = (localeName: string): Locale => {
 	const matchedLocales = GameWorld.filter((locale: Locale) => locale.name === localeName);
 	if (matchedLocales.length < 1) {

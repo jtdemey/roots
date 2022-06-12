@@ -1,13 +1,16 @@
 <script type="ts">
-  import type { GameEvent } from "../../../models/GameEvent";
   import { onMount } from "svelte";
   import {
-executeGameEvents,
+    environmentTemperature,
+    executeGameEvents,
     gameEvents,
     gameState,
     paused,
+    temperatureFlux,
+    temperatureTick,
     tick
   } from "$lib/stores/game/GameStore";
+  import { locale, temperature } from "$lib/stores/player/PlayerStore";
   import { goto } from "$app/navigation";
 
   onMount(() => {
@@ -15,16 +18,16 @@ executeGameEvents,
     const clock = setInterval(() => {
       if ($paused) return;
       $tick += 1;
+      if ($tick % 16 === 0) {
+        temperatureTick(
+          $temperatureFlux,
+          $environmentTemperature,
+          $locale,
+          $temperature
+        );
+      }
       if ($gameEvents.length < 1) return;
-      // $gameEvents.forEach((event: GameEvent, i: number) => {
-      //   if (event.triggerTick <= $tick) {
-			// 		console.log('runnin ' + i)
-      //     event.action();
-      //     gameEvents.update((events: GameEvent[]) => events.splice(i, 1));
-			// 		i--;
-      //   }
-      // });
-			executeGameEvents($gameEvents, $tick);
+      executeGameEvents($gameEvents, $tick);
     }, 500);
     return () => clearInterval(clock);
   });

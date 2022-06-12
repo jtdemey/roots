@@ -10,6 +10,7 @@ import type { ItemMetadata } from "../../../models/meta/ItemMetadata";
 import type { Locale } from "../../../models/Locale";
 import type { Loot } from "../../../models/Loot";
 import type { Spawn } from "../../../models/Spawn";
+import { Temperatures } from "./Temperatures";
 
 export const createComment = (
   visibilityThreshold: number,
@@ -82,7 +83,7 @@ export const createLocale = (
 			region: writable<string>("forest"),
 			spawns: writable<Spawn[]>([]),
 			visits: writable<number>(0),
-			temperature: writable<number>(0),
+			temperature: writable<number>(Temperatures.Normal),
 			visibility: writable<number>(0)
 		},
 		overrides
@@ -100,13 +101,14 @@ export const createItemMetadata = (
   display: string,
   description: string,
   stackable: boolean,
+	equipable: boolean = false,
   overrides: any = {}
 ): ItemMetadata =>
   Object.assign(
     {
       display,
       description,
-      equipable: false,
+      equipable,
       stackable
     },
     overrides

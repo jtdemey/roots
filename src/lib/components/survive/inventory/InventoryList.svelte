@@ -4,7 +4,10 @@
   import { onDestroy } from "svelte";
   import { dropItem, examineItem, items } from "$lib/stores/player/PlayerStore";
   import { ItemData } from "$lib/data/items/ItemData";
-  import { getItemDisplayName, makeItemBtnAction } from "$lib/utils/items/ItemUtils";
+  import {
+    getItemDisplayName,
+    makeItemBtnAction
+  } from "$lib/utils/items/ItemUtils";
   import InventoryListItem from "./InventoryListItem.svelte";
   import ItemBtns from "./ItemBtns.svelte";
 
@@ -27,7 +30,7 @@
     result.push({
       color: "hsl(0, 30%, 18%)",
       text: "Drop",
-			action: () => dropItem(item)
+      action: () => dropItem(item)
     });
     return result;
   };
@@ -38,9 +41,8 @@
       : setSelectedItemId(entityId);
 
   const unsub = items.subscribe((newItems: Item[]) => {
-		console.log('inv refresh', newItems)
-		inventory = newItems;
-	});
+    inventory = newItems;
+  });
 
   onDestroy(unsub);
 </script>

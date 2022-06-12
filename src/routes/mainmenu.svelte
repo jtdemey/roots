@@ -8,9 +8,7 @@
 
 	onMount(() => {
 		if (menuContainer) {
-			console.log(menuContainer.style)
 			if ($isConsoleHeightSet === false) {
-				console.log(menuContainer.clientHeight)
 				$consoleHeight = menuContainer.clientHeight - 106;
 				$isConsoleHeightSet = true;
 			}

@@ -28,6 +28,7 @@
 	const consoleUnsub = consoleText.subscribe((lines: string[]) => updatePaneYPos(lines));
 
 	onMount(() => {
+		//To-do: append test line to find line break point
 		updatePaneYPos($consoleText);
 		if ($paused) {
 			$paused = false;

@@ -8,7 +8,7 @@
 
 <style>
 	pre {
-		height: 27px;
+		min-height: 27px;
 		margin: 0;
 		padding: 0 0.5rem;
 		font-family: 'Newsreader', serif;

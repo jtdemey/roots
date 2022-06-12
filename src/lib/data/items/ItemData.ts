@@ -6,6 +6,32 @@ interface IItemData {
 }
 
 export const ItemData: IItemData = {
-  handwarmers: createItemMetadata("Handwarmers", "these are handwarmers.", true),
-  flashlight: createItemMetadata("Flashlight", "fadisofjos.", false)
+  //Consumables
+  handwarmers: createItemMetadata(
+    "Handwarmers",
+    "Small packets that disperse a modest amount of heat when activated",
+    true
+  ),
+
+  //Tools
+  flashlight: createItemMetadata(
+    "Flashlight",
+    "A meager black torch powered by batteries",
+    false
+  ),
+
+  //Weapons
+  crowbar: createItemMetadata(
+    "Crowbar",
+    "A metal tool that can be used for many purposes, some more blunt than others",
+    false,
+    true
+  ),
+
+  //Writing
+  welcome_note: createItemMetadata(
+    "Note",
+    "An old, dingy slip of paper with a note scribbled upon it",
+    false
+  )
 };

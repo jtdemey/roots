@@ -1,6 +1,6 @@
 <script type="ts">
   import { fly } from "svelte/transition";
-  import { temperature } from "$lib/stores/player/PlayerStore";
+  import { environmentTemperature } from "$lib/stores/game/GameStore";
   import { usingFahrenheit } from "$lib/stores/settings/SettingsStore";
 </script>
 
@@ -9,7 +9,7 @@
 	duration: 2000,
 	y: -6 
 }}>
-  {$temperature}
+  {$environmentTemperature}
   <span>&deg;</span>
   {usingFahrenheit ? "F" : "C"}
 </div>
