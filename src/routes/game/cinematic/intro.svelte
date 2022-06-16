@@ -33,7 +33,7 @@
   const endCinematic = () => {
 		registerGameEvent({
 			triggerTick: $tick + 10,
-			action: () => appendLine("this is a long long long long long long long long long long long long long long long long line")
+			action: () => appendLine("this is a long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long line")
 		});
     $gameState = GameStates.Explore;
     goto("/game/survive/console");

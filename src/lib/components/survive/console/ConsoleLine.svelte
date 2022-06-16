@@ -13,7 +13,7 @@
 		padding: 0 0.5rem;
 		font-family: 'Newsreader', serif;
 		font-size: 1rem;
-		line-height: 1rem;
+		line-height: 150%;
 		white-space: inherit;
 	}
 </style>

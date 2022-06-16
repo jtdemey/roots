@@ -14,13 +14,18 @@ export const paused = writable<boolean>(true);
 export const temperatureFlux = writable<number>(0);
 export const tick = writable<number>(0);
 
-export const appendLine = (text: string) =>
+export const appendLine = (text: string): void =>
   consoleText.update((lines: string[]) => lines.concat([text]));
+
+export const appendRandomLine = (texts: string[]): void => {
+	const selectedTextIndex = Math.floor(Math.random() * texts.length);
+	appendLine(texts[selectedTextIndex] || "");
+};
 
 export const executeGameEvents = (
   currentEvents: GameEvent[],
   currentTick: number
-) => {
+): void => {
   const executedIndices: number[] = [];
   currentEvents.forEach((event: GameEvent, i: number) => {
     if (event.triggerTick <= currentTick) {
@@ -39,7 +44,7 @@ export const temperatureTick = (
   environmentTemp: number,
   playerLocale: string,
 	playerTemp: number
-) => {
+): void => {
   const flux = fluxTemperature(currentFlux);
   if (flux !== currentFlux) {
     temperatureFlux.set(flux);
@@ -52,8 +57,8 @@ export const temperatureTick = (
   affectPlayerTemperature(nextEnvironmentTemp, playerTemp);
 };
 
-export const registerGameEvent = (gameEvent: GameEvent) =>
+export const registerGameEvent = (gameEvent: GameEvent): void =>
   gameEvents.update((events: GameEvent[]) => events.concat([gameEvent]));
 
-export const registerGameEvents = (addedEvents: GameEvent[]) =>
+export const registerGameEvents = (addedEvents: GameEvent[]): void =>
   gameEvents.update((events: GameEvent[]) => events.concat(addedEvents));
