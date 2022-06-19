@@ -1,5 +1,6 @@
 import type { Item } from "../../../models/Item";
 import type { Locale } from "../../../models/Locale";
+import type { PlayerFlags } from "$lib/data/player/PlayerFlags";
 import { goto } from "$app/navigation";
 import { get, writable } from "svelte/store";
 import { appendLine } from "../game/GameStore";
@@ -15,6 +16,7 @@ export const items = writable<Item[]>([createItem("handwarmers", 2)]);
 export const locale = writable<string>("car");
 export const lastLocale = writable<string>(undefined);
 export const maxHealth = writable<number>(100);
+export const playerFlags = writable<PlayerFlags[]>([]);
 export const region = writable<string>("forest");
 export const sanity = writable<number>(100);
 export const temperature = writable<number>(98.6);
@@ -23,7 +25,7 @@ export const affectPlayerTemperature = (
   environmentTemp: number,
   playerTemp: number
 ): void => {
-	//To-do: more nuanced cooling/heating
+  //To-do: more nuanced cooling/heating
   const environmentDifference = playerTemp - (environmentTemp + 40);
   temperature.update((currentTemp: number) =>
     roundTo(currentTemp - environmentDifference / 140, 1)
@@ -80,8 +82,8 @@ const addItemToLocale = (targetLocale: Locale, item: Item) =>
 export const dropItem = (item: Item): void => {
   removeItemFromInventory(item);
   addItemToLocale(getLocale(get(locale)), item);
-	const meta = getItemMetadata(item.name);
-	appendLine(`You drop the ${meta.display.toLocaleLowerCase()}`);
+  const meta = getItemMetadata(item.name);
+  appendLine(`You drop the ${meta.display.toLocaleLowerCase()}`);
 };
 
 export const examineItem = (item: Item): void => {

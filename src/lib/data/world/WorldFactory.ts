@@ -1,5 +1,3 @@
-import { nanoid } from "nanoid";
-import { writable, type Writable } from "svelte/store";
 import type { Comment } from "../../../models/Comment";
 import type { Container } from "../../../models/Container";
 import type { Enemy } from "../../../models/Enemy";
@@ -10,6 +8,8 @@ import type { ItemMetadata } from "../../../models/meta/ItemMetadata";
 import type { Locale } from "../../../models/Locale";
 import type { Loot } from "../../../models/Loot";
 import type { Spawn } from "../../../models/Spawn";
+import { nanoid } from "nanoid";
+import { writable, type Writable } from "svelte/store";
 import { Temperatures } from "./Temperatures";
 
 export const createComment = (
@@ -36,7 +36,7 @@ export const createContainer = (
 });
 
 export const createExit = (
-  direction: number,
+  direction: string,
   destination: string,
   duration: number,
   exitPhrase: string
@@ -57,6 +57,7 @@ export const createFeature = (
   description
 });
 
+//To-do: separate metadata
 export const createLocale = (
   name: string,
   display: string,
@@ -65,35 +66,39 @@ export const createLocale = (
   z: number,
   overrides: any = {}
 ): Locale => {
-	return Object.assign(
-		{
-			name,
-			display: writable<string>(display),
-			comments: writable<Comment[]>([]),
-			containers: writable<Container[]>([]),
-			coordinates: writable<number[]>([x, y, z]),
-			enemies: writable<Enemy[]>([]),
-			enterPhrase: writable<string>("You have entered a default locale."),
-			examinePhrase: writable<string>("Looks like a default locale here."),
-			exitPhrase: writable<string>("You have exited a default locale."),
-			exits: writable<Exit[]>([]),
-			features: writable<Feature[]>([]),
-			items: writable<Item[]>([]),
-			loot: writable<Loot[]>([]),
-			region: writable<string>("forest"),
-			spawns: writable<Spawn[]>([]),
-			visits: writable<number>(0),
-			temperature: writable<number>(Temperatures.Normal),
-			visibility: writable<number>(0)
-		},
-		overrides
-	);
+  return Object.assign(
+    {
+      name,
+      display: writable<string>(display),
+      comments: writable<Comment[]>([]),
+      containers: writable<Container[]>([]),
+      coordinates: writable<number[]>([x, y, z]),
+      enemies: writable<Enemy[]>([]),
+      enterPhrase: writable<string>("You have entered a default locale."),
+      examinePhrase: writable<string>("Looks like a default locale here."),
+      exitPhrase: writable<string>("You have exited a default locale."),
+      exits: writable<Exit[]>([]),
+      features: writable<Feature[]>([]),
+      items: writable<Item[]>([]),
+      loot: writable<Loot[]>([]),
+      region: writable<string>("forest"),
+      spawns: writable<Spawn[]>([]),
+      visits: writable<number>(0),
+      temperature: writable<number>(Temperatures.Normal),
+      visibility: writable<number>(0)
+    },
+    overrides
+  );
 };
 
-export const createItem = (name: string, amount: number, containerId: string | null = null): Item => ({
+export const createItem = (
+  name: string,
+  amount: number,
+  containerId: string | null = null
+): Item => ({
   entityId: nanoid(),
   amount,
-	containerId,
+  containerId,
   name
 });
 
@@ -101,7 +106,7 @@ export const createItemMetadata = (
   display: string,
   description: string,
   stackable: boolean,
-	equipable: boolean = false,
+  equipable: boolean = false,
   overrides: any = {}
 ): ItemMetadata =>
   Object.assign(

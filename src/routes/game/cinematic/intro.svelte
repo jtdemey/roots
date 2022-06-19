@@ -32,8 +32,16 @@
 
   const endCinematic = () => {
 		registerGameEvent({
+			triggerTick: $tick,
+			action: () => appendLine("The engine stalls.")
+		});
+		registerGameEvent({
+			triggerTick: $tick + 4,
+			action: () => appendLine("The airbag hisses as it deflates in front of you.")
+		});
+		registerGameEvent({
 			triggerTick: $tick + 10,
-			action: () => appendLine("this is a long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long line")
+			action: () => appendLine("The hood of your car looks crumpled. Smoke rises from its edges.")
 		});
     $gameState = GameStates.Explore;
     goto("/game/survive/console");

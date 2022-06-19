@@ -10,6 +10,7 @@
     if (event.key && event.key === "Enter") {
 			const actions = parseInput(inputValue, $tick);
 			registerGameEvents(actions);
+			inputValue = "";
     }
   };
 

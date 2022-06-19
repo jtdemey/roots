@@ -1,5 +1,5 @@
 export interface Exit {
-	direction: number;
+	direction: string;
 	destination: string;
 	duration: number;
 	exitPhrase: string;

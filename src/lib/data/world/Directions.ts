@@ -1,14 +1,14 @@
-export enum Directions {
-	North,
-	Northeast,
-	East,
-	Southeast,
-	South,
-	Southwest,
-	West,
-	Northwest,
-	Up,
-	Down,
-	Inside,
-	Outside
-}
+export const Directions: any = {
+  North: "north",
+	Northeast: "northeast",
+	East: "east",
+	Southeast: "southeast",
+	South: "south",
+	Southwest: "southwest",
+	West: "west",
+	Northwest: "northwest",
+	Up: "up",
+	Down: "down",
+	Inside: "inside",
+	Outside: "outside"
+};

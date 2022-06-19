@@ -14,16 +14,20 @@
   import InventoryList from "$lib/components/survive/inventory/InventoryList.svelte";
 
   let displayName: string = "";
+  let localeName: string = "car";
   let selectedItemId: string = "";
 
-  const localeName: string = $locale;
-
-  const currentLocale: Locale = World.filter(
-    (loc: Locale) => loc.name === $locale
-  )[0];
-  const unsub = currentLocale.display.subscribe(
-    (display: string) => (displayName = display)
-  );
+  let currentLocale: Locale;
+  let unsubDisplayName: Function;
+  const unsubLocaleName = locale.subscribe((loc: string) => {
+    localeName = loc;
+    currentLocale = World.filter(
+      (loc: Locale) => loc.name === localeName 
+    )[0];
+    unsubDisplayName = currentLocale.display.subscribe(
+      (display: string) => (displayName = display)
+    );
+  });
 
   const setSelectedItemId = (entityId: string) => (selectedItemId = entityId);
 
@@ -47,7 +51,10 @@
     return result;
   };
 
-  onDestroy(unsub);
+  onDestroy(() => {
+    unsubLocaleName();
+    unsubDisplayName && unsubDisplayName();
+  });
 </script>
 
 <section style="max-height: {$consoleHeight}px">

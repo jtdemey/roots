@@ -11,6 +11,7 @@
   import InventoryListItem from "./InventoryListItem.svelte";
   import { closeContainer, openContainer } from "$lib/stores/world/WorldStore";
   import { getContainers } from "$lib/utils/selectors/WorldSelectors";
+  import { sortObjectsByPropName } from "$lib/utils/SortUtils";
 
 	export let getItemBtns: Function = () => [];
   export let localeName: string = "car";
@@ -18,9 +19,18 @@
   export let setSelectedItemId: Function = () => false;
 
   let containers: Container[] = [];
+  let containersStore: Writable<Container[]> = [];
+  let unsub: Function;
 
-  const containersStore: Writable<Container[]> = getContainers(localeName);
-  const unsub = containersStore.subscribe((c: Container[]) => (containers = c));
+  $: {
+    containersStore = getContainers(localeName);
+    unsub = containersStore.subscribe((c: Container[]) => {
+      const newContainers = sortObjectsByPropName(c, "name");
+      containers = c.sort(
+        (containerA: Container, containerB: Container) => containerB.name[0] - containerA.name[0]
+      )
+    });
+  }
 
   const containerIconInfo: any[] = [
     { alt: "A circled question mark", src: CircleQuestionSolid },
@@ -50,7 +60,7 @@
   const isOpen = (container: Container) =>
     container.containerState === ContainerStates.Open;
 
-  onDestroy(unsub);
+  onDestroy(() => unsub && unsub());
 </script>
 
 <ul>

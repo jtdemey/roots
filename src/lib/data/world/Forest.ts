@@ -20,7 +20,7 @@ export const Forest: Locale[] = [
       )
     ]),
     exits: w([
-      F.createExit(Directions.Outside, "mailbox", 1000, "You exit the vehicle.")
+      F.createExit(Directions.Outside, "mailbox", 8, "You open the car door and exit the vehicle.")
     ]),
     items: w([F.createItem("handwarmers", 1)])
   }),
@@ -45,19 +45,19 @@ export const Forest: Locale[] = [
       F.createExit(
         Directions.South,
         "farm_front_path",
-        1000,
+        8,
         "You march through the decrepit entrance to the driveway."
       ),
       F.createExit(
         Directions.Inside,
         "car",
-        1500,
+        8,
         "You open the car door, duck, and step inside."
       )
     ]),
     items: w([F.createItem("handwarmers", 1)]),
     spawns: w([F.createSpawn("wolf", 1)]),
-    temperature: Temperatures.Cold
+    temperature: w(Temperatures.Cold)
   }),
 
   F.createLocale("farm_front_path", "Front Path", 7, 0, 6, {
@@ -65,11 +65,24 @@ export const Forest: Locale[] = [
       F.createExit(
         Directions.North,
         "farm_front_path",
-        1000,
+        8,
         "You exit the mouth of the driveway, arriving back at the main road."
       )
     ]),
     items: w([F.createItem("handwarmers", 1)]),
-    temperature: Temperatures.Cold
+    temperature: w(Temperatures.Cold)
+  }),
+
+  F.createLocale("farm_scrap_pile", "Front Intersection", 7, 0, 6, {
+    exits: w([
+      F.createExit(
+        Directions.North,
+        "farm_front_path",
+        8,
+        "You exit the mouth of the driveway, arriving back at the main road."
+      )
+    ]),
+    items: w([F.createItem("handwarmers", 1)]),
+    temperature: w(Temperatures.Cold)
   })
 ];

@@ -15,6 +15,9 @@ export interface Locale {
   containers: Writable<Container[]>;
 	display: Writable<string>;
   enemies: Writable<Enemy[]>;
+  enterPhrase: Writable<string>;
+  examinePhrase: Writable<string>;
+  exitPhrase: Writable<string>;
   meta: Writable<LocaleMetadata>;
   exits: Writable<Exit[]>;
   features: Writable<Feature[]>;
