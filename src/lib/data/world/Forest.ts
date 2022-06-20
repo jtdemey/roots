@@ -55,7 +55,7 @@ export const Forest: Locale[] = [
         "You open the car door, duck, and step inside."
       )
     ]),
-    items: w([F.createItem("handwarmers", 1)]),
+    items: w([F.createItem("handwarmers", 2)]),
     spawns: w([F.createSpawn("wolf", 1)]),
     temperature: w(Temperatures.Cold)
   }),

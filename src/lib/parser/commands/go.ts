@@ -34,8 +34,7 @@ const parseDirection = (dirInput: string): string => {
 
 export const parseGo = (
   input: string[],
-  currentTick: number,
-  localeName: string
+  currentTick: number
 ): GameEvent[] => {
   const queuedEvents: GameEvent[] = [];
   if (input.length === 1) {
@@ -52,6 +51,7 @@ export const parseGo = (
     return queuedEvents;
   }
 
+  const localeName: string = get(locale);
   const currentLocale: Locale = getLocale(localeName);
   const localeExits: Exit[] = get(currentLocale.exits);
   const intendedExits: Exit[] = localeExits.filter(
