@@ -23,6 +23,18 @@ export const region = writable<string>("forest");
 export const sanity = writable<number>(100);
 export const temperature = writable<number>(98.6);
 
+export const affectPlayerEnergy = (amount: number) =>
+  energy.update((currentEnergy: number) => {
+    const nextEnergy = currentEnergy + amount;
+    return nextEnergy < 1 ? 0 : nextEnergy;
+  });
+
+export const affectPlayerSanity = (amount: number) =>
+  sanity.update((currentSanity: number) => {
+    const nextSanity = currentSanity + amount;
+    return nextSanity < 1 ? 0 : nextSanity;
+  });
+
 export const affectPlayerTemperature = (
   environmentTemp: number,
   playerTemp: number

@@ -39,12 +39,18 @@ export const createExit = (
   direction: string,
   destination: string,
   duration: number,
-  exitPhrase: string
+  exitPhrase: string,
+  description: string = "",
+  locked: boolean = false,
+  visibilityThreshold: number = 0
 ): Exit => ({
-  direction,
+  description,
   destination,
+  direction,
   duration,
-  exitPhrase
+  exitPhrase,
+  locked,
+  visibilityThreshold
 });
 
 export const createFeature = (
@@ -57,7 +63,6 @@ export const createFeature = (
   description
 });
 
-//To-do: separate metadata
 export const createLocale = (
   name: string,
   display: string,

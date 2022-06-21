@@ -1,3 +1,7 @@
+import {
+  affectPlayerEnergy,
+  affectPlayerSanity
+} from "$lib/stores/player/PlayerStore";
 import type { TemperatureEffect } from "../../../models/TemperatureEffect";
 
 const genTempEff = (
@@ -24,23 +28,27 @@ export const TemperatureEffects: any = {
   ),
   Sleepy: genTempEff(
     "Your limbs feel heavy. The world is growing dark.",
-    "You feel moisture from the frost thawing off your skin."
+    "You feel moisture from the frost thawing off your skin.",
+    () => affectPlayerEnergy(-15)
   ),
   Frigid: genTempEff(
     "The frigid air stiffens your limbs.",
-    "You resist the cold's lure to eternal slumber as you feel your mental faculties rejuvenating."
+    "You resist the cold's lure to eternal slumber as you feel your mental faculties rejuvenating.",
+    () => affectPlayerEnergy(-3),
+    () => affectPlayerEnergy(15)
   ),
   Disoriented: genTempEff(
     "You feel disoriented from the harsh cold. Your shivering is uncontrollable.",
-    "You feel mobility return to your limbs."
+    "You feel mobility return to your limbs.",
+    () => affectPlayerSanity(-10),
+    () => affectPlayerEnergy(9)
   ),
   Shivering: genTempEff(
     "Your teeth chatter as your body begins shivering.",
-    "You shiver as you feel a stinging sensation return to your flesh."
+    "You shiver as you feel a stinging sensation return to your flesh.",
+    () => false,
+    () => affectPlayerSanity(10)
   ),
-  Normal: genTempEff(
-    "",
-    "You cease shivering."
-  ),
+  Normal: genTempEff("", "You cease shivering."),
   Hot: genTempEff("You feel overheated as you begin sweating.", "")
 };

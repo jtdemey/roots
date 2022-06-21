@@ -24,7 +24,7 @@
 
   $: {
     containersStore = getContainers(localeName);
-    unsub = containersStore.subscribe((c: Container[]) => {
+    unsubContainers = containersStore.subscribe((c: Container[]) => {
       const newContainers = sortObjectsByPropName(c, "name");
       containers = c.sort(
         (containerA: Container, containerB: Container) => containerB.name[0] - containerA.name[0]

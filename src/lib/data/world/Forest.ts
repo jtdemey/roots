@@ -20,7 +20,20 @@ export const Forest: Locale[] = [
       )
     ]),
     exits: w([
-      F.createExit(Directions.Outside, "mailbox", 8, "You open the car door and exit the vehicle.")
+      F.createExit(
+        Directions.Outside,
+        "mailbox",
+        8,
+        "You open the car door and exit the vehicle.",
+        "The woods are dark and still aside from gentle snowfall. It's eerily silent."
+      )
+    ]),
+    features: w([
+      F.createFeature(
+        "Air Freshener",
+        0,
+        "Your pinetree-shaped air freshener dangles delicately from your rear-view mirror."
+      )
     ]),
     items: w([F.createItem("handwarmers", 1)])
   }),

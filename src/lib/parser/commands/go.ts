@@ -11,7 +11,7 @@ import { queueEventNow } from "$lib/utils/GameEventUtils";
 import { getLocale } from "$lib/utils/selectors/WorldSelectors";
 import { genGameEvent } from "../ExploreParser";
 
-const parseDirection = (dirInput: string): string => {
+export const parseDirection = (dirInput: string): string => {
   let result: string = "";
   const intention = dirInput.toLocaleLowerCase();
   Object.keys(Directions).forEach((direction: string) => {
@@ -78,7 +78,7 @@ export const parseGo = (
   );
   const destination: Locale = getLocale(targetExit.destination);
   if (!destination) {
-    console.error(`No destination locale ${destination}`);
+    console.error(`No destination locale ${destination} to ${directionInput} of ${currentLocale.name}`);
   }
 
   queuedEvents.push(
