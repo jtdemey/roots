@@ -20,7 +20,7 @@
 
   let containers: Container[] = [];
   let containersStore: Writable<Container[]> = [];
-  let unsub: Function;
+  let unsubContainers: Function;
 
   $: {
     containersStore = getContainers(localeName);
@@ -60,7 +60,7 @@
   const isOpen = (container: Container) =>
     container.containerState === ContainerStates.Open;
 
-  onDestroy(() => unsub && unsub());
+  onDestroy(() => unsubContainers && unsubContainers());
 </script>
 
 <ul>

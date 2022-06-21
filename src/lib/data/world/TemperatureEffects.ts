@@ -31,15 +31,15 @@ export const TemperatureEffects: any = {
     "You resist the cold's lure to eternal slumber as you feel your mental faculties rejuvenating."
   ),
   Disoriented: genTempEff(
-    "You feel disoriented from the harsh cold.",
+    "You feel disoriented from the harsh cold. Your shivering is uncontrollable.",
     "You feel mobility return to your limbs."
   ),
   Shivering: genTempEff(
-    "Your teeth chatter as your body begins uncontrollably shivering.",
-    "You shiver violently as you feel a stinging sensation return to your flesh."
+    "Your teeth chatter as your body begins shivering.",
+    "You shiver as you feel a stinging sensation return to your flesh."
   ),
   Normal: genTempEff(
-    "You cool to an ideal, comfortable temperature.",
+    "",
     "You cease shivering."
   ),
   Hot: genTempEff("You feel overheated as you begin sweating.", "")

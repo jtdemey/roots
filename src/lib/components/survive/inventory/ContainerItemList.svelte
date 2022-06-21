@@ -1,5 +1,6 @@
 <script type="ts">
   import type { Item } from "../../../../models/Item";
+  import type { Locale } from "../../../../models/Locale";
   import { onDestroy } from "svelte";
 	import { getItemDisplayName } from "$lib/utils/items/ItemUtils";
   import { getLocale } from "$lib/utils/selectors/WorldSelectors";
@@ -12,22 +13,26 @@
   export let selectedItemId: string = "";
   export let setSelectedItemId: Function = () => false;
 
+  let currentLocale: Locale;
   let items: Item[] = [];
+  let unsubItems: Function = () => false;
 
-  const currentLocale = getLocale(localeName);
-  const unsub = currentLocale.items.subscribe(
-    (localeItems: Item[]) =>
-      (items = localeItems.filter(
-        (stuff: Item) => stuff.containerId === containerId
-      ))
-  );
+  $: {
+    currentLocale = getLocale(localeName);
+    unsubItems = currentLocale.items.subscribe(
+      (localeItems: Item[]) =>
+        (items = localeItems.filter(
+          (stuff: Item) => stuff.containerId === containerId
+        ))
+    );
+  }
 
   const handleClick: Function = (entityId: string): void =>
     selectedItemId === entityId
       ? setSelectedItemId("")
       : setSelectedItemId(entityId);
 
-  onDestroy(unsub);
+  onDestroy(unsubItems);
 </script>
 
 <div>

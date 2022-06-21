@@ -1,3 +1,4 @@
+import { parseExamine } from "$lib/parser/commands/examine";
 import { parseGo } from "$lib/parser/commands/go";
 import type { GameCommand } from "../../../models/GameCommand";
 
@@ -46,15 +47,11 @@ export const GameCommands: any = {
     "wear"
   ]),
 
-  examine: genCmd("examine", (input: string[], currentTick: number) => false, [
-    "gander",
-    "look",
-    "perceive",
-    "peruse",
-    "search",
-    "where",
-    "whereami"
-  ]),
+  examine: genCmd(
+    "examine",
+    (input: string[], currentTick: number) => parseExamine(input, currentTick),
+    ["gander", "look", "perceive", "peruse", "search", "where", "whereami"]
+  ),
 
   go: genCmd(
     "go",
@@ -73,7 +70,7 @@ export const GameCommands: any = {
     ]
   ),
 
-  "throw": genCmd("throw", (input: string[], currentTick: number) => false, [
+  throw: genCmd("throw", (input: string[], currentTick: number) => false, [
     "catapult",
     "chuck",
     "discharge",

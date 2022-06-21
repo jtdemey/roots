@@ -21,46 +21,23 @@ export const maxHealth = writable<number>(100);
 export const playerFlags = writable<PlayerFlags[]>([]);
 export const region = writable<string>("forest");
 export const sanity = writable<number>(100);
-export const temperature = writable<number>(98.9);
-
-const shiftPlayerTemperatureLevel = (
-  currentLvl: string,
-  currentTemp: number,
-  nextLvl: string,
-  nextTemp: number
-): void => {
-  console.log("temp diff");
-  const temperatureEffects = TemperatureEffects[nextLvl];
-  if (currentTemp < nextTemp) {
-    appendLine(temperatureEffects.dipPhrase);
-    return;
-  }
-  if (currentTemp > nextTemp) {
-    appendLine(temperatureEffects.risePhrase);
-  }
-};
+export const temperature = writable<number>(98.6);
 
 export const affectPlayerTemperature = (
   environmentTemp: number,
   playerTemp: number
 ): void => {
   //To-do: more nuanced cooling/heating
-  const environmentDifference = playerTemp - (environmentTemp + 40);
+  const environmentDifference: number = playerTemp - (environmentTemp + 40);
   temperature.update((currentTemp: number) => {
     const currentTempLvl: string = getPlayerTemperatureLevel(currentTemp);
     const newTemperature: number = roundTo(
-      currentTemp - environmentDifference / 140,
+      currentTemp - environmentDifference / 240,
       1
     );
     const nextTempLvl: string = getPlayerTemperatureLevel(newTemperature);
-    console.log(`c: ${currentTempLvl},   n: ${nextTempLvl}`);
     if (currentTempLvl !== nextTempLvl) {
-      shiftPlayerTemperatureLevel(
-        currentTempLvl,
-        currentTemp,
-        nextTempLvl,
-        newTemperature
-      );
+      shiftPlayerTemperatureLevel(currentTemp, newTemperature, currentTempLvl);
     }
     return newTemperature;
   });
@@ -153,3 +130,24 @@ const removeItemFromInventory = (item: Item) =>
     }
     return otherItems;
   });
+
+const shiftPlayerTemperatureLevel = (
+  currentTemp: number,
+  nextTemp: number,
+  currentLvl: string
+): void => {
+  const temperatureEffects = TemperatureEffects[currentLvl];
+  if (nextTemp < currentTemp) {
+    if (temperatureEffects.dipPhrase !== "") {
+      appendLine(temperatureEffects.dipPhrase);
+    }
+    temperatureEffects.dipAction && temperatureEffects.dipAction();
+    return;
+  }
+  if (nextTemp > currentTemp) {
+    if (temperatureEffects.risePhrase !== "") {
+      appendLine(temperatureEffects.risePhrase);
+    }
+    temperatureEffects.riseAction && temperatureEffects.riseAction();
+  }
+};

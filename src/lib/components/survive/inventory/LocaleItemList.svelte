@@ -13,19 +13,23 @@
   export let setSelectedItemId: Function = () => false;
 
   let localeItems: Item[] = [];
+  let localeItemsStore: Writable<Item[]>;
+  let unsubItems: Function = () => false;
 
-  const localeItemsStore: Writable<Item[]> = getLocaleItems(localeName);
-  const unsub = localeItemsStore.subscribe(
-    (items: Item[]) =>
-      (localeItems = items.filter((stuff: Item) => stuff.containerId === null))
-  );
+  $: {
+    localeItemsStore = getLocaleItems(localeName);
+    unsubItems = localeItemsStore.subscribe(
+      (items: Item[]) =>
+        (localeItems = items.filter((stuff: Item) => stuff.containerId === null))
+    );
+  }
 
   const handleClick: Function = (entityId: string): void =>
     selectedItemId === entityId
       ? setSelectedItemId("")
       : setSelectedItemId(entityId);
 
-  onDestroy(unsub);
+  onDestroy(unsubItems);
 </script>
 
 <ul>
