@@ -6,7 +6,6 @@ import type { Exit } from "./Exit";
 import type { Feature } from "./Feature";
 import type { Item } from "./Item";
 import type { Loot } from "./Loot";
-import type { LocaleMetadata } from "./meta/LocaleMetadata";
 import type { Spawn } from "./Spawn";
 
 export interface Locale {
@@ -18,7 +17,6 @@ export interface Locale {
   enterPhrase: Writable<string>;
   examinePhrase: Writable<string>;
   exitPhrase: Writable<string>;
-  meta: Writable<LocaleMetadata>;
   exits: Writable<Exit[]>;
   features: Writable<Feature[]>;
   items: Writable<Item[]>;

@@ -11,6 +11,17 @@ import { queueEventNow } from "$lib/utils/GameEventUtils";
 import { getLocale } from "$lib/utils/selectors/WorldSelectors";
 import { genGameEvent } from "../ExploreParser";
 
+const RunningAliases: string[] = [
+  "dart",
+  "gallop",
+  "race",
+  "run",
+  "rush",
+  "scamper",
+  "spring",
+  "sprint"
+];
+
 export const parseDirection = (dirInput: string): string => {
   let result: string = "";
   const intention = dirInput.toLocaleLowerCase();
@@ -32,12 +43,31 @@ export const parseDirection = (dirInput: string): string => {
   return result;
 };
 
-export const parseGo = (
-  input: string[],
-  currentTick: number
-): GameEvent[] => {
+export const parseGo = (input: string[], currentTick: number): GameEvent[] => {
   const queuedEvents: GameEvent[] = [];
   if (input.length === 1) {
+    //Running
+    const currentPlayerFlags: PlayerFlags[] = get(playerFlags);
+    if (
+      RunningAliases.some(
+        (alias: string) => input[0].toLocaleLowerCase() === alias
+      ) &&
+      currentPlayerFlags.some(
+        (flag: PlayerFlags) => flag === PlayerFlags.Exiting
+      )
+    ) {
+      playerFlags.update((currentFlags: PlayerFlags[]) =>
+        currentFlags.concat([PlayerFlags.Running])
+      );
+      queueEventNow(queuedEvents, currentTick, () =>
+        appendRandomLine([
+          `You begin running.`,
+          `You break into a run.`,
+          `You expend energy to run to the next area.`
+        ])
+      );
+    }
+
     queueEventNow(queuedEvents, currentTick, () =>
       appendLine(`Specify a direction, such as "north" or "outside".`)
     );
@@ -78,7 +108,9 @@ export const parseGo = (
   );
   const destination: Locale = getLocale(targetExit.destination);
   if (!destination) {
-    console.error(`No destination locale ${destination} to ${directionInput} of ${currentLocale.name}`);
+    console.error(
+      `No destination locale ${destination} to ${directionInput} of ${currentLocale.name}`
+    );
   }
 
   queuedEvents.push(

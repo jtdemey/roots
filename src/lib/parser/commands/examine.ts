@@ -7,10 +7,11 @@ import { get } from "svelte/store";
 import { appendLine, appendRandomLine } from "$lib/stores/game/GameStore";
 import { locale } from "$lib/stores/player/PlayerStore";
 import { getLocale } from "$lib/utils/selectors/WorldSelectors";
-import { queueEventNow } from "$lib/utils/GameEventUtils";
-import { addAOrAn } from "$lib/utils/GrammarUtils";
+import { disableForFlags, queueEventNow } from "$lib/utils/GameEventUtils";
+import { addAOrAn, toColloquialList } from "$lib/utils/GrammarUtils";
 import { getItemMetadata } from "$lib/utils/selectors/ItemSelectors";
 import { parseDirection } from "./go";
+import {PlayerFlags} from "$lib/data/player/PlayerFlags";
 
 const LocaleAliases: string[] = [
   "area",
@@ -26,6 +27,10 @@ export const parseExamine = (
   currentTick: number
 ): GameEvent[] => {
   const queuedEvents: GameEvent[] = [];
+
+  const allowed = disableForFlags([PlayerFlags.Exiting], queuedEvents, currentTick);
+  if (!allowed) return queuedEvents;
+
   const notedEntities: string[] = [];
   const target: string = input.length === 1 ? "" : input[1].toLocaleLowerCase();
   const currentLocale: Locale = getLocale(get(locale));
@@ -60,9 +65,7 @@ export const parseExamine = (
       );
       tickIndex += 2;
     } else if (notedExits.length > 1) {
-      const joinedExits: string =
-        notedExits.slice(0, notedExits.length - 2).join(", ") +
-        `and ${notedExits.slice(notedExits.length - 1)}`;
+      const joinedExits: string = toColloquialList(notedExits);
       queueEventNow(queuedEvents, tickIndex, () =>
         appendRandomLine([
           `There are exits to the ${joinedExits}.`,

@@ -1,8 +1,7 @@
 import type { Container } from "../../../models/Container";
 import type { Locale } from "../../../models/Locale";
-import type { LocaleMetadata } from "src/models/meta/LocaleMetadata";
-import type { Writable } from "svelte/store";
 import type { Item } from "../../../models/Item";
+import type { Writable } from "svelte/store";
 import { GameWorld } from "$lib/stores/world/WorldStore";
 
 export const getContainers = (localeName: string): Writable<Container[]> =>
@@ -10,10 +9,6 @@ export const getContainers = (localeName: string): Writable<Container[]> =>
 
 export const getLocaleItems = (localeName: string): Writable<Item[]> =>
   getLocale(localeName).items;
-
-export const getLocaleMetadata = (localeName: string): LocaleMetadata => {
-
-};
 
 export const getLocaleTemperature = (localeName: string): Writable<number> =>
   getLocale(localeName).temperature;
