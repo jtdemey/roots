@@ -1,9 +1,9 @@
 import type { GameEvent } from "../../models/GameEvent";
+import type { GameEventFlags } from "$lib/data/game/GameEventFlags";
 import type { PlayerFlags } from "$lib/data/player/PlayerFlags";
 import { get } from "svelte/store";
 import { appendLine } from "$lib/stores/game/GameStore";
 import { playerFlags } from "$lib/stores/player/PlayerStore";
-import { genGameEvent } from "$lib/parser/ExploreParser";
 
 export const disableForFlags = (
   flags: PlayerFlags[],
@@ -24,10 +24,47 @@ export const disableForFlags = (
   return enabled;
 };
 
+export const genGameEvent = (
+  triggerTick: number,
+  action: Function,
+  eventFlags?: number[],
+  cancelFlags?: number[]
+) => ({
+  triggerTick,
+  action,
+  eventFlags,
+  cancelFlags
+});
+
+export const getCancelledEventIndices = (
+  queuedEvents: GameEvent[],
+  flagsToCancel: GameEventFlags[]
+): number[] => {
+  const result: number[] = [];
+  queuedEvents.forEach((queuedEvent: GameEvent, i: number) => {
+    if (
+      queuedEvent.cancelFlags &&
+      queuedEvent.cancelFlags.length > 0 &&
+      queuedEvent.cancelFlags.some((cancelFlag: GameEventFlags) =>
+        flagsToCancel.some(
+          (flagToCancel: GameEventFlags) => flagToCancel === cancelFlag
+        )
+      )
+    ) {
+      result.push(i);
+    }
+  });
+  return result;
+};
+
 export const queueEventNow = (
   eventCollection: GameEvent[],
   currentTick: number,
-  action: Function
+  action: Function,
+  eventFlags?: GameEventFlags[],
+  cancelFlags?: GameEventFlags[]
 ): void => {
-  eventCollection.push(genGameEvent(currentTick, action));
+  eventCollection.push(
+    genGameEvent(currentTick, action, eventFlags, cancelFlags)
+  );
 };

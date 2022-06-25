@@ -1,15 +1,19 @@
 <script type="ts">
+  import { goto } from "$app/navigation";
+  import { onMount } from "svelte";
   import { tweened } from "svelte/motion";
   import { fade, fly } from "svelte/transition";
   import {
     gameState,
     tick,
-    registerGameEvent,
+    registerGameEvents,
     appendLine
   } from "$lib/stores/game/GameStore";
+  import { GameEventFlags } from "$lib/data/game/GameEventFlags";
   import { GameStates } from "$lib/data/game/GameStates";
-  import { goto } from "$app/navigation";
-  import { onMount } from "svelte";
+  import { genGameEvent } from "$lib/utils/GameEventUtils";
+
+  let currentTick: number = $tick;
 
   const timers: any[] = [];
 
@@ -31,18 +35,16 @@
   });
 
   const endCinematic = () => {
-		registerGameEvent({
-			triggerTick: $tick,
-			action: () => appendLine("The engine stalls.")
-		});
-		registerGameEvent({
-			triggerTick: $tick + 4,
-			action: () => appendLine("The airbag hisses as it deflates in front of you.")
-		});
-		registerGameEvent({
-			triggerTick: $tick + 10,
-			action: () => appendLine("The hood of your car looks crumpled. Smoke rises from its edges.")
-		});
+    const genIntroEvent = (currentTick: number, action: Function) =>
+      genGameEvent(currentTick, action, undefined, [GameEventFlags.Exit]);
+    registerGameEvents([
+      genIntroEvent(currentTick, () => appendLine("The engine stalls.")),
+      genIntroEvent(currentTick + 4, () => appendLine("The airbag hisses as it deflates in front of you.")),
+      genIntroEvent(
+        currentTick + 10,
+        () => appendLine(`The hood of your car looks crumpled. Smoke rises from its edges.`)
+      )
+    ]);
     $gameState = GameStates.Explore;
     goto("/game/survive/console");
   };

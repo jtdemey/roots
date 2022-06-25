@@ -1,9 +1,9 @@
 import type { Item } from "../../../models/Item";
 import type { Locale } from "../../../models/Locale";
-import type { PlayerFlags } from "$lib/data/player/PlayerFlags";
+import { PlayerFlags } from "$lib/data/player/PlayerFlags";
 import { goto } from "$app/navigation";
 import { get, writable } from "svelte/store";
-import { appendLine } from "../game/GameStore";
+import { appendLine, appendRandomLine } from "../game/GameStore";
 import { ItemData } from "$lib/data/items/ItemData";
 import { getLocale } from "$lib/utils/selectors/WorldSelectors";
 import { createItem } from "$lib/data/world/WorldFactory";
@@ -128,6 +128,9 @@ export const pickUpItem = (entityId: string, localeName: string): void => {
   });
 };
 
+export const playerHasFlag = (flag: PlayerFlags): boolean =>
+  get(playerFlags).some((f: PlayerFlags) => f === flag);
+
 const removeItemFromInventory = (item: Item) =>
   items.update((inventory: Item[]) => {
     const targetItem = inventory.filter(
@@ -142,6 +145,18 @@ const removeItemFromInventory = (item: Item) =>
     }
     return otherItems;
   });
+
+export const runWhileExitingLocale = (): void => {
+  playerFlags.update((currentFlags: PlayerFlags[]) =>
+    currentFlags.concat([PlayerFlags.Running])
+  );
+  energy.update((currentEnergy: number) => currentEnergy - 8);
+  appendRandomLine([
+    `You begin running.`,
+    `You break into a run.`,
+    `You expend a burst of energy to run to the next area.`
+  ]);
+};
 
 const shiftPlayerTemperatureLevel = (
   currentTemp: number,

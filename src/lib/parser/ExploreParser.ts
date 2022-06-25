@@ -1,19 +1,15 @@
 import type { GameEvent } from "../../models/GameEvent";
 import { appendLine } from "$lib/stores/game/GameStore";
 import { GameCommands } from "$lib/data/parser/GameCommands";
+import { genGameEvent } from "$lib/utils/GameEventUtils";
 
 const collectEvents = (queue: GameEvent[], events: GameEvent[]): GameEvent[] =>
   events.length < 1 ? queue : queue.concat(events);
 
-export const genGameEvent = (triggerTick: number, action: Function) => ({
-  triggerTick,
-  action
-});
-
 const isAlias = (commandName: string, comparator: string) =>
-	commandName === comparator ||
-	(GameCommands[commandName] !== undefined &&
-		GameCommands[commandName].aliases.indexOf(comparator) > -1);
+  commandName === comparator ||
+  (GameCommands[commandName] !== undefined &&
+    GameCommands[commandName].aliases.indexOf(comparator) > -1);
 
 export const parseInput = (raw: string, currentTick: number): GameEvent[] => {
   let queuedEvents: GameEvent[] = [];
@@ -27,7 +23,10 @@ export const parseInput = (raw: string, currentTick: number): GameEvent[] => {
   Object.keys(GameCommands).forEach((commandName: string) => {
     const currentCmd = GameCommands[commandName];
     if (isAlias(commandName, keyword)) {
-      queuedEvents = collectEvents(queuedEvents, currentCmd.action(input, currentTick));
+      queuedEvents = collectEvents(
+        queuedEvents,
+        currentCmd.action(input, currentTick)
+      );
     }
   });
   if (queuedEvents.length < 1) {

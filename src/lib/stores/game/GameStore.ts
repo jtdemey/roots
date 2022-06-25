@@ -1,10 +1,11 @@
 import type { GameEvent } from "../../../models/GameEvent";
-import { GameStates } from "$lib/data/game/GameStates";
 import { get, writable } from "svelte/store";
+import { GameStates } from "$lib/data/game/GameStates";
+import { Temperatures } from "$lib/data/world/Temperatures";
 import { fluxTemperature } from "$lib/utils/world/WorldUtils";
 import { getLocaleTemperature } from "$lib/utils/selectors/WorldSelectors";
+import { getCancelledEventIndices } from "$lib/utils/GameEventUtils";
 import { affectPlayerTemperature } from "../player/PlayerStore";
-import { Temperatures } from "$lib/data/world/Temperatures";
 
 export const consoleText = writable<string[]>([]);
 export const environmentTemperature = writable<number>(Temperatures.Normal);
@@ -18,19 +19,24 @@ export const appendLine = (text: string): void =>
   consoleText.update((lines: string[]) => lines.concat([text]));
 
 export const appendRandomLine = (texts: string[]): void => {
-	const selectedTextIndex = Math.floor(Math.random() * texts.length);
-	appendLine(texts[selectedTextIndex] || "");
+  const selectedTextIndex = Math.floor(Math.random() * texts.length);
+  appendLine(texts[selectedTextIndex] || "");
 };
 
 export const executeGameEvents = (
   currentEvents: GameEvent[],
   currentTick: number
 ): void => {
-  const executedIndices: number[] = [];
-  currentEvents.forEach((event: GameEvent, i: number) => {
-    if (event.triggerTick <= currentTick) {
-      event.action();
+  let executedIndices: number[] = [];
+  currentEvents.forEach((gameEvent: GameEvent, i: number) => {
+    if (gameEvent.triggerTick <= currentTick) {
+      gameEvent.action();
       executedIndices.push(i);
+      if (gameEvent.eventFlags && gameEvent.eventFlags.length > 0) {
+        executedIndices = executedIndices.concat(
+          getCancelledEventIndices(currentEvents, gameEvent.eventFlags)
+        );
+      }
     }
   });
   const activatedEvents = currentEvents.filter(
@@ -43,7 +49,7 @@ export const temperatureTick = (
   currentFlux: number,
   environmentTemp: number,
   playerLocale: string,
-	playerTemp: number
+  playerTemp: number
 ): void => {
   const flux = fluxTemperature(currentFlux);
   if (flux !== currentFlux) {

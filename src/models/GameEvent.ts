@@ -1,5 +1,9 @@
+import type { GameEventFlags } from "$lib/data/game/GameEventFlags";
+
 export interface GameEvent {
-	eventName?: string;
-	triggerTick: number;
-	action: Function;
+  action: Function;
+  cancelFlags?: GameEventFlags[];
+  eventFlags?: GameEventFlags[];
+  eventName?: string;
+  triggerTick: number;
 }
