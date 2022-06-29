@@ -1,13 +1,11 @@
-import type { EnemyMetadata } from "./meta/EnemyMetadata";
-import type { Move } from "./Move";
+import type { Writable } from "svelte/store";
 
 export interface Enemy {
-	cooldown: number;
-	defense: number;
+	cooldown: Writable<number>;
+	attack: Writable<number>;
+	defense: Writable<number>;
 	entityId: string;
-	health: number | number[];
-	maxHealth: number;
-	meta: EnemyMetadata;
-	moves: Move[];
+	health: Writable<number>;
+	maxHealth: Writable<number>;
 	name: string;
 }

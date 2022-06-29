@@ -8,7 +8,8 @@ import { playerFlags } from "$lib/stores/player/PlayerStore";
 export const disableForFlags = (
   flags: PlayerFlags[],
   queuedEvents: GameEvent[],
-  currentTick: number
+  currentTick: number,
+  feedback: string = "You can't do that now."
 ): boolean => {
   const currentFlags: PlayerFlags[] = get(playerFlags);
   let enabled: boolean = true;
@@ -17,7 +18,7 @@ export const disableForFlags = (
     if (flags.some((f: PlayerFlags) => f === flag)) {
       enabled = false;
       queueEventNow(queuedEvents, currentTick, () =>
-        appendLine("You can't do that now.")
+        appendLine(feedback)
       );
     }
   });
@@ -28,12 +29,14 @@ export const genGameEvent = (
   triggerTick: number,
   action: Function,
   eventFlags?: number[],
-  cancelFlags?: number[]
+  cancelFlags?: number[],
+  eventName?: string
 ) => ({
   triggerTick,
   action,
   eventFlags,
-  cancelFlags
+  cancelFlags,
+  eventName
 });
 
 export const getCancelledEventIndices = (
@@ -62,9 +65,10 @@ export const queueEventNow = (
   currentTick: number,
   action: Function,
   eventFlags?: GameEventFlags[],
-  cancelFlags?: GameEventFlags[]
+  cancelFlags?: GameEventFlags[],
+  eventName?: string
 ): void => {
   eventCollection.push(
-    genGameEvent(currentTick, action, eventFlags, cancelFlags)
+    genGameEvent(currentTick, action, eventFlags, cancelFlags, eventName)
   );
 };

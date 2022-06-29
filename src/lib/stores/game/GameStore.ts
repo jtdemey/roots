@@ -1,5 +1,6 @@
 import type { GameEvent } from "../../../models/GameEvent";
 import { get, writable } from "svelte/store";
+import { goto } from "$app/navigation";
 import { GameStates } from "$lib/data/game/GameStates";
 import { Temperatures } from "$lib/data/world/Temperatures";
 import { fluxTemperature } from "$lib/utils/world/WorldUtils";
@@ -43,6 +44,11 @@ export const executeGameEvents = (
     (gameEvent: GameEvent, i: number) => executedIndices.indexOf(i) < 0
   );
   gameEvents.set(activatedEvents);
+};
+
+export const startCombat = (): void => {
+  gameState.set(GameStates.Combat);
+  goto("/game/combat/fight");
 };
 
 export const temperatureTick = (

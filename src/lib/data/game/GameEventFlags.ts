@@ -1,3 +1,5 @@
 export enum GameEventFlags {
-  Exit
+  Arrive,
+  Exit,
+  Run
 }

@@ -1,9 +1,12 @@
 import type { Container } from "../../../models/Container";
+import type { Enemy } from "../../../models/Enemy";
 import type { Item } from "../../../models/Item";
 import type { Locale } from "../../../models/Locale";
+import type { Spawn } from "../../../models/Spawn";
 import { get, type Writable } from "svelte/store";
-import { World } from "$lib/data/world/World";
+import { createEnemy } from "$lib/data/enemy/EnemyFactory";
 import { ContainerStates } from "$lib/data/items/ContainerStates";
+import { World } from "$lib/data/world/World";
 import { rollLoot } from "$lib/utils/items/ItemUtils";
 import { getLocale } from "$lib/utils/selectors/WorldSelectors";
 
@@ -75,4 +78,16 @@ export const openContainer = (
       }
     ]);
   });
+};
+
+export const spawnEnemies = (currentLocale: Locale): Enemy[] => {
+  const enemies: Enemy[] = [];
+  const spawns = get(currentLocale.spawns);
+  if (!spawns || spawns.length < 1) return enemies;
+  spawns.forEach((spawn: Spawn) => {
+    if (Math.random() > spawn.probability) return;
+    enemies.push(createEnemy(spawn.name));
+  });
+  currentLocale.enemies.set(enemies);
+  return enemies;
 };

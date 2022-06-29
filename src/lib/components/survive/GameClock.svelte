@@ -3,6 +3,8 @@
 	import { formatTime } from "$lib/utils/DateUtils";
 	import { tick } from "$lib/stores/game/GameStore";
 
+  export const darken: boolean = false;
+
 	const getTimeFromTick = (tick: number): string => {
 		const s = new Date(1987, 11, 12, 9, 44, 8, 0);
 		s.setSeconds((1 * s.getSeconds()) + Math.floor(tick / 2));

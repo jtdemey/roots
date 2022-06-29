@@ -5,9 +5,11 @@ import type { Locale } from "../../../models/Locale";
 import { get } from "svelte/store";
 import {
   appendLine,
-  appendRandomLine
+  appendRandomLine,
+  gameEvents
 } from "$lib/stores/game/GameStore";
 import {
+  enterLocale,
   locale,
   playerFlags,
   runWhileExitingLocale
@@ -15,7 +17,11 @@ import {
 import { Directions } from "$lib/data/world/Directions";
 import { DirectionAliases } from "$lib/data/world/DirectionAliases";
 import { PlayerFlags } from "$lib/data/player/PlayerFlags";
-import { genGameEvent, queueEventNow } from "$lib/utils/GameEventUtils";
+import {
+  disableForFlags,
+  genGameEvent,
+  queueEventNow
+} from "$lib/utils/GameEventUtils";
 import { getLocale } from "$lib/utils/selectors/WorldSelectors";
 
 const RunningAliases: string[] = [
@@ -55,22 +61,65 @@ export const parseDirection = (dirInput: string): string => {
 
 export const parseGo = (input: string[], currentTick: number): GameEvent[] => {
   const queuedEvents: GameEvent[] = [];
+
+  const allowed = disableForFlags(
+    [PlayerFlags.Running],
+    queuedEvents,
+    currentTick
+  );
+  if (!allowed) return queuedEvents;
+
+  const currentPlayerFlags: PlayerFlags[] = get(playerFlags);
+  let isRunning: boolean = false;
+
   if (input.length === 1) {
+    //"run" subcommand
     if (isRunAlias(input[0])) {
-      const currentPlayerFlags: PlayerFlags[] = get(playerFlags);
       if (
         currentPlayerFlags.some(
           (flag: PlayerFlags) => flag === PlayerFlags.Exiting
         )
       ) {
-        queueEventNow(queuedEvents, currentTick, () => runWhileExitingLocale());
+        queueEventNow(
+          queuedEvents,
+          currentTick,
+          () => runWhileExitingLocale(),
+          [GameEventFlags.Run]
+        );
+        isRunning = true;
+        const arriveEvent: GameEvent = get(gameEvents).filter(
+          (gameEvent: GameEvent) =>
+            gameEvent.eventFlags &&
+            gameEvent.eventFlags.some(
+              (flag: GameEventFlags) => flag === GameEventFlags.Arrive
+            )
+        )[0];
+
+        if (!arriveEvent || !arriveEvent.eventName) {
+          return queuedEvents;
+        }
+
+        const targetLocale: Locale = getLocale(arriveEvent.eventName.replace("arriveat-", ""));
+        const tickDifference = arriveEvent.triggerTick - currentTick;
+        queuedEvents.push(
+          genGameEvent(
+            currentTick + tickDifference / 2,
+            () => enterLocale(targetLocale),
+            [GameEventFlags.Arrive],
+            undefined,
+            `arriveat-${targetLocale.name}`
+          )
+        );
         return queuedEvents;
       }
     }
-    queueEventNow(queuedEvents, currentTick, () =>
-      appendLine(`Specify a direction, such as "north" or "outside".`)
-    );
-    return queuedEvents;
+
+    if (!isRunning) {
+      queueEventNow(queuedEvents, currentTick, () =>
+        appendLine(`Specify a direction, such as "north" or "outside".`)
+      );
+      return queuedEvents;
+    }
   }
 
   const directionInput: string = parseDirection(input[1]);
@@ -116,14 +165,20 @@ export const parseGo = (input: string[], currentTick: number): GameEvent[] => {
     );
   }
 
+  isRunning = isRunAlias(input[0]);
+  const exitDuration: number = isRunning
+    ? currentTick + targetExit.duration / 2
+    : currentTick + targetExit.duration;
+
   queuedEvents.push(
-    genGameEvent(currentTick + targetExit.duration, () => {
-      playerFlags.update((currentFlags: PlayerFlags[]) =>
-        currentFlags.filter((flag: PlayerFlags) => flag !== PlayerFlags.Exiting)
-      );
-      locale.set(destination.name);
-      appendLine(get(destination.enterPhrase));
-    })
+    genGameEvent(
+      exitDuration,
+      () => enterLocale(destination),
+      [GameEventFlags.Arrive],
+      [GameEventFlags.Run],
+      `arriveat-${destination.name}`
+    )
   );
+  console.log(queuedEvents);
   return queuedEvents;
 };

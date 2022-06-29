@@ -73,7 +73,6 @@
     left: 0;
     width: 100%;
     min-height: 100%;
-    overflow-y: scroll;
     scroll-behavior: smooth;
   }
 

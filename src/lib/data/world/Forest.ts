@@ -56,6 +56,13 @@ export const Forest: Locale[] = [
     ]),
     exits: w([
       F.createExit(
+        Directions.East,
+        "river_bed_road",
+        12,
+        "You continue eastward down the road, trudging through shallow snowfall.",
+        `The road continues slightly downhill to the east, curving to the south.`
+      ),
+      F.createExit(
         Directions.South,
         "farm_front_path",
         6,
@@ -70,13 +77,13 @@ export const Forest: Locale[] = [
         "It's hard to see through your car's tinted windows."
       )
     ]),
-    items: w([F.createItem("handwarmers", 2)]),
     spawns: w([F.createSpawn("wolf", 1)]),
     temperature: w(Temperatures.Cold)
   }),
 
   F.createLocale("river_bed_road", "Winding Road", 27, 0, 16, {
-    enterPhrase: w(`You arrive at a turn in the road that runs parallel to a riverbed visible
+    enterPhrase:
+      w(`You arrive at a turn in the road that runs parallel to a riverbed visible
       through the eastern foliage. The road continues downhill to the south, and toward your car
       to the west.`),
     exits: w([
@@ -93,8 +100,17 @@ export const Forest: Locale[] = [
         "farm_bridge_road",
         10,
         `You trod southwards down the road, hearing the hushed flow of the river to your east interspersed
-          with your cushioned footsteps through the snow.`
+          with your cushioned footsteps through the snow.`,
+        `The rough road continues downhill to the south. You can barely discern a wooden bridge spanning
+          the river through the crooked trees.`
       ),
+      F.createExit(
+        Directions.West,
+        "mailbox",
+        12,
+        `You saunter up the road toward your car and the obscured driveway.`,
+        `The road is long and dark. Snow falls gently between the disarray of branches overhead.`
+      )
     ]),
     temperature: w(Temperatures.Cold)
   }),
@@ -106,6 +122,14 @@ export const Forest: Locale[] = [
         "mailbox",
         8,
         "You exit the mouth of the driveway, arriving back at the main road next to your vehicle."
+      ),
+      F.createExit(
+        Directions.East,
+        "shed",
+        6,
+        `You enter through the shoddy shed doorway.`,
+        `A meager wooden shed with a tilted roof, rotted at its edges rests in a divot among the
+          dense foliage.`
       )
     ]),
     items: w([F.createItem("handwarmers", 1)]),

@@ -1,16 +1,17 @@
 import type { Item } from "../../../models/Item";
 import type { Locale } from "../../../models/Locale";
-import { PlayerFlags } from "$lib/data/player/PlayerFlags";
 import { goto } from "$app/navigation";
 import { get, writable } from "svelte/store";
-import { appendLine, appendRandomLine } from "../game/GameStore";
+import { appendLine, appendRandomLine, startCombat } from "../game/GameStore";
 import { ItemData } from "$lib/data/items/ItemData";
-import { getLocale } from "$lib/utils/selectors/WorldSelectors";
+import { PlayerFlags } from "$lib/data/player/PlayerFlags";
 import { createItem } from "$lib/data/world/WorldFactory";
-import { getItemMetadata } from "$lib/utils/selectors/ItemSelectors";
-import { roundTo } from "$lib/utils/MathUtils";
-import { getPlayerTemperatureLevel } from "$lib/utils/world/WorldUtils";
 import { TemperatureEffects } from "$lib/data/world/TemperatureEffects";
+import { spawnEnemies } from "$lib/stores/world/WorldStore";
+import { getItemMetadata } from "$lib/utils/selectors/ItemSelectors";
+import { getPlayerTemperatureLevel } from "$lib/utils/world/WorldUtils";
+import { getLocale } from "$lib/utils/selectors/WorldSelectors";
+import { roundTo } from "$lib/utils/MathUtils";
 
 export const energy = writable<number>(100);
 export const health = writable<number>(100);
@@ -109,6 +110,29 @@ export const dropItem = (item: Item): void => {
   appendLine(`You drop the ${meta.display.toLocaleLowerCase()}`);
 };
 
+export const enterLocale = (destination: Locale): void => {
+  const playerFlagsToRemove: PlayerFlags[] = [
+    PlayerFlags.Exiting,
+    PlayerFlags.Running
+  ];
+  playerFlags.update((currentFlags: PlayerFlags[]) =>
+    currentFlags.filter(
+      (flag: PlayerFlags) =>
+        !playerFlagsToRemove.some((pf: PlayerFlags) => pf === flag)
+    )
+  );
+  locale.set(destination.name);
+  appendLine(get(destination.enterPhrase));
+  const spawns = get(destination.spawns);
+  if (spawns.length > 0) {
+    const enemies = spawnEnemies(destination);
+    console.log(enemies);
+    if (enemies.length === 1) {
+      startCombat();
+    }
+  }
+};
+
 export const examineItem = (item: Item): void => {
   const meta = getItemMetadata(item.name);
   appendLine(meta.description);
@@ -150,7 +174,7 @@ export const runWhileExitingLocale = (): void => {
   playerFlags.update((currentFlags: PlayerFlags[]) =>
     currentFlags.concat([PlayerFlags.Running])
   );
-  energy.update((currentEnergy: number) => currentEnergy - 8);
+  affectPlayerEnergy(-8);
   appendRandomLine([
     `You begin running.`,
     `You break into a run.`,
