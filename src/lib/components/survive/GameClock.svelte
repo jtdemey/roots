@@ -3,7 +3,7 @@
 	import { formatTime } from "$lib/utils/DateUtils";
 	import { tick } from "$lib/stores/game/GameStore";
 
-  export const darken: boolean = false;
+  export let darken: boolean = false;
 
 	const getTimeFromTick = (tick: number): string => {
 		const s = new Date(1987, 11, 12, 9, 44, 8, 0);
@@ -12,11 +12,13 @@
 	};
 </script>
 
-<div>
-	<span in:fly={{
-    duration: 2000,
-    y: -6 
-  }}>
+<div style="color:{darken ? "#111" : "#fff"}">
+  <span
+    in:fly={{
+      duration: 2000,
+      y: -6 
+    }} 
+  >
 		{formatTime(getTimeFromTick($tick))}
 	</span>
 </div>
@@ -34,4 +36,8 @@
 		font-family: 'DM Serif Display', serif;
 		font-size: 1.1rem;
 	}
+
+  .dark {
+    color: #111;
+  }
 </style>

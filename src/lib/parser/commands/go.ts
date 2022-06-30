@@ -179,6 +179,5 @@ export const parseGo = (input: string[], currentTick: number): GameEvent[] => {
       `arriveat-${destination.name}`
     )
   );
-  console.log(queuedEvents);
   return queuedEvents;
 };

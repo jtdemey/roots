@@ -126,7 +126,6 @@ export const enterLocale = (destination: Locale): void => {
   const spawns = get(destination.spawns);
   if (spawns.length > 0) {
     const enemies = spawnEnemies(destination);
-    console.log(enemies);
     if (enemies.length === 1) {
       startCombat();
     }

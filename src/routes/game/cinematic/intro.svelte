@@ -12,6 +12,7 @@
   import { GameEventFlags } from "$lib/data/game/GameEventFlags";
   import { GameStates } from "$lib/data/game/GameStates";
   import { genGameEvent } from "$lib/utils/GameEventUtils";
+  import BaseCinematic from "$lib/components/cinematic/BaseCinematic.svelte";
 
   let currentTick: number = $tick;
 
@@ -38,10 +39,10 @@
     const genIntroEvent = (currentTick: number, action: Function) =>
       genGameEvent(currentTick, action, undefined, [GameEventFlags.Exit]);
     registerGameEvents([
-      genIntroEvent(currentTick, () => appendLine("The engine stalls.")),
-      genIntroEvent(currentTick + 4, () => appendLine("The airbag hisses as it deflates in front of you.")),
+      genIntroEvent($tick, () => appendLine("The engine stalls.")),
+      genIntroEvent($tick + 4, () => appendLine("The airbag hisses as it deflates in front of you.")),
       genIntroEvent(
-        currentTick + 10,
+        $tick + 10,
         () => appendLine(`The hood of your car looks crumpled. Smoke rises from its edges.`)
       )
     ]);
@@ -61,14 +62,16 @@
   });
 </script>
 
-<article style="opacity: {$cinematicOpacity};" on:click={() => endCinematic()}>
-  <h4 in:fly={getFlyParams(200)}>A dirt backroad.</h4>
-  <h4 in:fly={getFlyParams(1200)}>Caledonia County, Vermont.</h4>
-  <h4 in:fly={getFlyParams(2400)}>December 13th, 1987. 9:44PM.</h4>
-  <h6 in:fade={{ delay: 700 }} style="opacity: {$skipBtnOpacity}">
-    Tap to skip cutscene
-  </h6>
-</article>
+<BaseCinematic>
+  <article style="opacity: {$cinematicOpacity};" on:click={() => endCinematic()}>
+    <h4 in:fly={getFlyParams(200)}>A dirt backroad.</h4>
+    <h4 in:fly={getFlyParams(1200)}>Caledonia County, Vermont.</h4>
+    <h4 in:fly={getFlyParams(2400)}>December 13th, 1987. 9:44PM.</h4>
+    <h6 in:fade={{ delay: 700 }} style="opacity: {$skipBtnOpacity}">
+      Tap to skip cutscene
+    </h6>
+  </article>
+</BaseCinematic>
 
 <style>
   article {
