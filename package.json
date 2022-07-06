@@ -18,6 +18,8 @@
     "@sveltejs/adapter-node": "^1.0.0-next.73",
     "@sveltejs/kit": "^1.0.0-next.326",
     "nanoid": "^3.3.4",
+    "prettier": "^2.7.1",
+    "prettier-plugin-svelte": "^2.7.0",
     "svelte": "^3.48.0",
     "svelte-check": "^2.7.0",
     "svelte-preprocess": "^4.10.6",

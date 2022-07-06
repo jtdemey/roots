@@ -1,17 +1,20 @@
 <script type="ts">
   import { tweened } from "svelte/motion";
   import { fly } from "svelte/transition";
+  import { GameColors } from "$lib/data/ui/GameColors";
   import SvgIcon from "$lib/components/base/SvgIcon.svelte";
 
   export let animationStagger: number = 0;
-  export let color: string = "";
+  export let color: string = GameColors.grayscales.green[1];
 	export let clickFunc: Function = () => false;
   export let text: string = "...";
   export let iconAlt: string = "An image";
   export let iconSrc: any = undefined;
   export let iconWidth: number = 16;
 
-  const hasIcon = iconSrc !== undefined;
+  const hasIcon: boolean = iconSrc !== undefined;
+  const darkColor: string = GameColors.grayscales.green[0];
+  const lightColor: string = color;
 
   const btnScale = tweened(1, {
     duration: 10 
@@ -34,7 +37,7 @@
     x: 8
   }}
 	on:click={handleClick}
-  style="transform: scale({$btnScale});"
+  style="background: linear-gradient(145deg, {lightColor}, {darkColor}); transform: scale({$btnScale});"
 >
   {text}
   {#if hasIcon}

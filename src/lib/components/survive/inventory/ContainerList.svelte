@@ -3,6 +3,7 @@
   import type { Container } from "../../../../models/Container";
   import { onDestroy } from "svelte";
   import { ContainerStates } from "$lib/data/items/ContainerStates";
+  import { GameColors } from "$lib/data/ui/GameColors";
   import CircleQuestionSolid from "$lib/assets/inventory/circle-question-solid.svg";
   import LockOpenSolid from "$lib/assets/inventory/lock-open-solid.svg";
   import LockSolid from "$lib/assets/inventory/lock-solid.svg";
@@ -19,7 +20,7 @@
   export let setSelectedItemId: Function = () => false;
 
   let containers: Container[] = [];
-  let containersStore: Writable<Container[]> = [];
+  let containersStore: Writable<Container[]>;
   let unsubContainers: Function;
 
   $: {
@@ -67,7 +68,7 @@
   {#each containers as container, i}
     <InventoryListItem
       animationStagger={i}
-      color="light-gray"
+      color={GameColors.grayscales.green[3]}
       clickFunc={() => handleClick(container)}
       text={container.name}
       iconAlt={containerIconInfo[container.containerState].alt}

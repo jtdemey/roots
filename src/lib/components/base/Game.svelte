@@ -1,5 +1,6 @@
 <script type="ts">
   import { onMount } from "svelte";
+  import { GameStates } from "$lib/data/game/GameStates";
   import {
     environmentTemperature,
     executeGameEvents,
@@ -11,10 +12,10 @@
     tick
   } from "$lib/stores/game/GameStore";
   import { locale, temperature } from "$lib/stores/player/PlayerStore";
-  import { goto } from "$app/navigation";
+  import { navToCorrectGameState } from "$lib/utils/NavUtils";
 
   onMount(() => {
-    if ($gameState < 1) goto("/mainmenu");
+    navToCorrectGameState($gameState, GameStates.Explore);
     const clock = setInterval(() => {
       if ($paused) return;
       $tick += 1;

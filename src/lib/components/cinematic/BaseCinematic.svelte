@@ -4,6 +4,7 @@
   import { GameStates } from "$lib/data/game/GameStates";
   import { GameStateRoutes } from "$lib/data/game/GameStateRoutes";
   import { gameState } from "$lib/stores/game/GameStore";
+  import { GameColors } from "$lib/data/ui/GameColors";
 
   onMount(() => {
     if ($gameState !== GameStates.Cinematic) {
@@ -13,7 +14,7 @@
   });
 </script>
 
-<div>
+<div style="background-color: {GameColors.grayscales.green[0]}">
   <slot />
 </div>
 

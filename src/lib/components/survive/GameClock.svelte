@@ -36,8 +36,4 @@
 		font-family: 'DM Serif Display', serif;
 		font-size: 1.1rem;
 	}
-
-  .dark {
-    color: #111;
-  }
 </style>

@@ -4,6 +4,7 @@
   import InventoryImg from "$lib/assets/nav/inventory.svg";
   import MapImg from "$lib/assets/nav/map.svg";
   import InfoImg from "$lib/assets/nav/info.svg";
+  import { GameColors } from "$lib/data/ui/GameColors";
 
   interface NavBtn {
     alt: string;
@@ -33,7 +34,7 @@
   ];
 </script>
 
-<nav>
+<nav style="background-color: {GameColors.grayscales.green[0]}">
   {#each navBtns as btn, i}
     <NavBtn
       alt={btn.alt}

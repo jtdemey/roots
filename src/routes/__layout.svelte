@@ -1,8 +1,9 @@
 <script type="ts">
 	import "../styles/base.css";
+  import { GameColors } from "$lib/data/ui/GameColors";
 </script>
 
-<main>
+<main style="background-color: {GameColors.grayscales.green[0]}">
 	<slot />
 </main>
 
