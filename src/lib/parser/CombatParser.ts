@@ -1,10 +1,6 @@
 import type { GameEvent } from "../../models/GameEvent";
-import { appendLine } from "$lib/stores/game/GameStore";
-import { GameCommands } from "$lib/data/parser/GameCommands";
-import { genGameEvent } from "$lib/utils/GameEventUtils";
-import { collectEvents, isAlias } from "$lib/utils/ParserUtils";
 
-export const parseInput = (raw: string, currentTick: number): GameEvent[] => {
+export const parseCombat = (raw: string, currentTick: number): GameEvent[] => {
   let queuedEvents: GameEvent[] = [];
   const input: string[] = raw
     .trim()

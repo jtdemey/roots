@@ -11,8 +11,6 @@
 
   $: fillStyle = `width: ${width}%; background-color: ${backgroundColor};
     border-right: 1px solid ${shiftLightness(backgroundColor, 50)}`;
-
-    console.log(shiftLightness(backgroundColor, 40))
 </script>
 
 <section>

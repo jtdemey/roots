@@ -12,9 +12,11 @@
   import { locale } from "$lib/stores/player/PlayerStore";
   import { getEnemyMetadata } from "$lib/utils/selectors/EnemySelectors";
   import { getLocale } from "$lib/utils/selectors/WorldSelectors";
-  import GameClock from "$lib/components/survive/GameClock.svelte";
   import CombatBar from "$lib/components/combat/CombatBar.svelte";
+  import CombatInput from "$lib/components/combat/CombatInput.svelte";
   import CombatSprite from "$lib/components/combat/CombatSprite.svelte";
+  import CombatText from "$lib/components/combat/CombatText.svelte";
+  import GameClock from "$lib/components/survive/GameClock.svelte";
 
   let currentLocale: Locale;
   let enemy: Enemy;
@@ -76,10 +78,17 @@
       <CombatBar backgroundColor={GameColors.combat.cooldown} label="CD" />
     </div>
   </section>
+  <CombatText />
+  <CombatInput />
 </article>
 
 <style>
   article {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: grid;
+    grid-template-rows: calc(40px + 1rem) 5fr 4fr 2rem;
     width: 100%;
     height: 100%;
     background: hsl(42, 46%, 90%);
@@ -93,8 +102,9 @@
   }
   
   h5 {
-    margin: auto 0;
+    margin: auto 2rem auto 0;
     color: hsl(42, 35%, 4%);
+    text-align: right;
   }
   
   h3 {
@@ -107,6 +117,7 @@
 
   #sprite-area {
     display: grid;
+    grid-row-gap: 0.5rem;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     width: 100%;

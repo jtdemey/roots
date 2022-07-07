@@ -28,13 +28,11 @@
 
 <style>
   input {
-    position: absolute;
-    bottom: 0px;
     width: calc(100% - 1rem);
     height: 2rem;
     margin: 0;
     padding: 0 0.5rem;
-    background-color: hsl(320, 2%, 25%);
+    background-color: hsl(42, 9%, 25%);
     border: none;
     background-image: none;
     box-shadow: none;
