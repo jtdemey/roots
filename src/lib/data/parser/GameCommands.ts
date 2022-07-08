@@ -1,7 +1,18 @@
 import type { GameCommand } from "../../../models/GameCommand";
 import { parseExamine } from "$lib/parser/commands/examine";
 import { parseGo } from "$lib/parser/commands/go";
-import { genGameCommand } from "$lib/utils/ParserUtils";
+
+export const genGameCommand = (
+  name: string,
+  action: Function,
+  aliases: string[],
+  cancels: any[] = []
+): GameCommand => ({
+  name,
+  action,
+  aliases,
+  cancels
+});
 
 export const GameCommands: any = {
   attack: genGameCommand("attack", (input: string[], currentTick: number) => false, [

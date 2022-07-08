@@ -1,3 +1,4 @@
+import type { Enemy } from "../../../models/Enemy";
 import type { GameEvent } from "../../../models/GameEvent";
 import { get, writable } from "svelte/store";
 import { goto } from "$app/navigation";
@@ -6,6 +7,7 @@ import { Temperatures } from "$lib/data/world/Temperatures";
 import { fluxTemperature } from "$lib/utils/world/WorldUtils";
 import { getLocaleTemperature } from "$lib/utils/selectors/WorldSelectors";
 import { getCancelledEventIndices } from "$lib/utils/GameEventUtils";
+import { appendCombatEnterPhrase } from "../combat/CombatStore";
 import { affectPlayerTemperature } from "../player/PlayerStore";
 
 export const consoleText = writable<string[]>([]);
@@ -46,8 +48,9 @@ export const executeGameEvents = (
   gameEvents.set(activatedEvents);
 };
 
-export const startCombat = (): void => {
+export const startCombat = (currentEnemy: Enemy): void => {
   gameState.set(GameStates.Combat);
+  appendCombatEnterPhrase(currentEnemy);
   goto("/game/combat/fight");
 };
 

@@ -21,7 +21,7 @@
   let currentLocale: Locale;
   let enemy: Enemy;
   let enemyMetadata: EnemyMetadata;
-  let enemyName: string = "placeholder";
+  let enemyName: string = "Figure";
   let localeDisplay: string = "";
 
   let unsubEnemies: Function = () => false;

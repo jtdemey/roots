@@ -1,6 +1,7 @@
 <script type="ts">
 	import { onMount } from "svelte";
-	import { parseInput } from "$lib/parser/ExploreParser";
+  import { fly } from "svelte/transition";
+	import { parseCombat } from "$lib/parser/CombatParser";
 	import { registerGameEvents, tick } from "$lib/stores/game/GameStore";
 
 	let inputRef: any;
@@ -8,7 +9,7 @@
 
   const handleKeyDown = (event: any) => {
     if (event.key && event.key === "Enter") {
-			const actions = parseInput(inputValue, $tick);
+			const actions = parseCombat(inputValue, $tick);
 			registerGameEvents(actions);
 			inputValue = "";
     }
@@ -20,6 +21,10 @@
 <input
 	bind:this={inputRef}
   bind:value={inputValue}
+  in:fly={{
+    duration: 800,
+    y: 8
+  }}
   on:keydown={handleKeyDown}
   autocomplete="off"
   placeholder=">>"
@@ -28,11 +33,14 @@
 
 <style>
   input {
+    position: absolute;
+    bottom: 0;
+    left: 0;
     width: calc(100% - 1rem);
     height: 2rem;
     margin: 0;
     padding: 0 0.5rem;
-    background-color: hsl(42, 9%, 25%);
+    background-color: hsl(42, 11%, 25%);
     border: none;
     background-image: none;
     box-shadow: none;
