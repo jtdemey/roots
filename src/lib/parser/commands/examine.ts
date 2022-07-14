@@ -4,6 +4,7 @@ import type { GameEvent } from "../../../models/GameEvent";
 import type { Item } from "../../../models/Item";
 import type { Locale } from "../../../models/Locale";
 import { get } from "svelte/store";
+import { PlayerFlags } from "$lib/data/player/PlayerFlags";
 import { appendLine, appendRandomLine } from "$lib/stores/game/GameStore";
 import { locale } from "$lib/stores/player/PlayerStore";
 import { getLocale } from "$lib/utils/selectors/WorldSelectors";
@@ -11,7 +12,6 @@ import { disableForFlags, queueEventNow } from "$lib/utils/GameEventUtils";
 import { addAOrAn, toColloquialList } from "$lib/utils/GrammarUtils";
 import { getItemMetadata } from "$lib/utils/selectors/ItemSelectors";
 import { parseDirection } from "./go";
-import {PlayerFlags} from "$lib/data/player/PlayerFlags";
 
 const LocaleAliases: string[] = [
   "area",
@@ -28,7 +28,11 @@ export const parseExamine = (
 ): GameEvent[] => {
   const queuedEvents: GameEvent[] = [];
 
-  const allowed = disableForFlags([PlayerFlags.Exiting], queuedEvents, currentTick);
+  const allowed = disableForFlags(
+    [PlayerFlags.Exiting],
+    queuedEvents,
+    currentTick
+  );
   if (!allowed) return queuedEvents;
 
   const notedEntities: string[] = [];

@@ -2,6 +2,7 @@
 	import { onMount } from "svelte";
   import { fly } from "svelte/transition";
 	import { parseCombat } from "$lib/parser/CombatParser";
+	import { currentEnemy } from "$lib/stores/combat/CombatStore";
 	import { registerGameEvents, tick } from "$lib/stores/game/GameStore";
 
 	let inputRef: any;
@@ -9,7 +10,7 @@
 
   const handleKeyDown = (event: any) => {
     if (event.key && event.key === "Enter") {
-			const actions = parseCombat(inputValue, $tick);
+			const actions = parseCombat(inputValue, $tick, $currentEnemy);
 			registerGameEvents(actions);
 			inputValue = "";
     }

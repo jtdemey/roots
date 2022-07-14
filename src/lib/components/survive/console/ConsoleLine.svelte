@@ -1,8 +1,9 @@
 <script type="ts">
+  export let opacity: number = 1.0;
 	export let text: string = "...";
 </script>
 
-<pre>
+<pre style="opacity: {opacity};">
 	{text}
 </pre>
 

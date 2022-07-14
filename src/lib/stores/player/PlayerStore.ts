@@ -2,15 +2,22 @@ import type { Item } from "../../../models/Item";
 import type { Locale } from "../../../models/Locale";
 import { goto } from "$app/navigation";
 import { get, writable } from "svelte/store";
-import { appendLine, appendRandomLine, startCombat } from "../game/GameStore";
+import {
+  appendLine,
+  appendRandomLine,
+  gameState,
+  pauseGame,
+  startCombat
+} from "../game/GameStore";
+import { GameStates } from "$lib/data/game/GameStates";
 import { ItemData } from "$lib/data/items/ItemData";
 import { PlayerFlags } from "$lib/data/player/PlayerFlags";
 import { createItem } from "$lib/data/world/WorldFactory";
 import { TemperatureEffects } from "$lib/data/world/TemperatureEffects";
 import { spawnEnemies } from "$lib/stores/world/WorldStore";
 import { getItemMetadata } from "$lib/utils/selectors/ItemSelectors";
-import { getPlayerTemperatureLevel } from "$lib/utils/world/WorldUtils";
 import { getLocale } from "$lib/utils/selectors/WorldSelectors";
+import { getPlayerTemperatureLevel } from "$lib/utils/world/WorldUtils";
 import { roundTo } from "$lib/utils/MathUtils";
 
 export const energy = writable<number>(100);
@@ -28,6 +35,15 @@ export const affectPlayerEnergy = (amount: number) =>
   energy.update((currentEnergy: number) => {
     const nextEnergy = currentEnergy + amount;
     return nextEnergy < 1 ? 0 : nextEnergy;
+  });
+
+export const affectPlayerHealth = (amount: number) =>
+  health.update((currentHealth: number) => {
+    const nextHealth = currentHealth + amount;
+    if (nextHealth < 1) {
+      perish();
+    }
+    return nextHealth < 1 ? 0 : nextHealth;
   });
 
 export const affectPlayerSanity = (amount: number) =>
@@ -136,6 +152,12 @@ export const examineItem = (item: Item): void => {
   const meta = getItemMetadata(item.name);
   appendLine(meta.description);
   goto("/game/survive/console");
+};
+
+export const perish = (): void => {
+  pauseGame();
+  gameState.set(GameStates.Death);
+  goto("/death");
 };
 
 export const pickUpItem = (entityId: string, localeName: string): void => {

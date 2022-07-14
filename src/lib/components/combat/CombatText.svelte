@@ -45,8 +45,8 @@
 <section bind:this={combatConsoleContainer} style="max-height: {$combatConsoleHeight}px;">
   <div bind:this={consolePane} style="top: {$paneYPos}px;">
     <article bind:this={consoleOutput}>
-      {#each $combatText as text}
-        <ConsoleLine {text} />
+      {#each $combatText as text, i}
+        <ConsoleLine opacity={((i * 0.2))} {text} />
       {/each}
     </article>
   </div>

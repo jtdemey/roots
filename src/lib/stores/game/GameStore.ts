@@ -7,7 +7,7 @@ import { Temperatures } from "$lib/data/world/Temperatures";
 import { fluxTemperature } from "$lib/utils/world/WorldUtils";
 import { getLocaleTemperature } from "$lib/utils/selectors/WorldSelectors";
 import { getCancelledEventIndices } from "$lib/utils/GameEventUtils";
-import { appendCombatEnterPhrase } from "../combat/CombatStore";
+import { appendCombatEnterPhrase, setCurrentEnemy } from "../combat/CombatStore";
 import { affectPlayerTemperature } from "../player/PlayerStore";
 
 export const consoleText = writable<string[]>([]);
@@ -48,8 +48,13 @@ export const executeGameEvents = (
   gameEvents.set(activatedEvents);
 };
 
+export const pauseGame = (): void => paused.set(true);
+
+export const resumeGame = (): void => paused.set(false);
+
 export const startCombat = (currentEnemy: Enemy): void => {
   gameState.set(GameStates.Combat);
+  setCurrentEnemy(currentEnemy);
   appendCombatEnterPhrase(currentEnemy);
   goto("/game/combat/fight");
 };

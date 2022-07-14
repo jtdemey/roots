@@ -1,10 +1,16 @@
+import type { Enemy } from "../../models/Enemy";
 import type { GameEvent } from "../../models/GameEvent";
 import { appendCombatLine } from "$lib/stores/combat/CombatStore";
 import { CombatCommands } from "$lib/data/parser/CombatCommands";
 import { genGameEvent } from "$lib/utils/GameEventUtils";
 import { collectEvents, isAlias, splitRawInput } from "$lib/utils/ParserUtils";
 
-export const parseCombat = (raw: string, currentTick: number): GameEvent[] => {
+export const parseAttackMove = (input: string[], currentTick: number): GameEvent[] => {
+  const queuedEvents: GameEvent[] = [];
+
+};
+
+export const parseCombat = (raw: string, currentTick: number, enemy: Enemy): GameEvent[] => {
   let queuedEvents: GameEvent[] = [];
   const input: string[] = splitRawInput(raw);
   if (input.length < 1) return queuedEvents;
