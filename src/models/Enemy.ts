@@ -8,4 +8,5 @@ export interface Enemy {
 	health: Writable<number>;
 	maxHealth: Writable<number>;
 	name: string;
+  speed: number;
 }

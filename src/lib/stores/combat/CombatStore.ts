@@ -17,29 +17,17 @@ export const appendCombatEnterPhrase = (enemy: Enemy): void => {
   appendCombatLine(startPhrase);
 };
 
-//To-do: figure out fading out/continuous scrolling
-/*
- *  Options:
- *  -Timeout event for each line to destroy it after x ticks
- *  -
- *
- *
- */
 export const appendCombatLine = (text: string): void =>
-  combatText.update((lines: string[]) => {
-    if (lines.length > 15) {
-      setTimeout(() => popCombatLines(5), 500);
-    }
-    return lines.concat([text]);
-  });
+  combatText.update((lines: string[]) => lines.concat([text]));
+
+export const attackEnemy = (moveName: string): void => {};
+
+export const clearCombatLines = (lineCount: number): void => combatText.set([]);
 
 export const hurtEnemy = (damage: number): void => {
   currentEnemy.update((enemy: Enemy) =>
     Object.assign({}, { ...enemy, health: enemy.health - damage })
   );
 };
-
-export const popCombatLines = (lineCount: number): void =>
-  combatText.update((lines: string[]) => lines.slice(lineCount));
 
 export const setCurrentEnemy = (enemy: Enemy): void => currentEnemy.set(enemy);

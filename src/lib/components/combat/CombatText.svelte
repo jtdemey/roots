@@ -27,13 +27,14 @@
     }, 50);
   };
 
+  const getLineOpacity = (lineIndex: number, totalLines: number): number => lineIndex > 8 ? 1.0 : (lineIndex * 0.2);
+
   const unsub = combatText.subscribe(() => updatePaneYPos());
 
   onMount(() => {
     if (combatConsoleContainer) {
       if ($isCombatConsoleHeightSet === false) {
         $combatConsoleHeight = combatConsoleContainer.clientHeight;
-        console.log(`set to ${$combatConsoleHeight}`)
         $isCombatConsoleHeightSet = true;
       }
     }
@@ -46,7 +47,7 @@
   <div bind:this={consolePane} style="top: {$paneYPos}px;">
     <article bind:this={consoleOutput}>
       {#each $combatText as text, i}
-        <ConsoleLine opacity={((i * 0.2))} {text} />
+        <ConsoleLine opacity={getLineOpacity(i, $combatText.length)} {text} />
       {/each}
     </article>
   </div>

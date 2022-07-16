@@ -1,5 +1,8 @@
 <script type="ts">
+  import { onMount } from "svelte";
+  import { removeExcessLines } from "$lib/stores/game/GameStore";
 
+  onMount(() => removeExcessLines(100));
 </script>
 
 <section>

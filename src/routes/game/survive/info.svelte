@@ -1,11 +1,15 @@
 <script type="ts">
+  import { onMount } from "svelte";
   import { fly } from "svelte/transition";
 	import { PlayerEnergyStates } from "$lib/data/player/PlayerEnergyStates";
   import { PlayerHealthStates } from "$lib/data/player/PlayerHealthStates";
 	import { PlayerSanityStates } from "$lib/data/player/PlayerSanityStates";
+  import { removeExcessLines } from "$lib/stores/game/GameStore";
 	import { energy, health, maxHealth, sanity } from "$lib/stores/player/PlayerStore";
   import PlayerStatusPhrase from "$lib/components/survive/info/PlayerStatusPhrase.svelte";
 	import TemperatureInfo from "$lib/components/survive/info/TemperatureInfo.svelte";
+
+  onMount(() => removeExcessLines(100));
 </script>
 
 <section

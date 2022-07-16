@@ -2,10 +2,11 @@
   import type { Item } from "../../../models/Item";
   import type { ItemBtn } from "../../../models/ui/ItemBtn";
   import type { Locale } from "../../../models/Locale";
-  import { onDestroy } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import { fly } from "svelte/transition";
   import { ItemData } from "$lib/data/items/ItemData";
   import { World } from "$lib/data/world/World";
+  import { removeExcessLines } from "$lib/stores/game/GameStore";
   import { examineItem, locale, pickUpItem } from "$lib/stores/player/PlayerStore";
   import { consoleHeight } from "$lib/stores/ui/UIStore";
 	import { makeItemBtnAction } from "$lib/utils/items/ItemUtils";
@@ -50,6 +51,8 @@
     }
     return result;
   };
+
+  onMount(() => removeExcessLines(3));
 
   onDestroy(() => {
     unsubLocaleName();

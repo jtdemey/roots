@@ -7,7 +7,7 @@ import { Temperatures } from "$lib/data/world/Temperatures";
 import { fluxTemperature } from "$lib/utils/world/WorldUtils";
 import { getLocaleTemperature } from "$lib/utils/selectors/WorldSelectors";
 import { getCancelledEventIndices } from "$lib/utils/GameEventUtils";
-import { appendCombatEnterPhrase, setCurrentEnemy } from "../combat/CombatStore";
+import { appendCombatEnterPhrase, clearCombatLines, setCurrentEnemy } from "../combat/CombatStore";
 import { affectPlayerTemperature } from "../player/PlayerStore";
 
 export const consoleText = writable<string[]>([]);
@@ -24,6 +24,12 @@ export const appendLine = (text: string): void =>
 export const appendRandomLine = (texts: string[]): void => {
   const selectedTextIndex = Math.floor(Math.random() * texts.length);
   appendLine(texts[selectedTextIndex] || "");
+};
+
+export const endCombat = (): void => {
+  clearCombatLines();
+  gameState.set(GameStates.Explore);
+  goto("/game/explore/console");
 };
 
 export const executeGameEvents = (
@@ -49,6 +55,12 @@ export const executeGameEvents = (
 };
 
 export const pauseGame = (): void => paused.set(true);
+
+export const removeExcessLines = (limit: number): void => {
+  const currentLines = get(consoleText);
+  if (currentLines.length <= limit) return;
+  consoleText.update((lines: string[]) => lines.slice(limit, lines.length));
+};
 
 export const resumeGame = (): void => paused.set(false);
 
