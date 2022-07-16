@@ -4,6 +4,8 @@ import { writable } from "svelte/store";
 import { getRandomElement } from "$lib/utils/MathUtils";
 import { getEnemyMetadata } from "$lib/utils/selectors/EnemySelectors";
 
+export const attack = writable<number>(0.5);
+export const defense = writable<number>(0.5);
 export const combatText = writable<string[]>([]);
 export const currentEnemy = writable<Enemy>(undefined);
 

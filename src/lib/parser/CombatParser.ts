@@ -7,7 +7,17 @@ import { collectEvents, isAlias, splitRawInput } from "$lib/utils/ParserUtils";
 
 export const parseAttackMove = (input: string[], currentTick: number): GameEvent[] => {
   const queuedEvents: GameEvent[] = [];
+  const moveData: Move = getCombatMoveData(input[0]);
+  
+  if (input.length === 1) {
+    //const miss: boolean = 
+    moveData.instantEffects.forEach((instantEffect: Function) => {
+      queueEventNow(queuedEvents, currentTick, () => instantEffect());
+    });
+    queueEventNow(queuedEvents, currentTick, () => appendCombatLine(moveData.hitPhrase));
+  }
 
+  return queuedEvents;
 };
 
 export const parseCombat = (raw: string, currentTick: number, enemy: Enemy): GameEvent[] => {
