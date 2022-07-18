@@ -1,5 +1,6 @@
-import type { Move } from "../../../models/meta/Move";
+import type { Move } from "../../../models/Move";
 import { CombatMoveData } from "$lib/data/combat/CombatMoveData";
+import { resolvePossibleOptionArray } from "../MathUtils";
 
 const getDefaultMetadata = (): Move => CombatMoveData["kick"];
 

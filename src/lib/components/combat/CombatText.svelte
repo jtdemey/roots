@@ -27,7 +27,7 @@
     }, 50);
   };
 
-  const getLineOpacity = (lineIndex: number, totalLines: number): number => lineIndex > 8 ? 1.0 : (lineIndex * 0.2);
+  const getLineOpacity = (lineIndex: number, totalLines: number): number => lineIndex > 8 || totalLines < 9 ? 1.0 : (lineIndex * 0.2);
 
   const unsub = combatText.subscribe(() => updatePaneYPos());
 

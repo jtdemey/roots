@@ -1,4 +1,6 @@
 <script type="ts">
+  import { tweened, type Tweened } from "svelte/motion";
+  import { cubicOut } from "svelte/easing";
   import { GameColors } from "$lib/data/ui/GameColors";
   import { shiftLightness } from "$lib/utils/ColorUtils";
 
@@ -9,7 +11,14 @@
 
   let fillStyle: string;
 
-  $: fillStyle = `width: ${width}%; background-color: ${backgroundColor};
+  const barWidth: Tweened<number> = tweened(100, {
+    duration: 420,
+    easing: cubicOut
+  });
+
+  $: barWidth.set(width);
+
+  $: fillStyle = `width: ${$barWidth}%; background-color: ${backgroundColor};
     border-right: 1px solid ${shiftLightness(backgroundColor, 50)}`;
 </script>
 
@@ -48,6 +57,7 @@
 
   #fill {
     height: 100%;
+    animation: all .2s;
     border-radius: 2px;
   }
 </style>

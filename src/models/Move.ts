@@ -1,4 +1,5 @@
 export interface Move {
+  accuracy: number;
   activeEffects: any[];
   condition: Function;
   hitPhrase: string | string[];

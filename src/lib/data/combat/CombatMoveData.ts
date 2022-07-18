@@ -8,12 +8,14 @@ interface ICombatMoveData {
 
 const genMoveData = (
   name: string,
+  accuracy: number,
   hitPhrase: string | string[],
   missPhrase: string | string[],
   activeEffects: any[],
   instantEffects: Function[],
   condition: Function = () => true
 ): Move => ({
+  accuracy,
   activeEffects,
   condition,
   hitPhrase,
@@ -25,6 +27,7 @@ const genMoveData = (
 export const CombatMoveData: any = {
   kick: genMoveData(
     "kick",
+    80,
     `You kick the [enemy].`,
     [`Your kick fails to land a solid hit.`, `Your kick falters and misses.`],
     [],

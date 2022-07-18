@@ -5,16 +5,14 @@
   import { goto } from "$app/navigation";
   import { onMount, onDestroy } from "svelte";
   import { fade } from "svelte/transition";
-  import { GameColors } from "$lib/data/ui/GameColors";
   import { GameStates } from "$lib/data/game/GameStates";
   import { GameStateRoutes } from "$lib/data/game/GameStateRoutes";
   import { gameState } from "$lib/stores/game/GameStore";
   import { locale } from "$lib/stores/player/PlayerStore";
   import { getEnemyMetadata } from "$lib/utils/selectors/EnemySelectors";
   import { getLocale } from "$lib/utils/selectors/WorldSelectors";
-  import CombatBar from "$lib/components/combat/CombatBar.svelte";
   import CombatInput from "$lib/components/combat/CombatInput.svelte";
-  import CombatSprite from "$lib/components/combat/CombatSprite.svelte";
+  import CombatSpriteArea from "$lib/components/combat/CombatSpriteArea.svelte";
   import CombatText from "$lib/components/combat/CombatText.svelte";
   import GameClock from "$lib/components/survive/GameClock.svelte";
 
@@ -62,22 +60,7 @@
     <GameClock darken={true} />
     <h5>{localeDisplay}</h5>
   </section>
-  <section id="sprite-area">
-    <div class="stat-area">
-      <h3>{enemyName}</h3>
-      <div></div>
-      <CombatBar backgroundColor={GameColors.combat.health} label="HP" width={40} />
-      <CombatBar backgroundColor={GameColors.combat.cooldown} label="CD" />
-    </div>
-    <CombatSprite imgSrc={`/enemies/${enemyName}.webp`} />
-    <CombatSprite imgSrc={`/survivor.webp`} />
-    <div class="stat-area">
-      <h3>Survivor</h3>
-      <div></div>
-      <CombatBar backgroundColor={GameColors.combat.health} label="HP" />
-      <CombatBar backgroundColor={GameColors.combat.cooldown} label="CD" />
-    </div>
-  </section>
+  <CombatSpriteArea {enemy} {enemyName} />
   <CombatText />
   <CombatInput />
 </article>
@@ -105,25 +88,5 @@
     margin: auto 2rem auto 0;
     color: hsl(42, 35%, 4%);
     text-align: right;
-  }
-  
-  h3 {
-    padding: 0.2rem 1rem;
-    border-bottom: 1px solid hsl(42, 15%, 50%);
-    color: hsl(42, 35%, 4%);
-    font-size: 1.05rem;
-    text-align: right;
-  }
-
-  #sprite-area {
-    display: grid;
-    grid-row-gap: 0.5rem;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    width: 100%;
-  }
-
-  .stat-area > div {
-    margin-top: 0.2rem;
   }
 </style>

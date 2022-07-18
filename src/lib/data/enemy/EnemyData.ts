@@ -9,12 +9,16 @@ const createEnemyMetadata = (
   display: string,
   baseAttack: number,
   baseDefense: number,
+  baseEvasion: number,
+  baseSpeed: number,
   maxHealth: number | number[],
   combatEnterPhrase: string | string[],
   moves: Move[] = []
 ): EnemyMetadata => ({
   baseAttack,
   baseDefense,
+  baseEvasion,
+  baseSpeed,
   display,
   maxHealth,
   combatEnterPhrase,
@@ -22,10 +26,26 @@ const createEnemyMetadata = (
 });
 
 export const EnemyData: IEnemyData = {
-  default_enemy: createEnemyMetadata("Figure", 10, 10, 10, `A figure emerges.`),
-  wolf: createEnemyMetadata("Wolf", 10, 10, 10, [
-    `The wolf ducks its body defensively, furling its salivating lips.`,
-    `The wolf approaches, snarling.`,
-    `The wolf growls aggressively.`
-  ])
+  default_enemy: createEnemyMetadata(
+    "Figure",
+    50,
+    50,
+    50,
+    50,
+    80,
+    `A figure emerges.`
+  ),
+  wolf: createEnemyMetadata(
+    "Wolf",
+    60,
+    25,
+    40,
+    65,
+    [28, 30],
+    [
+      `The wolf ducks its body defensively, furling its salivating lips.`,
+      `The wolf approaches, snarling.`,
+      `The wolf growls aggressively.`
+    ]
+  )
 };

@@ -1,8 +1,13 @@
 import type { Enemy } from "../../../models/Enemy";
 import type { GameCommand } from "../../../models/GameCommand";
+import { parseAttackMove } from "$lib/parser/CombatParser";
 import { genGameCommand } from "./GameCommands";
 
-export const CombatCommands: any = {
+interface ICombatCommands {
+  [key: string]: GameCommand;
+}
+
+export const CombatCommands: ICombatCommands = {
   attack: genGameCommand(
     "attack",
     (input: string[], currentTick: number, enemy: Enemy) => false,
@@ -59,7 +64,8 @@ export const CombatCommands: any = {
   ),
   kick: genGameCommand(
     "kick",
-    (input: string[], currentTick: number, enemy: Enemy) => false,
+    (input: string[], currentTick: number, enemy: Enemy) =>
+      parseAttackMove(input, currentTick, enemy),
     ["boot", "dropkick", "hookkick", "punt", "roundkick", "sidekick"]
   ),
   punch: genGameCommand(

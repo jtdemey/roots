@@ -138,14 +138,15 @@ export const enterLocale = (destination: Locale): void => {
     )
   );
   locale.set(destination.name);
-  appendLine(get(destination.enterPhrase));
   const spawns = get(destination.spawns);
   if (spawns.length > 0) {
     const enemies = spawnEnemies(destination);
     if (enemies.length === 1) {
       startCombat(enemies[0]);
+      return;
     }
   }
+  appendLine(get(destination.enterPhrase));
 };
 
 export const examineItem = (item: Item): void => {

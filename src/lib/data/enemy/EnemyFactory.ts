@@ -15,9 +15,11 @@ export const createEnemy = (name: string): Enemy => {
     cooldown: w(8),
     attack: w(meta.baseAttack),
     defense: w(meta.baseDefense),
+    evasion: w(meta.baseEvasion),
     entityId: generateEntityId(),
     health: w(maxHealth),
     maxHealth: w(maxHealth),
-    name
+    name,
+    speed: w(meta.baseSpeed)
   };
 };
