@@ -11,7 +11,7 @@ export const CombatCommands: ICombatCommands = {
   attack: genGameCommand(
     "attack",
     (input: string[], currentTick: number, enemy: Enemy) => false,
-    ["fight", "hit", "assault", "bonk"]
+    ["assault", "bonk", "fight", "hit", "kill"]
   ),
   block: genGameCommand(
     "block",

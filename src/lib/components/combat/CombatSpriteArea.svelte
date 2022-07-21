@@ -1,27 +1,52 @@
 <script type="ts">
   import type { Enemy } from "../../../models/Enemy";
-  import { GameColors } from "$lib/data/ui/GameColors";
-  import CombatBar from "$lib/components/combat/CombatBar.svelte";
+  import { fly } from "svelte/transition";
   import CombatSprite from "$lib/components/combat/CombatSprite.svelte";
   import EnemyCombatBars from "./EnemyCombatBars.svelte";
+  import PlayerCombatBars from "./PlayerCombatBars.svelte";
 
   export let enemy: Enemy | undefined = undefined;
   export let enemyName: string = "Figure";
 </script>
 
 <section id="sprite-area">
-  <div class="stat-area">
-    <h3>{enemyName}</h3>
-    <div></div>
+  <div class="stat-area" in:fly={{ duration: 900, x: -100 }}>
+    <h3
+      in:fly={{
+        delay: 100,
+        duration: 1400,
+        x: -20
+      }}
+    >
+      {enemyName}
+    </h3>
+    <div
+      in:fly={{
+        duration: 2400,
+        x: -100
+      }}
+    />
     <EnemyCombatBars currentEnemy={enemy} />
   </div>
-  <CombatSprite imgSrc={`/enemies/${enemyName}.webp`} />
-  <CombatSprite imgSrc={`/survivor.webp`} />
-  <div class="stat-area">
-    <h3>Survivor</h3>
-    <div></div>
-    <CombatBar backgroundColor={GameColors.combat.health} label="HP" />
-    <CombatBar backgroundColor={GameColors.combat.cooldown} label="CD" />
+  <CombatSprite flyConfig={{ duration: 600, x: 80 }} imgSrc={`/enemies/${enemyName.toLowerCase()}.webp`} />
+  <CombatSprite flyConfig={{ duration: 400, x: -80 }} imgSrc={`/survivor.webp`} />
+  <div class="stat-area" in:fly={{ duration: 600, x: 100 }}>
+    <h3
+      in:fly={{
+        delay: 50,
+        duration: 800,
+        x: 20
+      }}
+    >
+      Survivor
+    </h3>
+    <div
+      in:fly={{
+        duration: 1600,
+        x: 100
+      }}
+    />
+    <PlayerCombatBars />
   </div>
 </section>
 

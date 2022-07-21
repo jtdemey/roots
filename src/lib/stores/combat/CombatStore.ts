@@ -7,6 +7,7 @@ import { getEnemyMetadata } from "$lib/utils/selectors/EnemySelectors";
 export const attack = writable<number>(80);
 export const defense = writable<number>(20);
 export const combatText = writable<string[]>([]);
+export const cooldown = writable<number>(0);
 export const currentEnemy = writable<Enemy>(undefined);
 
 export const appendCombatEnterPhrase = (enemy: Enemy): void => {
@@ -31,3 +32,5 @@ export const hurtEnemy = (damage: number): void => {
 };
 
 export const setCurrentEnemy = (enemy: Enemy): void => currentEnemy.set(enemy);
+
+export const setPlayerCooldown = (cd: number): void => cooldown.set(cd);

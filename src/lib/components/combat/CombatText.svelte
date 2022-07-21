@@ -3,7 +3,10 @@
   import { quartOut } from "svelte/easing";
   import { tweened } from "svelte/motion";
   import { combatText } from "$lib/stores/combat/CombatStore";
-  import { combatConsoleHeight, isCombatConsoleHeightSet } from "$lib/stores/ui/UIStore";
+  import {
+    combatConsoleHeight,
+    isCombatConsoleHeightSet
+  } from "$lib/stores/ui/UIStore";
   import ConsoleLine from "../survive/console/ConsoleLine.svelte";
 
   let combatConsoleContainer: any = undefined;
@@ -27,7 +30,13 @@
     }, 50);
   };
 
-  const getLineOpacity = (lineIndex: number, totalLines: number): number => lineIndex > 8 || totalLines < 9 ? 1.0 : (lineIndex * 0.2);
+  const getLineOpacity = (lineIndex: number, totalLines: number): number => {
+    if (totalLines < 9) return 1.0;
+    const fade = lineIndex * 0.2;
+    if (fade > 1) return 1.0;
+    if (fade < 0) return 0.0;
+    return fade;
+  };
 
   const unsub = combatText.subscribe(() => updatePaneYPos());
 
@@ -43,7 +52,10 @@
   onDestroy(unsub);
 </script>
 
-<section bind:this={combatConsoleContainer} style="max-height: {$combatConsoleHeight}px;">
+<section
+  bind:this={combatConsoleContainer}
+  style="max-height: {$combatConsoleHeight}px;"
+>
   <div bind:this={consolePane} style="top: {$paneYPos}px;">
     <article bind:this={consoleOutput}>
       {#each $combatText as text, i}

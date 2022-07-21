@@ -44,7 +44,7 @@ export const EnemyData: IEnemyData = {
     [28, 30],
     [
       `The wolf ducks its body defensively, furling its salivating lips.`,
-      `The wolf approaches, snarling.`,
+      `A wolf approaches, snarling.`,
       `The wolf growls aggressively.`
     ]
   )

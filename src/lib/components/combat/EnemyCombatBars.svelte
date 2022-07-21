@@ -14,7 +14,6 @@
   onMount(() => {
     if (currentEnemy !== undefined) {
       unsubEnemyHp = currentEnemy.health.subscribe((currentHp: number) => {
-        console.log("got " + currentHp);
         enemyHp = currentHp;
       });
       unsubEnemyMaxHp = currentEnemy.maxHealth.subscribe(

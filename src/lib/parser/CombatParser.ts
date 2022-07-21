@@ -4,7 +4,7 @@ import type { GameEvent } from "../../models/GameEvent";
 import type { Move } from "../../models/Move";
 import { get } from "svelte/store";
 import { CombatCommands } from "$lib/data/parser/CombatCommands";
-import { appendCombatLine, attack } from "$lib/stores/combat/CombatStore";
+import { appendCombatLine, attack, cooldown, setPlayerCooldown } from "$lib/stores/combat/CombatStore";
 import { getEnemyMetadata } from "$lib/utils/selectors/EnemySelectors";
 import { getCombatMoveData } from "$lib/utils/selectors/MoveSelectors";
 import { genGameEvent, queueEventNow } from "$lib/utils/GameEventUtils";
@@ -24,9 +24,11 @@ const EnemyAliases: string[] = [
   "figure",
   "goon",
   "it",
+  "monster",
   "something",
   "them",
-  "thing"
+  "thing",
+  "villain"
 ];
 
 export const parseAttackMove = (
@@ -35,6 +37,14 @@ export const parseAttackMove = (
   enemy: Enemy
 ): GameEvent[] => {
   const queuedEvents: GameEvent[] = [];
+  const playerCooldown: number = get(cooldown);
+  if (playerCooldown > 0) {
+    queueEventNow(queuedEvents, currentTick, () =>
+      appendCombatLine(`You have not yet recovered from your previous move.`)
+    );
+    return queuedEvents;
+  }
+
   const moveData: Move = getCombatMoveData(input[0]);
   const enemyData: EnemyMetadata = getEnemyMetadata(enemy.name);
   const isTargetingEnemy: boolean =
@@ -42,7 +52,6 @@ export const parseAttackMove = (
     (input.length > 1 &&
       (input[1] === enemyData.display.toLowerCase() ||
         EnemyAliases.indexOf(input[1]) > -1));
-
   if (isTargetingEnemy) {
     const roll = between(1, 100);
     const threshold = (get(attack) + moveData.accuracy) / 2;
@@ -55,13 +64,18 @@ export const parseAttackMove = (
       queueEventNow(queuedEvents, currentTick, () =>
         appendCombatLine(resolvePossibleOptionArray(moveData.hitPhrase), enemyData.display.toLowerCase())
       );
+      queueEventNow(queuedEvents, currentTick, () =>
+        setPlayerCooldown(moveData.cooldown)
+      );
+      queueEventNow(queuedEvents, currentTick + moveData.cooldown, () =>
+        setPlayerCooldown(0)
+      );
       return queuedEvents;
     }
     queueEventNow(queuedEvents, currentTick, () =>
       appendCombatLine(resolvePossibleOptionArray(moveData.missPhrase))
     );
   }
-
   return queuedEvents;
 };
 
