@@ -4,7 +4,7 @@ import type { GameEvent } from "../../models/GameEvent";
 import type { Move } from "../../models/Move";
 import { get } from "svelte/store";
 import { CombatCommands } from "$lib/data/parser/CombatCommands";
-import { appendCombatLine, attack, cooldown, setPlayerCooldown } from "$lib/stores/combat/CombatStore";
+import { appendCombatLine, attack, cooldown, setEnemyAnimation, setPlayerCooldown } from "$lib/stores/combat/CombatStore";
 import { getEnemyMetadata } from "$lib/utils/selectors/EnemySelectors";
 import { getCombatMoveData } from "$lib/utils/selectors/MoveSelectors";
 import { genGameEvent, queueEventNow } from "$lib/utils/GameEventUtils";
@@ -55,17 +55,18 @@ export const parseAttackMove = (
   if (isTargetingEnemy) {
     const roll = between(1, 100);
     const threshold = (get(attack) + moveData.accuracy) / 2;
-    console.log(roll, threshold);
     const hit: boolean = roll <= threshold;
     if (hit) {
       moveData.instantEffects.forEach((instantEffect: Function) => {
         queueEventNow(queuedEvents, currentTick, () => instantEffect());
       });
-      queueEventNow(queuedEvents, currentTick, () =>
-        appendCombatLine(resolvePossibleOptionArray(moveData.hitPhrase), enemyData.display.toLowerCase())
-      );
-      queueEventNow(queuedEvents, currentTick, () =>
-        setPlayerCooldown(moveData.cooldown)
+      const instantEvents: Function[] = [
+        () => appendCombatLine(resolvePossibleOptionArray(moveData.hitPhrase), enemyData.display.toLowerCase()),
+        () => setPlayerCooldown(moveData.cooldown),
+        () => setEnemyAnimation("impact")
+      ];
+      instantEvents.forEach((action: Function) =>
+        queueEventNow(queuedEvents, currentTick, action)
       );
       queueEventNow(queuedEvents, currentTick + moveData.cooldown, () =>
         setPlayerCooldown(0)

@@ -17,9 +17,7 @@ export const disableForFlags = (
     if (enabled === false) return;
     if (flags.some((f: PlayerFlags) => f === flag)) {
       enabled = false;
-      queueEventNow(queuedEvents, currentTick, () =>
-        appendLine(feedback)
-      );
+      queueEventNow(queuedEvents, currentTick, () => appendLine(feedback));
     }
   });
   return enabled;
@@ -58,6 +56,18 @@ export const getCancelledEventIndices = (
     }
   });
   return result;
+};
+
+export const executePromisesSequentially = (
+  promiseFunctions: Function[]
+): void => {
+  promiseFunctions
+    .reduce((prevVal: any, currentVal: Function, index: number) => {
+      return prevVal.then((promiseValue: any) => {
+        return currentVal(promiseValue);
+      });
+    }, Promise.resolve())
+    .catch((err: any) => console.error(err));
 };
 
 export const queueEventNow = (

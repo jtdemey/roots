@@ -4,9 +4,24 @@
   import CombatSprite from "$lib/components/combat/CombatSprite.svelte";
   import EnemyCombatBars from "./EnemyCombatBars.svelte";
   import PlayerCombatBars from "./PlayerCombatBars.svelte";
+  import { enemyAnimation } from "$lib/stores/combat/CombatStore";
+  import { onDestroy, onMount } from "svelte";
 
   export let enemy: Enemy | undefined = undefined;
   export let enemyName: string = "Figure";
+
+  let enemySpriteAnimation: string = "";
+  let unsubEnemyAnimation: Function = () => false;
+
+  onMount(() => {
+    unsubEnemyAnimation = enemyAnimation.subscribe((currentAnimationKey: string) => {
+      enemySpriteAnimation = currentAnimationKey;
+    });
+  });
+
+  onDestroy(() => {
+    unsubEnemyAnimation();
+  });
 </script>
 
 <section id="sprite-area">
@@ -28,8 +43,15 @@
     />
     <EnemyCombatBars currentEnemy={enemy} />
   </div>
-  <CombatSprite flyConfig={{ duration: 600, x: 80 }} imgSrc={`/enemies/${enemyName.toLowerCase()}.webp`} />
-  <CombatSprite flyConfig={{ duration: 400, x: -80 }} imgSrc={`/survivor.webp`} />
+  <CombatSprite
+    animationName={enemySpriteAnimation}
+    flyConfig={{ duration: 600, x: 80 }}
+    imgSrc={`/enemies/${enemyName.toLowerCase()}.webp`}
+  />
+  <CombatSprite
+    flyConfig={{ duration: 400, x: -80 }}
+    imgSrc={`/survivor.webp`}
+  />
   <div class="stat-area" in:fly={{ duration: 600, x: 100 }}>
     <h3
       in:fly={{

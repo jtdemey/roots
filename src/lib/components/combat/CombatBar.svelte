@@ -19,10 +19,9 @@
 
   $: {
     if (isReplenishing === true && width < 100) {
-      barWidth.set(0, { duration: 1 });
-      setTimeout(() => {
+      barWidth.set(0, { duration: 1 }).then(() => {
         barWidth.set(100, { duration: (width - 1) * 500 - 5 });
-      }, 5);
+      });
     } else {
       barWidth.set(width);
     }
