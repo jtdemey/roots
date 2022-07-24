@@ -35,7 +35,8 @@ export const Forest: Locale[] = [
         "Your pinetree-shaped air freshener dangles delicately from your rear-view mirror."
       )
     ]),
-    items: w([F.createItem("handwarmers", 1)])
+    items: w([F.createItem("handwarmers", 1)]),
+    temperature: w(Temperatures.Warm)
   }),
 
   F.createLocale("mailbox", "Roadside", 22, 0, 14, {

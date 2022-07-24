@@ -52,7 +52,7 @@
     return result;
   };
 
-  onMount(() => removeExcessLines(3));
+  onMount(() => removeExcessLines(100));
 
   onDestroy(() => {
     unsubLocaleName();

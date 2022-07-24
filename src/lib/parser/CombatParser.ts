@@ -4,7 +4,14 @@ import type { GameEvent } from "../../models/GameEvent";
 import type { Move } from "../../models/Move";
 import { get } from "svelte/store";
 import { CombatCommands } from "$lib/data/parser/CombatCommands";
-import { appendCombatLine, attack, cooldown, setEnemyAnimation, setPlayerCooldown } from "$lib/stores/combat/CombatStore";
+import {
+  appendCombatLine,
+  attack,
+  cooldown,
+  setEnemyAnimation,
+  setPlayerAnimation,
+  setPlayerCooldown
+} from "$lib/stores/combat/CombatStore";
 import { getEnemyMetadata } from "$lib/utils/selectors/EnemySelectors";
 import { getCombatMoveData } from "$lib/utils/selectors/MoveSelectors";
 import { genGameEvent, queueEventNow } from "$lib/utils/GameEventUtils";
@@ -60,12 +67,16 @@ export const parseAttackMove = (
       moveData.instantEffects.forEach((instantEffect: Function) => {
         queueEventNow(queuedEvents, currentTick, () => instantEffect());
       });
-      const instantEvents: Function[] = [
-        () => appendCombatLine(resolvePossibleOptionArray(moveData.hitPhrase), enemyData.display.toLowerCase()),
+      const hitEvents: Function[] = [
+        () =>
+          appendCombatLine(
+            resolvePossibleOptionArray(moveData.hitPhrase),
+            enemyData.display.toLowerCase()
+          ),
         () => setPlayerCooldown(moveData.cooldown),
         () => setEnemyAnimation("impact")
       ];
-      instantEvents.forEach((action: Function) =>
+      hitEvents.forEach((action: Function) =>
         queueEventNow(queuedEvents, currentTick, action)
       );
       queueEventNow(queuedEvents, currentTick + moveData.cooldown, () =>
@@ -73,8 +84,12 @@ export const parseAttackMove = (
       );
       return queuedEvents;
     }
-    queueEventNow(queuedEvents, currentTick, () =>
-      appendCombatLine(resolvePossibleOptionArray(moveData.missPhrase))
+    const missEvents: Function[] = [
+      () => appendCombatLine(resolvePossibleOptionArray(moveData.missPhrase)),
+      () => setPlayerAnimation("lunge")
+    ];
+    missEvents.forEach((action: Function) =>
+      queueEventNow(queuedEvents, currentTick, action)
     );
   }
   return queuedEvents;

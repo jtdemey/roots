@@ -12,6 +12,7 @@
   let combatConsoleContainer: any = undefined;
   let consoleOutput: any = undefined;
   let consolePane: any = undefined;
+  let unsubCombatText: Function = () => false;
 
   const paneYPos = tweened(800, {
     duration: 400,
@@ -31,16 +32,15 @@
   };
 
   const getLineOpacity = (lineIndex: number, totalLines: number): number => {
-    if (totalLines < 9) return 1.0;
-    const fade = lineIndex * 0.2;
+    const index: number = (totalLines - lineIndex);
+    const fade: number = 1 - index * 0.08;
     if (fade > 1) return 1.0;
     if (fade < 0) return 0.0;
     return fade;
   };
 
-  const unsub = combatText.subscribe(() => updatePaneYPos());
-
   onMount(() => {
+    unsubCombatText = combatText.subscribe(() => updatePaneYPos());
     if (combatConsoleContainer) {
       if ($isCombatConsoleHeightSet === false) {
         $combatConsoleHeight = combatConsoleContainer.clientHeight;
@@ -49,7 +49,9 @@
     }
   });
 
-  onDestroy(unsub);
+  onDestroy(() => {
+    unsubCombatText();
+  });
 </script>
 
 <section

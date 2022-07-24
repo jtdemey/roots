@@ -7,14 +7,22 @@
   export let backgroundColor: string = "#333";
   export let isReplenishing: boolean = false;
   export let label: string = "HP";
+  export let middleFillColor: string = "";
   export let text: string = "100";
   export let width: number = 100;
 
   let fillStyle: string;
+  let middleFillStyle: string;
 
   const barWidth: Tweened<number> = tweened(100, {
-    duration: 420,
+    duration: 320,
     easing: isReplenishing === true ? linear : cubicOut
+  });
+
+  const middleFillWidth: Tweened<number> = tweened(100, {
+    delay: 1000,
+    duration: 800,
+    easing: cubicOut
   });
 
   $: {
@@ -23,12 +31,18 @@
         barWidth.set(100, { duration: (width - 1) * 500 - 5 });
       });
     } else {
-      barWidth.set(width);
+      barWidth.set(width).then(() => {
+        middleFillWidth.set(width, { delay: 1000 });
+      });
     }
   }
 
   $: fillStyle = `width: ${$barWidth}%; background-color: ${backgroundColor};
     border-right: 1px solid ${shiftLightness(backgroundColor, 50)}`;
+
+  $: if (middleFillColor !== "") {
+    middleFillStyle = `width: ${$middleFillWidth}%; background-color: ${middleFillColor};`;
+  }
 </script>
 
 <section>
@@ -38,6 +52,7 @@
       <div id="fill" style={fillStyle}>
         <span>{text}</span>
       </div>
+      <div id="stagger-fill"></div>
     </div>
   </div>
 </section>
@@ -66,7 +81,11 @@
 
   #fill {
     height: 100%;
-    animation: all .2s;
+    border-radius: 2px;
+  }
+
+  #stagger-fill {
+    height: 100%;
     border-radius: 2px;
   }
 </style>

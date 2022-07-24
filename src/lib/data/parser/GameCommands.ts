@@ -1,6 +1,15 @@
 import type { GameCommand } from "../../../models/GameCommand";
 import { parseExamine } from "$lib/parser/commands/examine";
 import { parseGo } from "$lib/parser/commands/go";
+import { DirectionAliases } from "../world/DirectionAliases";
+
+//Direction shorthands for GO command
+const directionShorthands: string[] = [];
+Object.keys(DirectionAliases).forEach((directionKey: string) => {
+  DirectionAliases[directionKey].forEach((alias: string) =>
+    directionShorthands.push(alias)
+  );
+});
 
 export const genGameCommand = (
   name: string,
@@ -15,12 +24,11 @@ export const genGameCommand = (
 });
 
 export const GameCommands: any = {
-  attack: genGameCommand("attack", (input: string[], currentTick: number) => false, [
-    "fight",
-    "hit",
-    "assault",
-    "bonk"
-  ]),
+  attack: genGameCommand(
+    "attack",
+    (input: string[], currentTick: number) => false,
+    ["fight", "hit", "assault", "bonk"]
+  ),
 
   eat: genGameCommand("eat", (input: string[], currentTick: number) => false, [
     "bite",
@@ -35,17 +43,11 @@ export const GameCommands: any = {
     "swallow"
   ]),
 
-  equip: genGameCommand("equip", (input: string[], currentTick: number) => false, [
-    "adorn",
-    "arm",
-    "don",
-    "dress",
-    "endow",
-    "fit",
-    "furnish",
-    "gear",
-    "wear"
-  ]),
+  equip: genGameCommand(
+    "equip",
+    (input: string[], currentTick: number) => false,
+    ["adorn", "arm", "don", "dress", "endow", "fit", "furnish", "gear", "wear"]
+  ),
 
   examine: genGameCommand(
     "examine",
@@ -79,25 +81,29 @@ export const GameCommands: any = {
       "travel",
       "trot",
       "walk"
-    ]
+    ].concat(directionShorthands)
   ),
 
-  throw: genGameCommand("throw", (input: string[], currentTick: number) => false, [
-    "catapult",
-    "chuck",
-    "discharge",
-    "fire",
-    "flick",
-    "fling",
-    "heave",
-    "hurl",
-    "launch",
-    "lob",
-    "pitch",
-    "send",
-    "sling",
-    "toss",
-    "volley",
-    "yeet"
-  ])
+  throw: genGameCommand(
+    "throw",
+    (input: string[], currentTick: number) => false,
+    [
+      "catapult",
+      "chuck",
+      "discharge",
+      "fire",
+      "flick",
+      "fling",
+      "heave",
+      "hurl",
+      "launch",
+      "lob",
+      "pitch",
+      "send",
+      "sling",
+      "toss",
+      "volley",
+      "yeet"
+    ]
+  )
 };

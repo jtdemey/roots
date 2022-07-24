@@ -8,10 +8,10 @@
   import { fly } from "svelte/transition";
   import { getCombatAnimationData } from "$lib/utils/selectors/CombatAnimationSelectors";
   import { executePromisesSequentially } from "$lib/utils/GameEventUtils";
-  import { resetEnemyAnimation, resetPlayerAnimation } from "$lib/stores/combat/CombatStore";
 
   export let alt: string = "A placeholder image";
   export let animationName: string = "";
+  export let endAnimationCallback: Function = () => false;
   export let flyConfig: object = { duration: 0, x: 0 };
   export let imgSrc: string = "/placeholder.webp";
   export let width: number = 128;
@@ -30,7 +30,7 @@
           () =>
             new Promise((resolve: Function, reject: Function) => {
               try {
-                resetEnemyAnimation();
+                endAnimationCallback();
                 resolve();
               } catch (e) {
                 reject(e);

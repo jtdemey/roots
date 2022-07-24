@@ -1,5 +1,5 @@
 import type { Move } from "../../../models/Move";
-import { hurtEnemy } from "$lib/stores/combat/CombatStore";
+import { hurtEnemy, setPlayerAnimation } from "$lib/stores/combat/CombatStore";
 import { between } from "$lib/utils/MathUtils";
 
 interface ICombatMoveData {
@@ -31,9 +31,16 @@ export const CombatMoveData: any = {
     "kick",
     80,
     4,
-    [`You land a solid kick on the [enemy].`, `You drive the heel of your boot into the [enemy].`],
-    [`Your kick fails to land a solid hit.`, `Your kick falters and misses.`],
+    [
+      `You land a solid kick on the [enemy].`,
+      `You drive the heel of your boot into the [enemy].`
+    ],
+    [
+      `The [enemy] shifts its mass, stifling your kick.`,
+      `Your kick fails to land a solid hit.`,
+      `Your kick falters and misses.`
+    ],
     [],
-    [() => hurtEnemy(between(2, 5))]
+    [() => hurtEnemy(between(2, 5)), () => setPlayerAnimation("lunge")]
   )
 };

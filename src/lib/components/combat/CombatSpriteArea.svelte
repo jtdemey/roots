@@ -4,23 +4,38 @@
   import CombatSprite from "$lib/components/combat/CombatSprite.svelte";
   import EnemyCombatBars from "./EnemyCombatBars.svelte";
   import PlayerCombatBars from "./PlayerCombatBars.svelte";
-  import { enemyAnimation } from "$lib/stores/combat/CombatStore";
+  import {
+    enemyAnimation,
+    playerAnimation,
+    resetEnemyAnimation,
+    resetPlayerAnimation
+  } from "$lib/stores/combat/CombatStore";
   import { onDestroy, onMount } from "svelte";
 
   export let enemy: Enemy | undefined = undefined;
   export let enemyName: string = "Figure";
 
   let enemySpriteAnimation: string = "";
+  let playerSpriteAnimation: string = "";
   let unsubEnemyAnimation: Function = () => false;
+  let unsubPlayerAnimation: Function = () => false;
 
   onMount(() => {
-    unsubEnemyAnimation = enemyAnimation.subscribe((currentAnimationKey: string) => {
-      enemySpriteAnimation = currentAnimationKey;
-    });
+    unsubEnemyAnimation = enemyAnimation.subscribe(
+      (currentAnimationKey: string) => {
+        enemySpriteAnimation = currentAnimationKey;
+      }
+    );
+    unsubPlayerAnimation = playerAnimation.subscribe(
+      (currentAnimationKey: string) => {
+        playerSpriteAnimation = currentAnimationKey;
+      }
+    );
   });
 
   onDestroy(() => {
     unsubEnemyAnimation();
+    unsubPlayerAnimation();
   });
 </script>
 
@@ -45,10 +60,13 @@
   </div>
   <CombatSprite
     animationName={enemySpriteAnimation}
+    endAnimationCallback={() => resetEnemyAnimation()}
     flyConfig={{ duration: 600, x: 80 }}
     imgSrc={`/enemies/${enemyName.toLowerCase()}.webp`}
   />
   <CombatSprite
+    animationName={playerSpriteAnimation}
+    endAnimationCallback={() => resetPlayerAnimation()}
     flyConfig={{ duration: 400, x: -80 }}
     imgSrc={`/survivor.webp`}
   />

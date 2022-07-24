@@ -35,6 +35,17 @@ const RunningAliases: string[] = [
   "sprint"
 ];
 
+const isDirectionAlias = (str: string): boolean => {
+  Object.keys(DirectionAliases).forEach((directionKey: string) => {
+    DirectionAliases[directionKey].forEach((alias: string) => {
+      if (alias === str) {
+        return true;
+      }
+    });
+  });
+  return false;
+};
+
 const isRunAlias = (str: string): boolean =>
   RunningAliases.some((alias: string) => alias === str.toLocaleLowerCase());
 
@@ -71,6 +82,7 @@ export const parseGo = (input: string[], currentTick: number): GameEvent[] => {
 
   const currentPlayerFlags: PlayerFlags[] = get(playerFlags);
   let isRunning: boolean = false;
+  let intendedDirection: string = input.length === 1 ? input[0] : input[1];
 
   if (input.length === 1) {
     //"run" subcommand
@@ -112,17 +124,16 @@ export const parseGo = (input: string[], currentTick: number): GameEvent[] => {
         );
         return queuedEvents;
       }
-    }
-
-    if (!isRunning) {
-      queueEventNow(queuedEvents, currentTick, () =>
-        appendLine(`Specify a direction, such as "north" or "outside".`)
-      );
-      return queuedEvents;
+      if (!isRunning) {
+        queueEventNow(queuedEvents, currentTick, () =>
+          appendLine(`Specify a direction, such as "north" or "outside".`)
+        );
+        return queuedEvents;
+      }
     }
   }
 
-  const directionInput: string = parseDirection(input[1]);
+  const directionInput: string = parseDirection(intendedDirection);
   if (directionInput === "") {
     queueEventNow(queuedEvents, currentTick, () =>
       appendLine(`I don't understand the intended direction "${input[1]}".`)

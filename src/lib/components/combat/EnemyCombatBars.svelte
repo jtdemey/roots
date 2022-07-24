@@ -34,6 +34,7 @@
   <CombatBar
     backgroundColor={GameColors.combat.health}
     label="HP"
+    middleFillColor="yellow"
     text={enemyHp.toString()}
     width={enemyHp / enemyMaxHp * 100}
   />

@@ -13,6 +13,7 @@ export const CombatCommands: ICombatCommands = {
     (input: string[], currentTick: number, enemy: Enemy) => false,
     ["assault", "bonk", "fight", "hit", "kill"]
   ),
+
   block: genGameCommand(
     "block",
     (input: string[], currentTick: number, enemy: Enemy) => false,
@@ -32,10 +33,12 @@ export const CombatCommands: ICombatCommands = {
       "stymie"
     ]
   ),
+
   dodge: genGameCommand(
     "dodge",
     (input: string[], currentTick: number, enemy: Enemy) => false,
     [
+      "avoid",
       "circumlocate",
       "duck",
       "elude",
@@ -57,17 +60,40 @@ export const CombatCommands: ICombatCommands = {
       "weasel"
     ]
   ),
+
+  flee: genGameCommand(
+    "flee",
+    (input: string[], currentTick: number, enemy: Enemy) => false,
+    [
+      "bolt",
+      "depart",
+      "desert",
+      "elude",
+      "go",
+      "leave",
+      "scamper",
+      "scram",
+      "skedaddle",
+      "retreat",
+      "run",
+      "vamoose",
+      "vanish"
+    ]
+  ),
+
   headbutt: genGameCommand(
     "headbutt",
     (input: string[], currentTick: number, enemy: Enemy) => false,
     ["dome", "head", "headslam"]
   ),
+
   kick: genGameCommand(
     "kick",
     (input: string[], currentTick: number, enemy: Enemy) =>
       parseAttackMove(input, currentTick, enemy),
     ["boot", "dropkick", "hookkick", "punt", "roundkick", "sidekick"]
   ),
+
   punch: genGameCommand(
     "punch",
     (input: string[], currentTick: number, enemy: Enemy) => false,
@@ -93,6 +119,7 @@ export const CombatCommands: ICombatCommands = {
       "wallop"
     ]
   ),
+
   slap: genGameCommand(
     "slap",
     (input: string[], currentTick: number, enemy: Enemy) => false,

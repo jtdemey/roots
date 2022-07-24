@@ -11,7 +11,7 @@ import { appendCombatEnterPhrase, clearCombatLines, setCurrentEnemy } from "../c
 import { affectPlayerTemperature } from "../player/PlayerStore";
 
 export const consoleText = writable<string[]>([]);
-export const environmentTemperature = writable<number>(Temperatures.Normal);
+export const environmentTemperature = writable<number>(Temperatures.Warm);
 export const gameEvents = writable<GameEvent[]>([]);
 export const gameState = writable<GameStates>(GameStates.MainMenu);
 export const paused = writable<boolean>(true);

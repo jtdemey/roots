@@ -1,10 +1,10 @@
-import type {CombatAnimation} from "../../../models/ui/CombatAnimation";
+import type { CombatAnimation } from "../../../models/ui/CombatAnimation";
 import type { Enemy } from "../../../models/Enemy";
 import type { EnemyMetadata } from "../../../models/meta/EnemyMetadata";
 import { get, writable } from "svelte/store";
 import { getRandomElement } from "$lib/utils/MathUtils";
 import { getEnemyMetadata } from "$lib/utils/selectors/EnemySelectors";
-import {CombatAnimationData} from "$lib/data/combat/CombatAnimationData";
+import { CombatAnimationData } from "$lib/data/combat/CombatAnimationData";
 
 export const attack = writable<number>(80);
 export const defense = writable<number>(20);
@@ -24,8 +24,13 @@ export const appendCombatEnterPhrase = (enemy: Enemy): void => {
   appendCombatLine(startPhrase);
 };
 
-export const appendCombatLine = (text: string, enemyName: string = "figure"): void =>
-  combatText.update((lines: string[]) => lines.concat([text.replace("[enemy]", enemyName)]));
+export const appendCombatLine = (
+  text: string,
+  enemyName: string = "figure"
+): void =>
+  combatText.update((lines: string[]) =>
+    lines.concat([text.replace("[enemy]", enemyName)])
+  );
 
 export const clearCombatLines = (): void => combatText.set([]);
 
