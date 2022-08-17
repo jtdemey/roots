@@ -1,4 +1,8 @@
 <script context="module">
+  /* Ideas
+      A gondola that shifts through a chasm while somber music plays, descriptive text
+
+  */
 	export async function load() {
 		return {
 			status: 301,

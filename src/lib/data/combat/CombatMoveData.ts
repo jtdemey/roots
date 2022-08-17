@@ -27,6 +27,19 @@ const genMoveData = (
 });
 
 export const CombatMoveData: any = {
+  headbutt: genMoveData(
+    "headbutt",
+    30,
+    6,
+    [
+      `You headbutt the [enemy]`
+    ],
+    [
+      `Your head whooshes past the [enemy]`
+    ],
+    [],
+    [() => hurtEnemy(between(1, 8)), () => setPlayerAnimation("lunge")]
+  ),
   kick: genMoveData(
     "kick",
     80,
@@ -41,6 +54,24 @@ export const CombatMoveData: any = {
       `Your kick falters and misses.`
     ],
     [],
-    [() => hurtEnemy(between(2, 5)), () => setPlayerAnimation("lunge")]
+    [() => hurtEnemy(between(4, 7)), () => setPlayerAnimation("lunge")]
+  ),
+  punch: genMoveData(
+    "punch",
+    50,
+    2,
+    [
+      `Your fist clashes against the [enemy].`,
+      `You punch the [enemy].`,
+      `You land a solid punch.`,
+      `Your knuckles pound into the [enemy].`
+    ],
+    [
+      `Your fist lands flimsily, blocked by the [enemy].`,
+      `The [enemy] moves to block your punch.`,
+      `The [enemy] reflexively dodges your fist.`
+    ],
+    [],
+    [() => hurtEnemy(between(2, 6)), () => setPlayerAnimation("lunge")]
   )
 };

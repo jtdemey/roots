@@ -2,6 +2,7 @@ import type { Enemy } from "../../../models/Enemy";
 import type { GameCommand } from "../../../models/GameCommand";
 import { parseAttackMove } from "$lib/parser/CombatParser";
 import { genGameCommand } from "./GameCommands";
+import { getRandomElement } from "$lib/utils/MathUtils";
 
 interface ICombatCommands {
   [key: string]: GameCommand;
@@ -10,7 +11,14 @@ interface ICombatCommands {
 export const CombatCommands: ICombatCommands = {
   attack: genGameCommand(
     "attack",
-    (input: string[], currentTick: number, enemy: Enemy) => false,
+    (input: string[], currentTick: number, enemy: Enemy) =>
+      parseAttackMove(
+        input.map((word: string, i: number) =>
+          i === 0 ? getRandomElement(["headbutt", "kick", "punch"]) : word
+        ),
+        currentTick,
+        enemy
+      ),
     ["assault", "bonk", "fight", "hit", "kill"]
   ),
 
@@ -83,7 +91,7 @@ export const CombatCommands: ICombatCommands = {
 
   headbutt: genGameCommand(
     "headbutt",
-    (input: string[], currentTick: number, enemy: Enemy) => false,
+    (input: string[], currentTick: number, enemy: Enemy) => parseAttackMove(input, currentTick, enemy),
     ["dome", "head", "headslam"]
   ),
 
@@ -96,7 +104,7 @@ export const CombatCommands: ICombatCommands = {
 
   punch: genGameCommand(
     "punch",
-    (input: string[], currentTick: number, enemy: Enemy) => false,
+    (input: string[], currentTick: number, enemy: Enemy) => parseAttackMove(input, currentTick, enemy),
     [
       "bash",
       "biff",
@@ -122,7 +130,7 @@ export const CombatCommands: ICombatCommands = {
 
   slap: genGameCommand(
     "slap",
-    (input: string[], currentTick: number, enemy: Enemy) => false,
+    (input: string[], currentTick: number, enemy: Enemy) => parseAttackMove(input, currentTick, enemy),
     [
       "blip",
       "palm",
