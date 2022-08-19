@@ -1,5 +1,4 @@
 <script type="ts">
-  import { goto } from "$app/navigation";
   import { onMount } from "svelte";
   import { tweened } from "svelte/motion";
   import { fade, fly } from "svelte/transition";
@@ -15,6 +14,8 @@
   import BaseCinematic from "$lib/components/cinematic/BaseCinematic.svelte";
 
   let currentTick: number = $tick;
+
+  let skipBtnRef: any;
 
   const timers: any[] = [];
 
@@ -47,7 +48,7 @@
       )
     ]);
     $gameState = GameStates.Explore;
-    goto("/game/survive/console");
+    skipBtnRef.click();
   };
 
   onMount(() => {
@@ -71,6 +72,7 @@
       Tap to skip cutscene
     </h6>
   </article>
+  <a href="/game/survive/console"><div bind:this={skipBtnRef}></div></a>
 </BaseCinematic>
 
 <style>

@@ -9,7 +9,8 @@
   onMount(() => {
     if ($gameState !== GameStates.Cinematic) {
       const route: string = GameStateRoutes[$gameState];
-      goto(route || "/mainmenu");
+      window.location.replace("/mainmenu");
+      //goto(route || "/mainmenu");
     }
   });
 </script>

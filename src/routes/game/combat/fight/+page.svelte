@@ -1,7 +1,7 @@
 <script type="ts">
-  import type { Enemy } from "../../../models/Enemy";
-  import type { EnemyMetadata } from "../../../models/meta/EnemyMetadata";
-  import type { Locale } from "../../../models/Locale";
+  import type { Enemy } from "../../../../models/Enemy";
+  import type { EnemyMetadata } from "../../../../models/meta/EnemyMetadata";
+  import type { Locale } from "../../../../models/Locale";
   import { goto } from "$app/navigation";
   import { onMount, onDestroy } from "svelte";
   import { fade } from "svelte/transition";

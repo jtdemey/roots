@@ -1,7 +1,7 @@
 <script type="ts">
-  import type { Item } from "../../../models/Item";
-  import type { ItemBtn } from "../../../models/ui/ItemBtn";
-  import type { Locale } from "../../../models/Locale";
+  import type { Item } from "../../../../models/Item";
+  import type { ItemBtn } from "../../../../models/ui/ItemBtn";
+  import type { Locale } from "../../../../models/Locale";
   import { onMount, onDestroy } from "svelte";
   import { fly } from "svelte/transition";
   import { ItemData } from "$lib/data/items/ItemData";
