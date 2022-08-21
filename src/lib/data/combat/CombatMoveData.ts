@@ -14,19 +14,22 @@ const genMoveData = (
   missPhrase: string | string[],
   activeEffects: any[],
   instantEffects: Function[],
-  condition: Function = () => true
+  condition: Function = () => true,
+  probability: number = 1.0
 ): Move => ({
   accuracy,
   activeEffects,
+  animation: "lunge",
   condition,
   cooldown,
   hitPhrase,
   instantEffects,
   missPhrase,
-  name
+  name,
+  probability
 });
 
-export const CombatMoveData: any = {
+export const CombatMoveData: ICombatMoveData = {
   headbutt: genMoveData(
     "headbutt",
     30,

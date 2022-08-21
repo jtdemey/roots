@@ -1,9 +1,8 @@
 import type { Item } from "../../../models/Item";
+import type {ItemFlags} from "$lib/data/items/ItemFlags";
 import type { Loot } from "../../../models/Loot";
 import { createItem } from "$lib/data/world/WorldFactory";
-import { getItemMetadata } from "../selectors/ItemSelectors";
-
-export const copyItem = (item: Item) => false;
+import { getItemFlags, getItemMetadata } from "../selectors/ItemSelectors";
 
 export const getItemDisplayName = (item: Item): string => {
   const displayName = getItemMetadata(item.name).display;
@@ -12,6 +11,9 @@ export const getItemDisplayName = (item: Item): string => {
   }
   return displayName;
 };
+
+export const itemHasFlag = (item: Item, flag: ItemFlags): boolean =>
+  getItemFlags(item.name, item).indexOf(flag) > -1;
 
 export const makeItemBtnAction =
   (cb: Function, setSelectedItemId: Function): Function =>

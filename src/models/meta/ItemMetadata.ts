@@ -1,6 +1,7 @@
+import type { ItemFlags } from "$lib/data/items/ItemFlags";
+
 export interface ItemMetadata {
-	display: string;
-	description: string;
-	equipable: boolean;
-	stackable: boolean;
+  baseFlags: ItemFlags[];
+  display: string;
+  description: string;
 }

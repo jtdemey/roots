@@ -15,7 +15,7 @@
   import { navToCorrectGameState } from "$lib/utils/NavUtils";
 
   onMount(() => {
-    //navToCorrectGameState($gameState, GameStates.Explore);
+    navToCorrectGameState($gameState, GameStates.Explore);
     const clock = setInterval(() => {
       if ($paused) return;
       $tick += 1;

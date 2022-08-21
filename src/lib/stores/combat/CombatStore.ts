@@ -12,6 +12,7 @@ export const combatText = writable<string[]>([]);
 export const cooldown = writable<number>(0);
 export const currentEnemy = writable<Enemy>(undefined);
 export const enemyAnimation = writable<string>("");
+export const enemyCooldown = writable<number>(0);
 export const playerAnimation = writable<string>("");
 
 export const appendCombatEnterPhrase = (enemy: Enemy): void => {
@@ -62,5 +63,7 @@ export const setPlayerAnimation = (animationName: string): void => {
   validateAnimationExists(animationName);
   playerAnimation.set(animationName);
 };
+
+export const setEnemyCooldown = (cd: number): void => enemyCooldown.set(cd);
 
 export const setPlayerCooldown = (cd: number): void => cooldown.set(cd);

@@ -1,5 +1,4 @@
 <script type="ts">
-  import { goto } from "$app/navigation";
   import { onMount } from "svelte";
   import { GameStates } from "$lib/data/game/GameStates";
   import { GameStateRoutes } from "$lib/data/game/GameStateRoutes";
@@ -9,8 +8,7 @@
   onMount(() => {
     if ($gameState !== GameStates.Cinematic) {
       const route: string = GameStateRoutes[$gameState];
-      window.location.replace("/mainmenu");
-      //goto(route || "/mainmenu");
+      window.location.replace(route || "/mainmenu");
     }
   });
 </script>

@@ -4,6 +4,7 @@ import type { Enemy } from "../../../models/Enemy";
 import type { Exit } from "../../../models/Exit";
 import type { Feature } from "../../../models/Feature";
 import type { Item } from "../../../models/Item";
+import type { ItemFlags } from "../items/ItemFlags";
 import type { ItemMetadata } from "../../../models/meta/ItemMetadata";
 import type { Locale } from "../../../models/Locale";
 import type { Loot } from "../../../models/Loot";
@@ -100,26 +101,27 @@ export const createItem = (
   name: string,
   amount: number,
   containerId: string | null = null
-): Item => ({
-  entityId: nanoid(),
-  amount,
-  containerId,
-  name
-});
+): Item => {
+  return {
+    entityId: nanoid(),
+    amount,
+    containerId,
+    flags: [],
+    name
+  };
+};
 
 export const createItemMetadata = (
   display: string,
+  baseFlags: ItemFlags[],
   description: string,
-  stackable: boolean,
-  equipable: boolean = false,
   overrides: any = {}
 ): ItemMetadata =>
   Object.assign(
     {
+      baseFlags,
       display,
-      description,
-      equipable,
-      stackable
+      description
     },
     overrides
   );
