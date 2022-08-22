@@ -12,6 +12,7 @@ export const getNextMove = (enemy: Enemy): Move => {
     probabilityIndex += increment;
     return range;
   });
+  console.log(probabilityRanges)
   const roll: number = between(0, probabilityIndex);
   let selectedMove: Move = moves[0];
   moves.forEach((move: Move, i: number) => {

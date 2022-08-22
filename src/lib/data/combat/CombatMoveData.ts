@@ -6,7 +6,7 @@ interface ICombatMoveData {
   [key: string]: Move;
 }
 
-const genMoveData = (
+export const genMoveData = (
   name: string,
   accuracy: number,
   cooldown: number,
@@ -14,8 +14,8 @@ const genMoveData = (
   missPhrase: string | string[],
   activeEffects: any[],
   instantEffects: Function[],
-  condition: Function = () => true,
-  probability: number = 1.0
+  probability: number = 1.0,
+  condition: Function = () => true
 ): Move => ({
   accuracy,
   activeEffects,

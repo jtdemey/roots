@@ -1,16 +1,17 @@
 <script type="ts">
   import type { Enemy } from "../../../models/Enemy";
+  import { onDestroy, onMount } from "svelte";
   import { fly } from "svelte/transition";
-  import CombatSprite from "$lib/components/combat/CombatSprite.svelte";
-  import EnemyCombatBars from "./EnemyCombatBars.svelte";
-  import PlayerCombatBars from "./PlayerCombatBars.svelte";
   import {
     enemyAnimation,
     playerAnimation,
     resetEnemyAnimation,
     resetPlayerAnimation
   } from "$lib/stores/combat/CombatStore";
-  import { onDestroy, onMount } from "svelte";
+  import CombatSprite from "$lib/components/combat/CombatSprite.svelte";
+  import EnemyBrain from "./EnemyBrain.svelte";
+  import EnemyCombatBars from "./EnemyCombatBars.svelte";
+  import PlayerCombatBars from "./PlayerCombatBars.svelte";
 
   export let enemy: Enemy | undefined = undefined;
   export let enemyName: string = "Figure";
@@ -40,6 +41,7 @@
 </script>
 
 <section id="sprite-area">
+  <EnemyBrain currentEnemy={enemy} />
   <div class="stat-area" in:fly={{ duration: 900, x: -100 }}>
     <h3
       in:fly={{

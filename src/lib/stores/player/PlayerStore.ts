@@ -19,8 +19,8 @@ import { getItemMetadata } from "$lib/utils/selectors/ItemSelectors";
 import { getLocale } from "$lib/utils/selectors/WorldSelectors";
 import { getPlayerTemperatureLevel } from "$lib/utils/world/WorldUtils";
 import { roundTo } from "$lib/utils/MathUtils";
-import {ItemFlags} from "$lib/data/items/ItemFlags";
-import {itemHasFlag} from "$lib/utils/items/ItemUtils";
+import { ItemFlags } from "$lib/data/items/ItemFlags";
+import { itemHasFlag } from "$lib/utils/items/ItemUtils";
 
 export const energy = writable<number>(100);
 export const health = writable<number>(100);
@@ -100,7 +100,7 @@ const addItemToInventory = (item: Item): void => {
 const addItemToLocale = (targetLocale: Locale, item: Item) =>
   targetLocale.items.update((localeItems: Item[]) => {
     if (localeItems.some((thing: Item) => thing.name === item.name)) {
-      const isStackable = getItemMetadata(item.name).stackable;
+      const isStackable = itemHasFlag(item, ItemFlags.Stackable);
       if (isStackable === true) {
         const matchingLocaleItems = localeItems.filter(
           (thing: Item) =>

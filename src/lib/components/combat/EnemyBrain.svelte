@@ -12,12 +12,13 @@
   import { genGameEvent } from "$lib/utils/GameEventUtils";
   import { between } from "$lib/utils/MathUtils";
 
-  export let currentEnemy: Enemy;
+  export let currentEnemy: Enemy | undefined = undefined;
 
   const attackPlayer = (): void => {
+    if (!currentEnemy) return;
     const nextMove: Move = getNextMove(currentEnemy);
-    const queueEvent = (action: Function): void =>
-      registerGameEvent(genGameEvent($tick, () => action()));
+    const queueEvent = (action: Function, targetTick?: number): void =>
+      registerGameEvent(genGameEvent(targetTick || $tick, () => action()));
     if (nextMove.instantEffects.length > 0) {
       nextMove.instantEffects.forEach((effect: Function) => queueEvent(effect));
     }
@@ -28,12 +29,12 @@
           return;
         }
         queueEvent(effects[0]);
-        registerGameEvent(genGameEvent($tick + nextMove.cooldown, effects[1]));
+        queueEvent(effects[1], $tick + nextMove.cooldown);
       });
     }
     queueEvent(() => setEnemyAnimation(nextMove.animation));
     queueEvent(() => setEnemyCooldown(nextMove.cooldown));
-    registerGameEvent(genGameEvent($tick + nextMove.cooldown, () => setEnemyCooldown(0)));
+    queueEvent(() => setEnemyCooldown(0), $tick + nextMove.cooldown);
   };
 
   $: {

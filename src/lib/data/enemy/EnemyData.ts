@@ -1,5 +1,6 @@
 import type { EnemyMetadata } from "../../../models/meta/EnemyMetadata";
 import type { Move } from "../../../models/Move";
+import {EnemyMoveData} from "./EnemyMoveData";
 
 interface IEnemyData {
   [key: string]: EnemyMetadata;
@@ -46,6 +47,7 @@ export const EnemyData: IEnemyData = {
       `The wolf ducks its body defensively, furling its salivating lips.`,
       `A wolf approaches, snarling.`,
       `The wolf growls aggressively.`
-    ]
+    ],
+    [EnemyMoveData.bite]
   )
 };
