@@ -2,7 +2,7 @@ import type {
   CombatKeyframe,
   CombatAnimation
 } from "../../../models/ui/CombatAnimation";
-import { cubicOut, linear } from "svelte/easing";
+import { cubicOut } from "svelte/easing";
 
 interface ICombatAnimationData {
   [key: string]: CombatAnimation;

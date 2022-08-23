@@ -3,6 +3,7 @@
   import type { Move } from "../../../models/Move";
   import { onMount } from "svelte";
   import {
+appendCombatLine,
     enemyCooldown,
     setEnemyAnimation,
     setEnemyCooldown
@@ -10,15 +11,30 @@
   import { registerGameEvent, tick } from "$lib/stores/game/GameStore";
   import { getNextMove } from "$lib/utils/CombatUtils";
   import { genGameEvent } from "$lib/utils/GameEventUtils";
-  import { between } from "$lib/utils/MathUtils";
+  import { between, resolvePossibleOptionArray } from "$lib/utils/MathUtils";
 
   export let currentEnemy: Enemy | undefined = undefined;
 
+  let playerIsApproaching: boolean = true;
+
   const attackPlayer = (): void => {
     if (!currentEnemy) return;
-    const nextMove: Move = getNextMove(currentEnemy);
     const queueEvent = (action: Function, targetTick?: number): void =>
       registerGameEvent(genGameEvent(targetTick || $tick, () => action()));
+    const nextMove: Move = getNextMove(currentEnemy);
+
+    const rollToHit: number = Math.random();
+    if (rollToHit > nextMove.accuracy) {
+      const missEffects: Function[] = [
+        () => setEnemyAnimation("lunge"),
+        () => setEnemyCooldown(nextMove.cooldown),
+        () => appendCombatLine(resolvePossibleOptionArray(nextMove.missPhrase))
+      ];
+      missEffects.forEach((effect: Function) => queueEvent(effect));
+      queueEvent(() => setEnemyCooldown(0), $tick + nextMove.cooldown);
+      return;
+    }
+
     if (nextMove.instantEffects.length > 0) {
       nextMove.instantEffects.forEach((effect: Function) => queueEvent(effect));
     }
@@ -32,22 +48,25 @@
         queueEvent(effects[1], $tick + nextMove.cooldown);
       });
     }
-    queueEvent(() => setEnemyAnimation(nextMove.animation));
-    queueEvent(() => setEnemyCooldown(nextMove.cooldown));
+    const attackEffects: Function[] = [
+      () => setEnemyAnimation(nextMove.animation),
+      () => setEnemyCooldown(nextMove.cooldown),
+      () => appendCombatLine(resolvePossibleOptionArray(nextMove.hitPhrase))
+    ];
+    attackEffects.forEach((effect: Function) => queueEvent(effect));
     queueEvent(() => setEnemyCooldown(0), $tick + nextMove.cooldown);
   };
 
-  $: {
-    if ($enemyCooldown < 1) {
-      attackPlayer();
-    }
+  $: if ($enemyCooldown < 1 && !playerIsApproaching) {
+    attackPlayer();
   }
 
   onMount(() => {
     const delayBeforeAction: number = between(2, 6);
-    setTimeout(() => {
+    registerGameEvent(genGameEvent($tick + delayBeforeAction, () => {
       attackPlayer();
-    }, delayBeforeAction);
+      playerIsApproaching = false;
+    }));
   });
 </script>
 
@@ -55,6 +74,7 @@
 
 <style>
   div {
+    position: absolute;
     width: 0px;
     height: 0px;
   }

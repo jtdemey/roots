@@ -37,6 +37,7 @@
   });
 
   onDestroy(() => {
+    unsubCd();
     unsubHp();
     unsubMaxHp();
   });

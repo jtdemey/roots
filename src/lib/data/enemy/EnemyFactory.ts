@@ -12,7 +12,6 @@ export const createEnemy = (name: string): Enemy => {
     ? between(meta.maxHealth[0], meta.maxHealth[1])
     : meta.maxHealth;
   return {
-    cooldown: w(8),
     attack: w(meta.baseAttack),
     defense: w(meta.baseDefense),
     evasion: w(meta.baseEvasion),

@@ -1,4 +1,4 @@
-import type { GameCommand } from "../../../models/GameCommand";
+import type { GameEvent } from "src/models/GameEvent";
 import { GameCommands } from "$lib/data/parser/GameCommands";
 
 export const collectEvents = (

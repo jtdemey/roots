@@ -66,6 +66,7 @@
     flyConfig={{ duration: 600, x: 80 }}
     imgSrc={`/enemies/${enemyName.toLowerCase()}.webp`}
   />
+
   <CombatSprite
     animationName={playerSpriteAnimation}
     endAnimationCallback={() => resetPlayerAnimation()}
