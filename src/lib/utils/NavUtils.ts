@@ -8,5 +8,6 @@ export const navToCorrectGameState = (
   if (gameState !== desiredState) {
     if (gameState === GameStates.MainMenu) goto("/mainmenu");
     if (gameState === GameStates.Combat) goto("/game/combat/fight");
+    if (gameState === GameStates.Death) goto("/death");
   }
 };

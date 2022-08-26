@@ -62,7 +62,7 @@ export const executePromisesSequentially = (
   promiseFunctions: Function[]
 ): void => {
   promiseFunctions
-    .reduce((prevVal: any, currentVal: Function, index: number) => {
+    .reduce((prevVal: any, currentVal: Function) => {
       return prevVal.then((promiseValue: any) => {
         return currentVal(promiseValue);
       });

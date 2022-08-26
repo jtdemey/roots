@@ -59,10 +59,12 @@ export const parseAttackMove = (
     (input.length > 1 &&
       (input[1] === enemyData.display.toLowerCase() ||
         EnemyAliases.indexOf(input[1]) > -1));
+
   if (isTargetingEnemy) {
     const roll = between(1, 100);
     const threshold = (get(attack) + moveData.accuracy) / 2;
     const hit: boolean = roll <= threshold;
+
     if (hit) {
       moveData.instantEffects.forEach((instantEffect: Function) => {
         queueEventNow(queuedEvents, currentTick, () => instantEffect());
@@ -84,6 +86,7 @@ export const parseAttackMove = (
       );
       return queuedEvents;
     }
+
     const missEvents: Function[] = [
       () => appendCombatLine(resolvePossibleOptionArray(moveData.missPhrase)),
       () => setPlayerAnimation("lunge")

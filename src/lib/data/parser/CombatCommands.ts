@@ -95,6 +95,12 @@ export const CombatCommands: ICombatCommands = {
     ["dome", "head", "headslam"]
   ),
 
+  jab: genGameCommand(
+    "jab",
+    (input: string[], currentTick: number, enemy: Enemy) => parseAttackMove(input, currentTick, enemy),
+    ["clip", "thump"]
+  ),
+
   kick: genGameCommand(
     "kick",
     (input: string[], currentTick: number, enemy: Enemy) =>
@@ -111,11 +117,9 @@ export const CombatCommands: ICombatCommands = {
       "blow",
       "bop",
       "box",
-      "clip",
       "cuff",
       "fist",
       "fists",
-      "jab",
       "knock",
       "lollop",
       "pummel",
@@ -123,7 +127,6 @@ export const CombatCommands: ICombatCommands = {
       "slug",
       "sock",
       "strike",
-      "thump",
       "wallop"
     ]
   ),

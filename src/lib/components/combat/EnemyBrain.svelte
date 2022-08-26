@@ -3,7 +3,7 @@
   import type { Move } from "../../../models/Move";
   import { onMount } from "svelte";
   import {
-appendCombatLine,
+    appendCombatLine,
     enemyCooldown,
     setEnemyAnimation,
     setEnemyCooldown
@@ -26,7 +26,7 @@ appendCombatLine,
     const rollToHit: number = Math.random();
     if (rollToHit > nextMove.accuracy) {
       const missEffects: Function[] = [
-        () => setEnemyAnimation("lunge"),
+        () => setEnemyAnimation("reverselunge"),
         () => setEnemyCooldown(nextMove.cooldown),
         () => appendCombatLine(resolvePossibleOptionArray(nextMove.missPhrase))
       ];
@@ -63,10 +63,12 @@ appendCombatLine,
 
   onMount(() => {
     const delayBeforeAction: number = between(2, 6);
-    registerGameEvent(genGameEvent($tick + delayBeforeAction, () => {
-      attackPlayer();
-      playerIsApproaching = false;
-    }));
+    registerGameEvent(
+      genGameEvent($tick + delayBeforeAction, () => {
+        attackPlayer();
+        playerIsApproaching = false;
+      })
+    );
   });
 </script>
 

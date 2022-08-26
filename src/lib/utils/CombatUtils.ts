@@ -1,3 +1,4 @@
+import type { CombatAnimation } from "src/models/ui/CombatAnimation";
 import type { Enemy } from "../../models/Enemy";
 import type { Move } from "../../models/Move";
 import { getEnemyMetadata } from "./selectors/EnemySelectors";
@@ -16,7 +17,10 @@ export const getMoveProbabilities = (moves: Move[]): number[][] => {
 export const getNextMove = (enemy: Enemy): Move => {
   const moves: Move[] = getEnemyMetadata(enemy.name).moves;
   const probabilityRanges: number[][] = getMoveProbabilities(moves);
-  const roll: number = between(0, probabilityRanges[probabilityRanges.length - 1][1]);
+  const roll: number = between(
+    0,
+    probabilityRanges[probabilityRanges.length - 1][1]
+  );
   let selectedMove: Move = moves[0];
   moves.forEach((move: Move, i: number) => {
     if (roll >= probabilityRanges[i][0] && roll <= probabilityRanges[i][1]) {
@@ -24,11 +28,4 @@ export const getNextMove = (enemy: Enemy): Move => {
     }
   });
   return selectedMove;
-};
-
-export const performMove = (enemy: Enemy, move: Move): void => {
-  if (move.instantEffects.length < 1) return;
-  move.instantEffects.forEach((effect: Function) => {
-    
-  });
 };

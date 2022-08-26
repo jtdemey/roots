@@ -14,12 +14,13 @@ export const genMoveData = (
   missPhrase: string | string[],
   activeEffects: any[],
   instantEffects: Function[],
+  animation: string = "lunge",
   probability: number = 1.0,
   condition: Function = () => true
 ): Move => ({
   accuracy,
   activeEffects,
-  animation: "lunge",
+  animation,
   condition,
   cooldown,
   hitPhrase,
@@ -43,6 +44,7 @@ export const CombatMoveData: ICombatMoveData = {
     [],
     [() => hurtEnemy(between(1, 8)), () => setPlayerAnimation("lunge")]
   ),
+
   kick: genMoveData(
     "kick",
     80,
@@ -59,10 +61,30 @@ export const CombatMoveData: ICombatMoveData = {
     [],
     [() => hurtEnemy(between(4, 7)), () => setPlayerAnimation("lunge")]
   ),
+
   punch: genMoveData(
     "punch",
     50,
-    2,
+    3,
+    [
+      `Your fist clashes against the [enemy].`,
+      `You punch the [enemy].`,
+      `You land a solid punch.`,
+      `Your knuckles pound into the [enemy].`
+    ],
+    [
+      `Your fist lands flimsily, blocked by the [enemy].`,
+      `The [enemy] moves to block your punch.`,
+      `The [enemy] reflexively dodges your fist.`
+    ],
+    [],
+    [() => hurtEnemy(between(2, 6)), () => setPlayerAnimation("lunge")]
+  ),
+
+  slap: genMoveData(
+    "slap",
+    50,
+    3,
     [
       `Your fist clashes against the [enemy].`,
       `You punch the [enemy].`,
@@ -77,4 +99,5 @@ export const CombatMoveData: ICombatMoveData = {
     [],
     [() => hurtEnemy(between(2, 6)), () => setPlayerAnimation("lunge")]
   )
+
 };

@@ -16,7 +16,8 @@
   export let imgSrc: string = "/placeholder.webp";
   export let width: number = 128;
 
-  const spriteXPos: Tweened<number> = tweened(0, { duration: 500, easing: linear });
+  const tweenConfig = { duration: 500, easing: linear };
+  const spritePos: Tweened<[number, number]> = tweened([0, 0], tweenConfig);
 
   $: if (animationName !== "") {
     const animationData: CombatAnimation =
@@ -24,7 +25,8 @@
     executePromisesSequentially(
       animationData.keyframes
         .map((keyframe: CombatKeyframe) => {
-          return () => spriteXPos.set(keyframe.value, keyframe.tweenConfig);
+          return () =>
+            spritePos.set([keyframe.x, keyframe.y], keyframe.tweenConfig);
         })
         .concat([
           () =>
@@ -46,7 +48,7 @@
     {alt}
     src={imgSrc}
     {width}
-    style="transform: translateX({$spriteXPos}px);"
+    style="transform: translate({$spritePos[0]}px, {$spritePos[1]}px);"
   />
 </picture>
 
