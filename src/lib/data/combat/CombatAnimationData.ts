@@ -20,15 +20,15 @@ export const CombatAnimationData: ICombatAnimationData = {
   impact: {
     keyframes: [
       genAnim(0, 0, 20),
-      genAnim(8, -8, 80),
-      genAnim(-5, -2, 60),
-      genAnim(5, 4, 60),
+      genAnim(12, -12, 80),
+      genAnim(-9, -6, 60),
+      genAnim(7, 9, 60),
       genAnim(0, 0, 120)
     ]
   },
   lunge: {
     keyframes: [
-      genAnim(18, 12, 100),
+      genAnim(18, -12, 100),
       genAnim(-2, 2, 80),
       genAnim(0, 0, 200)
     ]

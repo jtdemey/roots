@@ -13,8 +13,6 @@
   import { genGameEvent } from "$lib/utils/GameEventUtils";
   import BaseCinematic from "$lib/components/cinematic/BaseCinematic.svelte";
 
-  let currentTick: number = $tick;
-
   let skipBtnRef: any;
 
   const timers: any[] = [];

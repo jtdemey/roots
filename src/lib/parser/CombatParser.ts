@@ -1,7 +1,7 @@
 import type { Enemy } from "../../models/Enemy";
 import type { EnemyMetadata } from "../../models/meta/EnemyMetadata";
 import type { GameEvent } from "../../models/GameEvent";
-import type { Move } from "../../models/Move";
+import type { DelayedEffect, Move } from "../../models/Move";
 import { get } from "svelte/store";
 import { CombatCommands } from "$lib/data/parser/CombatCommands";
 import {
@@ -38,19 +38,26 @@ const EnemyAliases: string[] = [
   "villain"
 ];
 
+const checkPlayerCooldown = (
+  queuedEvents: GameEvent[],
+  currentTick: number
+): void => {
+  const playerCooldown: number = get(cooldown);
+  if (playerCooldown > 0) {
+    queueEventNow(queuedEvents, currentTick, () =>
+      appendCombatLine(`You have not yet recovered from your previous move.`)
+    );
+  }
+};
+
 export const parseAttackMove = (
   input: string[],
   currentTick: number,
   enemy: Enemy
 ): GameEvent[] => {
   const queuedEvents: GameEvent[] = [];
-  const playerCooldown: number = get(cooldown);
-  if (playerCooldown > 0) {
-    queueEventNow(queuedEvents, currentTick, () =>
-      appendCombatLine(`You have not yet recovered from your previous move.`)
-    );
-    return queuedEvents;
-  }
+  checkPlayerCooldown(queuedEvents, currentTick);
+  if (queuedEvents.length > 0) return queuedEvents;
 
   const moveData: Move = getCombatMoveData(input[0]);
   const enemyData: EnemyMetadata = getEnemyMetadata(enemy.name);
@@ -61,10 +68,14 @@ export const parseAttackMove = (
         EnemyAliases.indexOf(input[1]) > -1));
 
   if (isTargetingEnemy) {
-    const roll = between(1, 100);
-    const threshold = (get(attack) + moveData.accuracy) / 2;
-    const hit: boolean = roll <= threshold;
+    let hit: boolean = moveData.accuracy === 100;
+    if (!hit) {
+      const roll = between(1, 100);
+      const threshold = (get(attack) + moveData.accuracy) / 2;
+      hit = roll <= threshold;
+    }
 
+    const enemyName: string = enemyData.display.toLowerCase();
     if (hit) {
       moveData.instantEffects.forEach((instantEffect: Function) => {
         queueEventNow(queuedEvents, currentTick, () => instantEffect());
@@ -73,10 +84,9 @@ export const parseAttackMove = (
         () =>
           appendCombatLine(
             resolvePossibleOptionArray(moveData.hitPhrase),
-            enemyData.display.toLowerCase()
+            enemyName
           ),
-        () => setPlayerCooldown(moveData.cooldown),
-        () => setEnemyAnimation("impact")
+        () => setPlayerCooldown(moveData.cooldown)
       ];
       hitEvents.forEach((action: Function) =>
         queueEventNow(queuedEvents, currentTick, action)
@@ -84,11 +94,21 @@ export const parseAttackMove = (
       queueEventNow(queuedEvents, currentTick + moveData.cooldown, () =>
         setPlayerCooldown(0)
       );
+
+      moveData.delayedEffects.forEach((delayedEffect: DelayedEffect) => {
+        const delay: number = delayedEffect.delay || moveData.cooldown;
+        queueEventNow(queuedEvents, currentTick + delay, () => delayedEffect.effect());
+      });
+      
       return queuedEvents;
     }
 
     const missEvents: Function[] = [
-      () => appendCombatLine(resolvePossibleOptionArray(moveData.missPhrase)),
+      () =>
+        appendCombatLine(
+          resolvePossibleOptionArray(moveData.missPhrase),
+          enemyName
+        ),
       () => setPlayerAnimation("lunge")
     ];
     missEvents.forEach((action: Function) =>

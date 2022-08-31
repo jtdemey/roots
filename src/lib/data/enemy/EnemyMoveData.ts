@@ -12,14 +12,14 @@ export const EnemyMoveData: IEnemyMoveData = {
   bite: genMoveData(
     "bite",
     0.4,
-    8,
+    7,
     "Its jaw clamps down on your leg, causing a searing pain.",
     "The [enemy] gnashes its teeth and lunges, narrowly missing.",
-    [],
     [
       () => affectPlayerHealth(between(-12, -6)),
       () => setPlayerAnimation("impact")
     ],
+    [],
     "reverselunge"
   )
 };

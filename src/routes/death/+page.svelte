@@ -1,6 +1,8 @@
 <script type="ts">
   import { goto } from "$app/navigation";
   import { onMount } from "svelte";
+  import { quadInOut } from "svelte/easing";
+  import { fade, fly } from "svelte/transition";
   import { GameStates } from "$lib/data/game/GameStates";
   import { gameState, tick } from "$lib/stores/game/GameStore";
   import { formatTime, getTimeFromTick } from "$lib/utils/DateUtils";
@@ -13,9 +15,13 @@
 </script>
 
 <article>
-  <h1>You perished at {formatTime(getTimeFromTick($tick))}.</h1>
-  <h2>Your flesh feeds the forest as its roots grow deeper still.</h2>
-  <section>
+  <h1 in:fade={{ duration: 900, easing: quadInOut }}>
+    You perished at {formatTime(getTimeFromTick($tick))}.
+  </h1>
+  <h2 in:fade={{ delay: 1000, duration: 1200, easing: quadInOut }}>
+    Your flesh feeds the forest as its roots grow deeper still.
+  </h2>
+  <section in:fly={{ y: -12, delay: 3000, duration: 1600, easing: quadInOut }}>
     <span on:click={() => window.location.reload()}>Main Menu</span>
   </section>
 </article>

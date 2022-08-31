@@ -1,10 +1,27 @@
-import type { Move } from "../../../models/Move";
-import { hurtEnemy, setPlayerAnimation } from "$lib/stores/combat/CombatStore";
+import type { DelayedEffect, Move } from "../../../models/Move";
+import {
+  hurtEnemy,
+  setEnemyAnimation,
+  setPlayerAnimation
+} from "$lib/stores/combat/CombatStore";
 import { between } from "$lib/utils/MathUtils";
 
 interface ICombatMoveData {
   [key: string]: Move;
 }
+
+const getDamageEffects = (
+  min: number,
+  max: number,
+  enemyAnimation: string = "impact",
+  playerAnimation: string = "lunge"
+): Function[] => {
+  return [
+    () => hurtEnemy(between(min, max)),
+    () => setEnemyAnimation(enemyAnimation),
+    () => setPlayerAnimation(playerAnimation)
+  ];
+};
 
 export const genMoveData = (
   name: string,
@@ -12,17 +29,17 @@ export const genMoveData = (
   cooldown: number,
   hitPhrase: string | string[],
   missPhrase: string | string[],
-  activeEffects: any[],
-  instantEffects: Function[],
+  instantEffects: Function[] = [],
+  delayedEffects: DelayedEffect[] = [],
   animation: string = "lunge",
   probability: number = 1.0,
   condition: Function = () => true
 ): Move => ({
   accuracy,
-  activeEffects,
   animation,
   condition,
   cooldown,
+  delayedEffects,
   hitPhrase,
   instantEffects,
   missPhrase,
@@ -31,18 +48,28 @@ export const genMoveData = (
 });
 
 export const CombatMoveData: ICombatMoveData = {
+  block: genMoveData(
+    "block",
+    100,
+    6,
+    [
+      `Your muscles contract as you guard your vitals`,
+      `You attempt to defend against oncoming blows`,
+      `You stand defensively, anticipating attacks`
+    ],
+    "",
+    [],
+    [{ effect: () => hurtEnemy(69) }]
+  ),
+
   headbutt: genMoveData(
     "headbutt",
     30,
     6,
-    [
-      `You headbutt the [enemy]`
-    ],
-    [
-      `Your head whooshes past the [enemy]`
-    ],
-    [],
-    [() => hurtEnemy(between(1, 8)), () => setPlayerAnimation("lunge")]
+    [`You headbutt the [enemy]`],
+    [`Your head whooshes past the [enemy]`],
+    [...getDamageEffects(1, 8)],
+    []
   ),
 
   kick: genMoveData(
@@ -58,8 +85,8 @@ export const CombatMoveData: ICombatMoveData = {
       `Your kick fails to land a solid hit.`,
       `Your kick falters and misses.`
     ],
-    [],
-    [() => hurtEnemy(between(4, 7)), () => setPlayerAnimation("lunge")]
+    [...getDamageEffects(4, 7)],
+    []
   ),
 
   punch: genMoveData(
@@ -77,8 +104,8 @@ export const CombatMoveData: ICombatMoveData = {
       `The [enemy] moves to block your punch.`,
       `The [enemy] reflexively dodges your fist.`
     ],
-    [],
-    [() => hurtEnemy(between(2, 6)), () => setPlayerAnimation("lunge")]
+    [...getDamageEffects(2, 6)],
+    []
   ),
 
   slap: genMoveData(
@@ -96,8 +123,7 @@ export const CombatMoveData: ICombatMoveData = {
       `The [enemy] moves to block your punch.`,
       `The [enemy] reflexively dodges your fist.`
     ],
-    [],
-    [() => hurtEnemy(between(2, 6)), () => setPlayerAnimation("lunge")]
+    [...getDamageEffects(2, 6)],
+    []
   )
-
 };
