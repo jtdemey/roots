@@ -1,5 +1,6 @@
 import type { DelayedEffect, Move } from "../../../models/Move";
 import {
+  affectDefense,
   hurtEnemy,
   setEnemyAnimation,
   setPlayerAnimation
@@ -53,21 +54,21 @@ export const CombatMoveData: ICombatMoveData = {
     100,
     6,
     [
-      `Your muscles contract as you guard your vitals`,
-      `You attempt to defend against oncoming blows`,
-      `You stand defensively, anticipating attacks`
+      `Your muscles contract as you guard your vitals.`,
+      `You attempt to defend against oncoming blows.`,
+      `You stand defensively, anticipating attacks.`
     ],
     "",
-    [],
-    [{ effect: () => hurtEnemy(69) }]
+    [() => affectDefense(40)],
+    [{ delay: 6, effect: () => affectDefense(-40) }]
   ),
 
   headbutt: genMoveData(
     "headbutt",
     30,
     6,
-    [`You headbutt the [enemy]`],
-    [`Your head whooshes past the [enemy]`],
+    [`You headbutt the [enemy].`],
+    [`Your head whooshes past the [enemy].`],
     [...getDamageEffects(1, 8)],
     []
   ),
@@ -113,15 +114,15 @@ export const CombatMoveData: ICombatMoveData = {
     50,
     3,
     [
-      `Your fist clashes against the [enemy].`,
-      `You punch the [enemy].`,
-      `You land a solid punch.`,
-      `Your knuckles pound into the [enemy].`
+      `Your hand clashes against the [enemy].`,
+      `You slap the [enemy].`,
+      `You land a solid slap. THWACK!`,
+      `Your palm stings as it collides into the [enemy].`
     ],
     [
-      `Your fist lands flimsily, blocked by the [enemy].`,
-      `The [enemy] moves to block your punch.`,
-      `The [enemy] reflexively dodges your fist.`
+      `Your hand lands flimsily, blocked by the [enemy].`,
+      `The [enemy] moves to block your slap.`,
+      `The [enemy] reflexively dodges your strike.`
     ],
     [...getDamageEffects(2, 6)],
     []

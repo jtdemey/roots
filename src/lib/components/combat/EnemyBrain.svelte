@@ -1,10 +1,11 @@
 <script type="ts">
   import type { Enemy } from "../../../models/Enemy";
-  import type { Move } from "../../../models/Move";
+  import type { DelayedEffect, Move } from "../../../models/Move";
   import { onMount } from "svelte";
   import {
     appendCombatLine,
     enemyCooldown,
+    evasion,
     setEnemyAnimation,
     setEnemyCooldown
   } from "$lib/stores/combat/CombatStore";
@@ -24,7 +25,7 @@
     const nextMove: Move = getNextMove(currentEnemy);
 
     const rollToHit: number = Math.random();
-    if (rollToHit > nextMove.accuracy) {
+    if (rollToHit > nextMove.accuracy + $evasion) {
       const missEffects: Function[] = [
         () => setEnemyAnimation("reverselunge"),
         () => setEnemyCooldown(nextMove.cooldown),
@@ -38,14 +39,9 @@
     if (nextMove.instantEffects.length > 0) {
       nextMove.instantEffects.forEach((effect: Function) => queueEvent(effect));
     }
-    if (nextMove.activeEffects.length > 0) {
-      nextMove.activeEffects.forEach((effects: Function[]) => {
-        if (!Array.isArray) {
-          console.error(`Array expected for active effect in ${nextMove.name}`);
-          return;
-        }
-        queueEvent(effects[0]);
-        queueEvent(effects[1], $tick + nextMove.cooldown);
+    if (nextMove.delayedEffects.length > 0) {
+      nextMove.delayedEffects.forEach((delayedEffect: DelayedEffect) => {
+        queueEvent(() => delayedEffect.effect(), $tick + nextMove.cooldown);
       });
     }
     const attackEffects: Function[] = [

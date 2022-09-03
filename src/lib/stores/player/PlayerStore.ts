@@ -10,7 +10,6 @@ import {
   startCombat
 } from "../game/GameStore";
 import { GameStates } from "$lib/data/game/GameStates";
-import { ItemData } from "$lib/data/items/ItemData";
 import { PlayerFlags } from "$lib/data/player/PlayerFlags";
 import { createItem } from "$lib/data/world/WorldFactory";
 import { TemperatureEffects } from "$lib/data/world/TemperatureEffects";

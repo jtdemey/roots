@@ -24,7 +24,7 @@ export const CombatCommands: ICombatCommands = {
 
   block: genGameCommand(
     "block",
-    (input: string[], currentTick: number, enemy: Enemy) => false,
+    (input: string[], currentTick: number, enemy: Enemy) => parseAttackMove(input, currentTick, enemy),
     [
       "barricade",
       "catch",

@@ -29,7 +29,7 @@ export const appendRandomLine = (texts: string[]): void => {
 export const endCombat = (): void => {
   clearCombatLines();
   gameState.set(GameStates.Explore);
-  goto("/game/explore/console");
+  goto("/game/survive/console");
 };
 
 export const executeGameEvents = (

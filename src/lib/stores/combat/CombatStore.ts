@@ -1,19 +1,25 @@
 import type { CombatAnimation } from "../../../models/ui/CombatAnimation";
 import type { Enemy } from "../../../models/Enemy";
 import type { EnemyMetadata } from "../../../models/meta/EnemyMetadata";
-import { get, writable } from "svelte/store";
+import { get, writable, type Writable } from "svelte/store";
+import { CombatAnimationData } from "$lib/data/combat/CombatAnimationData";
+import { endCombat } from "../game/GameStore";
+import { affectPlayerHealth } from "../player/PlayerStore";
 import { getRandomElement } from "$lib/utils/MathUtils";
 import { getEnemyMetadata } from "$lib/utils/selectors/EnemySelectors";
-import { CombatAnimationData } from "$lib/data/combat/CombatAnimationData";
 
 export const attack = writable<number>(80);
-export const defense = writable<number>(20);
+export const defense = writable<number>(0);
+export const evasion = writable<number>(0);
 export const combatText = writable<string[]>([]);
 export const cooldown = writable<number>(0);
 export const currentEnemy = writable<Enemy>(undefined);
 export const enemyAnimation = writable<string>("");
 export const enemyCooldown = writable<number>(0);
 export const playerAnimation = writable<string>("");
+
+export const affectDefense = (amount: number): void =>
+  defense.update((d: number) => d + amount);
 
 export const appendCombatEnterPhrase = (enemy: Enemy): void => {
   const meta: EnemyMetadata = getEnemyMetadata(enemy.name);
@@ -36,9 +42,19 @@ export const appendCombatLine = (
 export const clearCombatLines = (): void => combatText.set([]);
 
 export const hurtEnemy = (damage: number): void => {
-  get(currentEnemy).health.update(
-    (currentHealth: number) => currentHealth - damage
-  );
+  const enemyHealth: Writable<number> = get(currentEnemy).health;
+  enemyHealth.update((currentHealth: number) => {
+    const hp: number = currentHealth - damage;
+    if (hp < 1) {
+      endCombat();
+    }
+    return hp;
+  });
+};
+
+export const hurtPlayer = (amount: number): void => {
+  const damage: number = amount + amount * (get(defense) / 100);
+  affectPlayerHealth(damage);
 };
 
 export const resetEnemyAnimation = (): void => enemyAnimation.set("");
