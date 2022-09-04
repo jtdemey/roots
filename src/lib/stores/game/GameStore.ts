@@ -1,14 +1,25 @@
 import type { Enemy } from "../../../models/Enemy";
+import type { EnemyMetadata } from "src/models/meta/EnemyMetadata";
 import type { GameEvent } from "../../../models/GameEvent";
 import { get, writable } from "svelte/store";
 import { goto } from "$app/navigation";
 import { GameStates } from "$lib/data/game/GameStates";
 import { Temperatures } from "$lib/data/world/Temperatures";
+import {
+  appendCombatEnterPhrase,
+  clearCombatLines,
+  setCurrentEnemy
+} from "../combat/CombatStore";
+import { affectPlayerTemperature } from "../player/PlayerStore";
 import { fluxTemperature } from "$lib/utils/world/WorldUtils";
 import { getLocaleTemperature } from "$lib/utils/selectors/WorldSelectors";
-import { getCancelledEventIndices } from "$lib/utils/GameEventUtils";
-import { appendCombatEnterPhrase, clearCombatLines, setCurrentEnemy } from "../combat/CombatStore";
-import { affectPlayerTemperature } from "../player/PlayerStore";
+import {
+  genGameEvent,
+  getCancelledEventIndices
+} from "$lib/utils/GameEventUtils";
+import {getPlayerHpStatusPhrase} from "$lib/utils/CombatUtils";
+import { resolvePossibleOptionArray } from "$lib/utils/MathUtils";
+import { getEnemyMetadata } from "$lib/utils/selectors/EnemySelectors";
 
 export const consoleText = writable<string[]>([]);
 export const environmentTemperature = writable<number>(Temperatures.Warm);
@@ -26,9 +37,24 @@ export const appendRandomLine = (texts: string[]): void => {
   appendLine(texts[selectedTextIndex] || "");
 };
 
-export const endCombat = (): void => {
+export const endCombat = (enemy: Enemy): void => {
+  const currentTick: number = get(tick);
   clearCombatLines();
-  gameState.set(GameStates.Explore);
+  const enemyMeta: EnemyMetadata = getEnemyMetadata(enemy.name);
+  setTimeout(() => {
+    registerGameEvents([
+      genGameEvent(currentTick, () => {
+        console.log('eve')
+        gameState.set(GameStates.Explore);
+      }),
+      genGameEvent(currentTick + 1, () =>
+        appendLine(resolvePossibleOptionArray(enemyMeta.deathPhrase))
+      ),
+      genGameEvent(currentTick + 4, () =>
+        appendLine(getPlayerHpStatusPhrase())
+      )
+    ]);
+  }, 1000);
   goto("/game/survive/console");
 };
 

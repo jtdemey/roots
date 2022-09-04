@@ -86,7 +86,7 @@ export const CombatMoveData: ICombatMoveData = {
       `Your kick fails to land a solid hit.`,
       `Your kick falters and misses.`
     ],
-    [...getDamageEffects(4, 7)],
+    [...getDamageEffects(4, 27)],
     []
   ),
 

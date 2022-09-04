@@ -14,12 +14,14 @@ const createEnemyMetadata = (
   baseSpeed: number,
   maxHealth: number | number[],
   combatEnterPhrase: string | string[],
+  deathPhrase: string | string[] = "",
   moves: Move[] = []
 ): EnemyMetadata => ({
   baseAttack,
   baseDefense,
   baseEvasion,
   baseSpeed,
+  deathPhrase,
   display,
   maxHealth,
   combatEnterPhrase,
@@ -47,6 +49,11 @@ export const EnemyData: IEnemyData = {
       `The wolf ducks its body defensively, furling its salivating lips.`,
       `A wolf approaches, snarling.`,
       `The wolf growls aggressively.`
+    ],
+    [
+      `The mangled corpse of the wolf draws its last breath.`,
+      `The wolf whines as life leaves its body.`,
+      `The carcass of the wolf lies on the ground.`
     ],
     [EnemyMoveData.bite]
   )

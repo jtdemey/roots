@@ -42,14 +42,17 @@ export const appendCombatLine = (
 export const clearCombatLines = (): void => combatText.set([]);
 
 export const hurtEnemy = (damage: number): void => {
-  const enemyHealth: Writable<number> = get(currentEnemy).health;
+  const baddie: Enemy = get(currentEnemy); 
+  const enemyHealth: Writable<number> = baddie.health;
+  let shouldEndCombat: boolean = false;
   enemyHealth.update((currentHealth: number) => {
     const hp: number = currentHealth - damage;
     if (hp < 1) {
-      endCombat();
+      shouldEndCombat = true;
     }
     return hp;
   });
+  if (shouldEndCombat) endCombat(baddie);
 };
 
 export const hurtPlayer = (amount: number): void => {

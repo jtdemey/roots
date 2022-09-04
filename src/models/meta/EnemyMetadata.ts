@@ -6,6 +6,7 @@ export interface EnemyMetadata {
   baseEvasion: number;
   baseSpeed: number;
   combatEnterPhrase: string | string[];
+  deathPhrase: string | string[];
 	display: string;
   maxHealth: number | number[];
   moves: Move[];
