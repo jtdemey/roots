@@ -17,6 +17,15 @@ const genAnim = (
 ): CombatKeyframe => ({ x, y, tweenConfig: { delay, duration, easing } });
 
 export const CombatAnimationData: ICombatAnimationData = {
+  death: {
+    keyframes: [
+      genAnim(0, 12, 50),
+      genAnim(1, 13, 100),
+      genAnim(-1, 14, 100),
+      genAnim(1, 13, 100),
+      genAnim(0, 50, 200)
+    ]
+  },
   impact: {
     keyframes: [
       genAnim(0, 0, 20),

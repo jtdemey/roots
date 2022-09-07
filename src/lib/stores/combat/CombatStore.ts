@@ -19,7 +19,20 @@ export const enemyCooldown = writable<number>(0);
 export const playerAnimation = writable<string>("");
 
 export const affectDefense = (amount: number): void =>
-  defense.update((d: number) => d + amount);
+  defense.update((d: number) => {
+    const nextDefense: number = d + amount;
+    if (nextDefense < 1) return 1;
+    if (nextDefense > 100) return 100;
+    return nextDefense;
+  });
+
+export const affectEvasion = (amount: number): void =>
+  evasion.update((e: number) => {
+    const nextEvasion: number = e + amount;
+    if (nextEvasion < 1) return 1;
+    if (nextEvasion > 100) return 100;
+    return nextEvasion;
+  });
 
 export const appendCombatEnterPhrase = (enemy: Enemy): void => {
   const meta: EnemyMetadata = getEnemyMetadata(enemy.name);
@@ -50,13 +63,13 @@ export const hurtEnemy = (damage: number): void => {
     if (hp < 1) {
       shouldEndCombat = true;
     }
-    return hp;
+    return hp < 0 ? 0 : hp;
   });
   if (shouldEndCombat) endCombat(baddie);
 };
 
 export const hurtPlayer = (amount: number): void => {
-  const damage: number = amount + amount * (get(defense) / 100);
+  const damage: number = amount * (get(defense) / 100);
   affectPlayerHealth(damage);
 };
 

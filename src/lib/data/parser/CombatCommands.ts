@@ -69,6 +69,12 @@ export const CombatCommands: ICombatCommands = {
     ]
   ),
 
+  elbow: genGameCommand(
+    "elbow",
+    (input: string[], currentTick: number, enemy: Enemy) => parseAttackMove(input, currentTick, enemy),
+    []
+  ),
+
   flee: genGameCommand(
     "flee",
     (input: string[], currentTick: number, enemy: Enemy) => false,

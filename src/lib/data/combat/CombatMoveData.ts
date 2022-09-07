@@ -63,6 +63,36 @@ export const CombatMoveData: ICombatMoveData = {
     [{ delay: 6, effect: () => affectDefense(-40) }]
   ),
 
+  dodge: genMoveData(
+    "dodge",
+    100,
+    6,
+    [
+      `You anticipate oncoming attacks.`,
+      `You attempt to dodge incoming attacks.`,
+      `You prepare to evade anything thrown at you.`
+    ],
+    "",
+    [() => affectDefense(40)],
+    [{ delay: 6, effect: () => affectDefense(-40) }]
+  ),
+
+  elbow: genMoveData(
+    "elbow",
+    60,
+    4,
+    [
+      `Your elbow slashes into the [enemy].`,
+      `You bash your elbow into the [enemy].`
+    ],
+    [
+      `Your elbow misses the [enemy].`,
+      `Your elbow lands at a poor angle, whiffing.`
+    ],
+    [...getDamageEffects(1, 8)],
+    []
+  ),
+
   headbutt: genMoveData(
     "headbutt",
     30,

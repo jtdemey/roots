@@ -8,7 +8,8 @@ import { Temperatures } from "$lib/data/world/Temperatures";
 import {
   appendCombatEnterPhrase,
   clearCombatLines,
-  setCurrentEnemy
+  setCurrentEnemy,
+  setEnemyAnimation
 } from "../combat/CombatStore";
 import { affectPlayerTemperature } from "../player/PlayerStore";
 import { fluxTemperature } from "$lib/utils/world/WorldUtils";
@@ -17,7 +18,7 @@ import {
   genGameEvent,
   getCancelledEventIndices
 } from "$lib/utils/GameEventUtils";
-import {getPlayerHpStatusPhrase} from "$lib/utils/CombatUtils";
+import { getPlayerHpStatusPhrase } from "$lib/utils/CombatUtils";
 import { resolvePossibleOptionArray } from "$lib/utils/MathUtils";
 import { getEnemyMetadata } from "$lib/utils/selectors/EnemySelectors";
 
@@ -43,19 +44,15 @@ export const endCombat = (enemy: Enemy): void => {
   const enemyMeta: EnemyMetadata = getEnemyMetadata(enemy.name);
   setTimeout(() => {
     registerGameEvents([
-      genGameEvent(currentTick, () => {
-        console.log('eve')
-        gameState.set(GameStates.Explore);
-      }),
-      genGameEvent(currentTick + 1, () =>
+      genGameEvent(currentTick + 1, () => setEnemyAnimation("death")),
+      genGameEvent(currentTick + 10, () => gameState.set(GameStates.Explore)),
+      genGameEvent(currentTick + 10, () =>
         appendLine(resolvePossibleOptionArray(enemyMeta.deathPhrase))
       ),
-      genGameEvent(currentTick + 4, () =>
-        appendLine(getPlayerHpStatusPhrase())
-      )
+      genGameEvent(currentTick + 14, () => appendLine(getPlayerHpStatusPhrase()))
     ]);
   }, 1000);
-  goto("/game/survive/console");
+  setTimeout(() => goto("/game/survive/console"), 7000);
 };
 
 export const executeGameEvents = (

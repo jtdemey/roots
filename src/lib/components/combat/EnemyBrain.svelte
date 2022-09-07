@@ -24,7 +24,7 @@
       registerGameEvent(genGameEvent(targetTick || $tick, () => action()));
     const nextMove: Move = getNextMove(currentEnemy);
 
-    const rollToHit: number = Math.random();
+    const rollToHit: number = Math.random() + 100;
     if (rollToHit > nextMove.accuracy + $evasion) {
       const missEffects: Function[] = [
         () => setEnemyAnimation("reverselunge"),
