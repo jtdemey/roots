@@ -11,6 +11,7 @@ import { getEnemyMetadata } from "$lib/utils/selectors/EnemySelectors";
 export const attack = writable<number>(80);
 export const defense = writable<number>(0);
 export const evasion = writable<number>(0);
+export const combatPaused = writable<boolean>(false);
 export const combatText = writable<string[]>([]);
 export const cooldown = writable<number>(0);
 export const currentEnemy = writable<Enemy>(undefined);
@@ -73,9 +74,13 @@ export const hurtPlayer = (amount: number): void => {
   affectPlayerHealth(damage);
 };
 
+export const pauseCombat = (): void => combatPaused.set(true);
+
 export const resetEnemyAnimation = (): void => enemyAnimation.set("");
 
 export const resetPlayerAnimation = (): void => playerAnimation.set("");
+
+export const resumeCombat = (): void => combatPaused.set(false);
 
 export const setCurrentEnemy = (enemy: Enemy): void => currentEnemy.set(enemy);
 

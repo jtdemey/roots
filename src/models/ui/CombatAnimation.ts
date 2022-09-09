@@ -1,6 +1,7 @@
 export interface CombatKeyframe {
   x: number;
   y: number;
+  opacity: number;
   tweenConfig: object;
 }
 

@@ -1,9 +1,11 @@
 <script type="ts">
+  import type { Writable } from "svelte/store";
   import type { Enemy } from "../../../models/Enemy";
   import type { DelayedEffect, Move } from "../../../models/Move";
   import { onMount } from "svelte";
   import {
     appendCombatLine,
+    combatPaused,
     enemyCooldown,
     evasion,
     setEnemyAnimation,
@@ -53,7 +55,7 @@
     queueEvent(() => setEnemyCooldown(0), $tick + nextMove.cooldown);
   };
 
-  $: if ($enemyCooldown < 1 && !playerIsApproaching) {
+  $: if ($enemyCooldown < 1 && !playerIsApproaching && !$combatPaused) {
     attackPlayer();
   }
 

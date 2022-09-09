@@ -8,8 +8,11 @@ import { Temperatures } from "$lib/data/world/Temperatures";
 import {
   appendCombatEnterPhrase,
   clearCombatLines,
+  pauseCombat,
+  resumeCombat,
   setCurrentEnemy,
-  setEnemyAnimation
+  setEnemyAnimation,
+  setEnemyCooldown
 } from "../combat/CombatStore";
 import { affectPlayerTemperature } from "../player/PlayerStore";
 import { fluxTemperature } from "$lib/utils/world/WorldUtils";
@@ -44,15 +47,17 @@ export const endCombat = (enemy: Enemy): void => {
   const enemyMeta: EnemyMetadata = getEnemyMetadata(enemy.name);
   setTimeout(() => {
     registerGameEvents([
+      genGameEvent(currentTick + 1, () => pauseCombat()),
       genGameEvent(currentTick + 1, () => setEnemyAnimation("death")),
-      genGameEvent(currentTick + 10, () => gameState.set(GameStates.Explore)),
-      genGameEvent(currentTick + 10, () =>
+      genGameEvent(currentTick + 1, () => setEnemyCooldown(0)),
+      genGameEvent(currentTick + 5, () => gameState.set(GameStates.Explore)),
+      genGameEvent(currentTick + 5, () =>
         appendLine(resolvePossibleOptionArray(enemyMeta.deathPhrase))
       ),
-      genGameEvent(currentTick + 14, () => appendLine(getPlayerHpStatusPhrase()))
+      genGameEvent(currentTick + 8, () => appendLine(getPlayerHpStatusPhrase()))
     ]);
   }, 1000);
-  setTimeout(() => goto("/game/survive/console"), 7000);
+  setTimeout(() => goto("/game/survive/console"), 2500);
 };
 
 export const executeGameEvents = (
@@ -90,6 +95,7 @@ export const resumeGame = (): void => paused.set(false);
 export const startCombat = (currentEnemy: Enemy): void => {
   gameState.set(GameStates.Combat);
   setCurrentEnemy(currentEnemy);
+  resumeCombat();
   appendCombatEnterPhrase(currentEnemy);
   goto("/game/combat/fight");
 };

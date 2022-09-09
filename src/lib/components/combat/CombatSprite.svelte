@@ -17,7 +17,7 @@
   export let width: number = 128;
 
   const tweenConfig = { duration: 500, easing: linear };
-  const spritePos: Tweened<[number, number]> = tweened([0, 0], tweenConfig);
+  const spritePos: Tweened<[number, number, number]> = tweened([0, 0, 1.0], tweenConfig);
 
   $: if (animationName !== "") {
     const animationData: CombatAnimation =
@@ -26,7 +26,7 @@
       animationData.keyframes
         .map((keyframe: CombatKeyframe) => {
           return () =>
-            spritePos.set([keyframe.x, keyframe.y], keyframe.tweenConfig);
+            spritePos.set([keyframe.x, keyframe.y, keyframe.opacity], keyframe.tweenConfig);
         })
         .concat([
           () =>
@@ -48,7 +48,7 @@
     {alt}
     src={imgSrc}
     {width}
-    style="transform: translate({$spritePos[0]}px, {$spritePos[1]}px);"
+    style="opacity: {$spritePos[2]}; transform: translate({$spritePos[0]}px, {$spritePos[1]}px);"
   />
 </picture>
 
