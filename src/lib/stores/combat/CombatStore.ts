@@ -9,7 +9,7 @@ import { getRandomElement } from "$lib/utils/MathUtils";
 import { getEnemyMetadata } from "$lib/utils/selectors/EnemySelectors";
 
 export const attack = writable<number>(80);
-export const defense = writable<number>(0);
+export const defense = writable<number>(50);
 export const evasion = writable<number>(0);
 export const combatPaused = writable<boolean>(false);
 export const combatText = writable<string[]>([]);
@@ -35,14 +35,16 @@ export const affectEvasion = (amount: number): void =>
     return nextEvasion;
   });
 
-export const appendCombatEnterPhrase = (enemy: Enemy): void => {
+export const appendCombatEnterPhrase = (enemy: Enemy): string => {
   const meta: EnemyMetadata = getEnemyMetadata(enemy.name);
   const startPhrase: string | string[] = meta.combatEnterPhrase;
   if (Array.isArray(startPhrase)) {
-    appendCombatLine(getRandomElement(startPhrase));
-    return;
+    const phrase: string = getRandomElement(startPhrase);
+    appendCombatLine(phrase);
+    return phrase;
   }
   appendCombatLine(startPhrase);
+  return startPhrase;
 };
 
 export const appendCombatLine = (
@@ -56,7 +58,7 @@ export const appendCombatLine = (
 export const clearCombatLines = (): void => combatText.set([]);
 
 export const hurtEnemy = (damage: number): void => {
-  const baddie: Enemy = get(currentEnemy); 
+  const baddie: Enemy = get(currentEnemy);
   const enemyHealth: Writable<number> = baddie.health;
   let shouldEndCombat: boolean = false;
   enemyHealth.update((currentHealth: number) => {
@@ -70,8 +72,10 @@ export const hurtEnemy = (damage: number): void => {
 };
 
 export const hurtPlayer = (amount: number): void => {
-  const damage: number = amount * (get(defense) / 100);
-  affectPlayerHealth(damage);
+  const baseDamage: number = -amount;
+  const negation: number = get(defense) / 100;
+  console.log(baseDamage, negation);
+  affectPlayerHealth(baseDamage);
 };
 
 export const pauseCombat = (): void => combatPaused.set(true);

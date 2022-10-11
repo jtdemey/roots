@@ -6,5 +6,5 @@ export const GameStateRoutes: string[] = [
   "/game/options",
   "/game/dialogue",
   "/game/cinematic",
-  "/game/death"
+  "/death"
 ];

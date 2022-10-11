@@ -15,6 +15,7 @@
   import CombatSpriteArea from "$lib/components/combat/CombatSpriteArea.svelte";
   import CombatText from "$lib/components/combat/CombatText.svelte";
   import GameClock from "$lib/components/survive/GameClock.svelte";
+  import CombatOverlay from "$lib/components/combat/CombatOverlay.svelte";
 
   let currentLocale: Locale;
   let enemy: Enemy;
@@ -55,15 +56,17 @@
   });
 </script>
 
-<article in:fade={{ duration: 600 }}>
-  <section id="top-bar">
-    <GameClock darken={true} />
-    <h5>{localeDisplay}</h5>
-  </section>
-  <CombatSpriteArea {enemy} {enemyName} />
-  <CombatText />
-  <CombatInput />
-</article>
+<CombatOverlay>
+  <article in:fade={{ duration: 600 }}>
+    <section id="top-bar">
+      <GameClock darken={true} />
+      <h5>{localeDisplay}</h5>
+    </section>
+    <CombatSpriteArea {enemy} {enemyName} />
+    <CombatText />
+    <CombatInput />
+  </article>
+</CombatOverlay>
 
 <style>
   article {

@@ -15,7 +15,7 @@ export const EnemyMoveData: IEnemyMoveData = {
     "Its jaw clamps down on your leg, causing a searing pain.",
     "The [enemy] gnashes its teeth and lunges, narrowly missing.",
     [
-      () => hurtPlayer(between(-12, -6)),
+      () => hurtPlayer(between(6, 12)),
       () => setPlayerAnimation("impact")
     ],
     [],

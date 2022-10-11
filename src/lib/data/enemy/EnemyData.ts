@@ -46,9 +46,9 @@ export const EnemyData: IEnemyData = {
     65,
     [28, 30],
     [
-      `The wolf ducks its body defensively, furling its salivating lips.`,
+      `A startled wolf ducks its body defensively, furling its salivating lips.`,
       `A wolf approaches, snarling.`,
-      `The wolf growls aggressively.`
+      `A wolf appears, growling aggressively.`
     ],
     [
       `The mangled corpse of the wolf draws its last breath.`,

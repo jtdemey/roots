@@ -1,5 +1,4 @@
 <script type="ts">
-  import type { Writable } from "svelte/store";
   import type { Enemy } from "../../../models/Enemy";
   import type { DelayedEffect, Move } from "../../../models/Move";
   import { onMount } from "svelte";
@@ -22,16 +21,21 @@
 
   const attackPlayer = (): void => {
     if (!currentEnemy) return;
+    const enemyName: string = currentEnemy.name;
     const queueEvent = (action: Function, targetTick?: number): void =>
       registerGameEvent(genGameEvent(targetTick || $tick, () => action()));
     const nextMove: Move = getNextMove(currentEnemy);
 
-    const rollToHit: number = Math.random() + 100;
+    const rollToHit: number = Math.random();
     if (rollToHit > nextMove.accuracy + $evasion) {
       const missEffects: Function[] = [
         () => setEnemyAnimation("reverselunge"),
         () => setEnemyCooldown(nextMove.cooldown),
-        () => appendCombatLine(resolvePossibleOptionArray(nextMove.missPhrase))
+        () =>
+          appendCombatLine(
+            resolvePossibleOptionArray(nextMove.missPhrase),
+            enemyName
+          )
       ];
       missEffects.forEach((effect: Function) => queueEvent(effect));
       queueEvent(() => setEnemyCooldown(0), $tick + nextMove.cooldown);
@@ -49,7 +53,11 @@
     const attackEffects: Function[] = [
       () => setEnemyAnimation(nextMove.animation),
       () => setEnemyCooldown(nextMove.cooldown),
-      () => appendCombatLine(resolvePossibleOptionArray(nextMove.hitPhrase))
+      () =>
+        appendCombatLine(
+          resolvePossibleOptionArray(nextMove.hitPhrase),
+          enemyName
+        )
     ];
     attackEffects.forEach((effect: Function) => queueEvent(effect));
     queueEvent(() => setEnemyCooldown(0), $tick + nextMove.cooldown);

@@ -96,7 +96,8 @@ export const startCombat = (currentEnemy: Enemy): void => {
   gameState.set(GameStates.Combat);
   setCurrentEnemy(currentEnemy);
   resumeCombat();
-  appendCombatEnterPhrase(currentEnemy);
+  const enterPhrase: string = appendCombatEnterPhrase(currentEnemy);
+  appendLine(enterPhrase);
   goto("/game/combat/fight");
 };
 
