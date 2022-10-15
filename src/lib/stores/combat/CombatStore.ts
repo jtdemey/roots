@@ -74,7 +74,7 @@ export const hurtEnemy = (damage: number): void => {
 export const hurtPlayer = (amount: number): void => {
   const baseDamage: number = -amount;
   const negation: number = get(defense) / 100;
-  console.log(baseDamage, negation);
+  //console.log(baseDamage, negation);
   affectPlayerHealth(baseDamage);
 };
 

@@ -29,9 +29,11 @@
 
   unsubLocaleName = locale.subscribe((currentLocaleName: string) => {
     currentLocale = getLocale(currentLocaleName);
-    unsubLocaleDisplay = currentLocale.display.subscribe((currentDisplay: string) => {
-      localeDisplay = currentDisplay;
-    });
+    unsubLocaleDisplay = currentLocale.display.subscribe(
+      (currentDisplay: string) => {
+        localeDisplay = currentDisplay;
+      }
+    );
     unsubEnemies = currentLocale.enemies.subscribe(
       (currentEnemies: Enemy[]) => {
         enemy = currentEnemies[0];
@@ -56,8 +58,8 @@
   });
 </script>
 
-<CombatOverlay>
-  <article in:fade={{ duration: 600 }}>
+<article in:fade={{ duration: 600 }}>
+  <CombatOverlay>
     <section id="top-bar">
       <GameClock darken={true} />
       <h5>{localeDisplay}</h5>
@@ -65,16 +67,14 @@
     <CombatSpriteArea {enemy} {enemyName} />
     <CombatText />
     <CombatInput />
-  </article>
-</CombatOverlay>
+  </CombatOverlay>
+</article>
 
 <style>
   article {
     position: fixed;
     top: 0;
     left: 0;
-    display: grid;
-    grid-template-rows: calc(40px + 1rem) 5fr 4fr 2rem;
     width: 100%;
     height: 100%;
     background: hsl(42, 46%, 90%);
@@ -86,7 +86,7 @@
     width: 100%;
     margin-bottom: 1rem;
   }
-  
+
   h5 {
     margin: auto 2rem auto 0;
     color: hsl(42, 35%, 4%);
