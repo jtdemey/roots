@@ -36,10 +36,17 @@ export const parseExamine = (
   if (!allowed) return queuedEvents;
 
   const notedEntities: string[] = [];
-  const target: string = input.length === 1 ? "" : input[1].toLocaleLowerCase();
+  const target: string =
+    input.length === 1
+      ? ""
+      : input
+          .slice(1)
+          .map((word: string) => word.toLocaleLowerCase())
+          .join(" ");
   const currentLocale: Locale = getLocale(get(locale));
   let targetFound: boolean = false;
   let tickIndex: number = currentTick;
+  console.log(target);
 
   //Locale
   if (

@@ -1,5 +1,6 @@
 import {
   affectPlayerEnergy,
+  affectPlayerHealth,
   affectPlayerSanity
 } from "$lib/stores/player/PlayerStore";
 import type { TemperatureEffect } from "../../../models/TemperatureEffect";
@@ -20,7 +21,8 @@ export const TemperatureEffects: any = {
   Dead: genTempEff("You freeze to death.", ""),
   Unconscious: genTempEff(
     "The world grows blurry and dark as you collapse to the ground.",
-    ""
+    "",
+    () => affectPlayerHealth(-999)
   ),
   Frozen: genTempEff(
     "The frost has begun to overtake your flesh.",

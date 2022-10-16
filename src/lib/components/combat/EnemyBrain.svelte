@@ -27,6 +27,7 @@
     const nextMove: Move = getNextMove(currentEnemy);
 
     const rollToHit: number = Math.random();
+    // TODO: refine evasion
     if (rollToHit > nextMove.accuracy + $evasion) {
       const missEffects: Function[] = [
         () => setEnemyAnimation("reverselunge"),
