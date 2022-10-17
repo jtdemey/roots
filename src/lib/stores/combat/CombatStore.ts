@@ -9,7 +9,7 @@ import { getRandomElement } from "$lib/utils/MathUtils";
 import { getEnemyMetadata } from "$lib/utils/selectors/EnemySelectors";
 
 export const attack = writable<number>(80);
-export const defense = writable<number>(50);
+export const defense = writable<number>(20);
 export const evasion = writable<number>(0);
 export const combatPaused = writable<boolean>(false);
 export const combatText = writable<string[]>([]);
@@ -74,7 +74,7 @@ export const hurtEnemy = (damage: number): void => {
 export const hurtPlayer = (amount: number): void => {
   const baseDamage: number = -amount;
   const negation: number = get(defense) / 100;
-  //console.log(baseDamage, negation);
+  console.log(baseDamage, negation);
   affectPlayerHealth(baseDamage);
 };
 

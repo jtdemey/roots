@@ -143,27 +143,30 @@ export const parseExamine = (
       targetFound = true;
     }
   });
-  if (notedEntities.length === 1) {
-    queueEventNow(queuedEvents, tickIndex, () =>
-      appendLine(`You notice ${addAOrAn(notedEntities[0])}.`)
-    );
-    tickIndex += 2;
-  } else if (notedEntities.length > 1) {
-    const joinedEntities: string = notedEntities
-      .map((entity: string, i: number) => {
-        if (i === notedEntities.length) {
-          return `and ${addAOrAn(entity)}`;
-        }
-        return `${addAOrAn(entity)}, `;
-      })
-      .join("");
-    queueEventNow(queuedEvents, tickIndex, () =>
-      appendLine(`You notice ${joinedEntities}.`)
-    );
-    tickIndex += 2;
-  }
-  if (targetFound) {
-    return queuedEvents;
+
+  if (input.length === 1) {
+    if (notedEntities.length === 1) {
+      queueEventNow(queuedEvents, tickIndex, () =>
+        appendLine(`You notice ${addAOrAn(notedEntities[0])}.`)
+      );
+      tickIndex += 2;
+    } else if (notedEntities.length > 1) {
+      const joinedEntities: string = notedEntities
+        .map((entity: string, i: number) => {
+          if (i === notedEntities.length) {
+            return `and ${addAOrAn(entity)}`;
+          }
+          return `${addAOrAn(entity)}, `;
+        })
+        .join("");
+      queueEventNow(queuedEvents, tickIndex, () =>
+        appendLine(`You notice ${joinedEntities}.`)
+      );
+      tickIndex += 2;
+    }
+    if (targetFound) {
+      return queuedEvents;
+    }
   }
 
   //Items
