@@ -1,7 +1,7 @@
 import type { Item } from "../../../models/Item";
 import type { Locale } from "../../../models/Locale";
 import { goto } from "$app/navigation";
-import { derived, get, writable } from "svelte/store";
+import { get, writable } from "svelte/store";
 import {
   appendLine,
   appendRandomLine,
