@@ -28,7 +28,7 @@ export const TemperatureEffects: any = {
     "The frost has begun to overtake your flesh.",
     "You awaken, weak, to unbearable cold."
   ),
-  Sleepy: genTempEff(
+  Failing: genTempEff(
     "Your limbs feel heavy. The world is growing dark.",
     "You feel moisture from the frost thawing off your skin.",
     () => affectPlayerEnergy(-15)

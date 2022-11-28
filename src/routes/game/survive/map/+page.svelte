@@ -1,15 +1,15 @@
 <script type="ts">
   import { onMount } from "svelte";
   import { removeExcessLines } from "$lib/stores/game/GameStore";
-  import MapCanvas from "$lib/components/survive/map/MapCanvas.svelte";
+  import GameMap from "$lib/components/survive/map/GameMap.svelte";
 
   onMount(() => {
     removeExcessLines(100);
   });
 </script>
 
-<section id="game-map">
-  <MapCanvas />
+<section>
+  <GameMap />
 </section>
 
 <style>
