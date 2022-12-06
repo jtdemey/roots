@@ -1,22 +1,37 @@
 import type { MapImage } from "../../../models/ui/MapImage";
+import { LocaleProgressionStatuses } from "./LocaleProgressionStatuses";
 
 interface IMapImages {
   [key: string]: MapImage;
 }
 
-const f = (path: string, x: number, y: number, scale: number): MapImage => ({
+const f = (
+  path: string,
+  x: number,
+  y: number,
+  scale: number = 1,
+  zIndex: number = 0
+): MapImage => ({
   path,
   x,
   y,
   scale,
-  progressionStatus: 0
+  progressionStatus: LocaleProgressionStatuses.unvisited,
+  zIndex
 });
 
 export const MapImages: IMapImages = {
   car: f(
     "M 3.9150701,157.06189 33.773386,220.67415 97.097769,196.42188 168.811,162.89274 206.07187,142.86786 174.28409,76.317861 135.06996,91.142612 64.417162,123.78628 Z",
-    0,
-    0,
-    0
+    70,
+    185,
+    0.45,
+    1
+  ),
+  mailbox: f(
+    "m 78.697045,133.69923 -0.04821,-7.44248 c 0,0 -0.01519,0.16528 1.363872,-0.6566 1.379061,-0.82188 4.852424,0.67585 4.852424,0.67585 l 0.247695,7.43232 c 0,0 -3.1093,0.95189 -4.414422,0.63821 -1.305121,-0.31368 -2.001359,-0.6473 -2.001359,-0.6473 z M 81.880332,69.058801 2.7972484,98.157854 2.7316392,152.37424 c 70.4665118,-30.36982 83.8081158,-30.5937 83.8081158,-30.5937 11.419097,33.31652 4.630025,38.61112 4.630025,38.61112 h -10e-7 l 45.179081,0.69581 c 0,0 6.35851,-5.72721 -3.8308,-45.7497 l 22.10999,-6.89021 c 22.10998,-6.89021 49.16467,-7.35647 49.16467,-7.35647 l 0.5622,-47.401964 c 0,0 -43.16318,-12.693441 -122.474588,15.369675 z",
+    180,
+    260,
+    1.75
   )
 };

@@ -1,5 +1,6 @@
 <script type="ts">
   import { onMount } from "svelte";
+  import { fly } from "svelte/transition";
   import { removeExcessLines } from "$lib/stores/game/GameStore";
   import GameMap from "$lib/components/survive/map/GameMap.svelte";
 
@@ -8,7 +9,12 @@
   });
 </script>
 
-<section>
+<section
+  in:fly={{
+    duration: 160,
+    y: 8
+  }}
+>
   <GameMap />
 </section>
 

@@ -10,7 +10,14 @@
 
 <div>
   {#each mapImgs as mapImg}
-    <GameMapLocale path={mapImg.path} />
+    <GameMapLocale
+      path={mapImg.path}
+      progressionStatus={mapImg.progressionStatus}
+      scale={mapImg.scale}
+      x={mapImg.x}
+      y={mapImg.y}
+      zIndex={mapImg.zIndex}
+    />
   {/each}
 </div>
 
@@ -21,5 +28,6 @@
     left: 0;
     width: 100%;
     height: 100%;
+    overflow: scroll;
   }
 </style>
