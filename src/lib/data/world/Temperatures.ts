@@ -1,9 +1,9 @@
 export const Temperatures: any = {
-	Glacial: -10,
-	Freezing: 12,
-	VeryCold: 18,
-	Cold: 24,
-	Normal: 32,
-	Warm: 45,
-	Hot: 62
+  Glacial: -10,
+  Freezing: 8,
+  VeryCold: 14,
+  Cold: 20,
+  Normal: 32,
+  Warm: 45,
+  Hot: 62
 };

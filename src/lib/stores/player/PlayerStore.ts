@@ -62,7 +62,7 @@ export const affectPlayerTemperature = (
   temperature.update((currentTemp: number) => {
     const currentTempLvl: string = getPlayerTemperatureLevel(currentTemp);
     const newTemperature: number = roundTo(
-      currentTemp - environmentDifference / 240,
+      currentTemp - environmentDifference / 230,
       1
     );
     const nextTempLvl: string = getPlayerTemperatureLevel(newTemperature);

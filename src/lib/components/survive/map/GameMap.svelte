@@ -1,24 +1,48 @@
 <script type="ts">
-  import type { MapImage } from "src/models/ui/MapImage";
-  import { MapImages } from "$lib/data/world/MapImages";
-  import GameMapLocale from "./GameMapLocale.svelte";
+  import { onMount } from "svelte";
 
-  const mapImgs: MapImage[] = Object.keys(MapImages).map(
-    (imgName: string) => MapImages[imgName]
-  );
+  interface IMapLocale {
+    element: Element;
+    name: string;
+  }
+
+  let locales: IMapLocale[] = [];
+  let mapLoaded: boolean = false;
+  let svgContent: string = "";
+
+  const createSvg = (svg: string) => {
+    console.log(svg);
+    const el: Element = document.createElement("svg");
+    el.innerHTML = svg;
+    console.log(el);
+    return el;
+  };
+
+  onMount(() => {
+    if (mapLoaded === true) return;
+    fetch("/map/map.svg")
+      .then((res: Response) => res.text())
+      .then((svg: string) => {
+        svgContent = svg.split("\n").slice(3).join("").replace("\t", " ");
+        const parser: DOMParser = new DOMParser();
+        const paths: HTMLCollection = parser
+          .parseFromString(svg, "text/xml")
+          .getElementsByTagName("path");
+        locales = Array.from(paths).map((path: any) => ({
+          element: path,
+          name: path.nextElementSibling?.getAttribute("inkscape:label")
+        }));
+        console.log(locales);
+        mapLoaded = true;
+      })
+      .catch((e: any) => console.error(e));
+  });
 </script>
 
 <div>
-  {#each mapImgs as mapImg}
-    <GameMapLocale
-      path={mapImg.path}
-      progressionStatus={mapImg.progressionStatus}
-      scale={mapImg.scale}
-      x={mapImg.x}
-      y={mapImg.y}
-      zIndex={mapImg.zIndex}
-    />
-  {/each}
+  {#if mapLoaded === true}
+    {createSvg(svgContent)}
+  {/if}
 </div>
 
 <style>
