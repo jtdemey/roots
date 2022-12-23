@@ -1,36 +1,24 @@
 <script type="ts">
+  import type { MapLocale } from "../../../../models/ui/MapLocale";
   import { onMount } from "svelte";
+  import GameMapSvg from "./GameMapSvg.svelte";
 
-  interface IMapLocale {
-    element: Element;
-    name: string;
-  }
-
-  let locales: IMapLocale[] = [];
+  let locales: MapLocale[] = [];
   let mapLoaded: boolean = false;
-  let svgContent: string = "";
-
-  const createSvg = (svg: string) => {
-    console.log(svg);
-    const el: Element = document.createElement("svg");
-    el.innerHTML = svg;
-    console.log(el);
-    return el;
-  };
 
   onMount(() => {
     if (mapLoaded === true) return;
     fetch("/map/map.svg")
       .then((res: Response) => res.text())
       .then((svg: string) => {
-        svgContent = svg.split("\n").slice(3).join("").replace("\t", " ");
         const parser: DOMParser = new DOMParser();
         const paths: HTMLCollection = parser
           .parseFromString(svg, "text/xml")
           .getElementsByTagName("path");
         locales = Array.from(paths).map((path: any) => ({
           element: path,
-          name: path.nextElementSibling?.getAttribute("inkscape:label")
+          name: path.getAttribute("inkscape:label"),
+          path: path.getAttribute("d")
         }));
         console.log(locales);
         mapLoaded = true;
@@ -40,9 +28,7 @@
 </script>
 
 <div>
-  {#if mapLoaded === true}
-    {createSvg(svgContent)}
-  {/if}
+  <GameMapSvg {locales} />
 </div>
 
 <style>
