@@ -6,6 +6,7 @@ import { DirectionAliases } from "../world/DirectionAliases";
 //Direction shorthands for GO command
 const directionShorthands: string[] = [];
 Object.keys(DirectionAliases).forEach((directionKey: string) => {
+  directionShorthands.push(directionKey.toLocaleLowerCase());
   DirectionAliases[directionKey].forEach((alias: string) =>
     directionShorthands.push(alias)
   );
@@ -52,7 +53,16 @@ export const GameCommands: any = {
   examine: genGameCommand(
     "examine",
     (input: string[], currentTick: number) => parseExamine(input, currentTick),
-    ["gander", "look", "perceive", "peruse", "search", "where", "whereami"]
+    [
+      "gander",
+      "look",
+      "look at",
+      "perceive",
+      "peruse",
+      "search",
+      "where",
+      "whereami"
+    ]
   ),
 
   go: genGameCommand(

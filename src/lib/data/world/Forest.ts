@@ -16,7 +16,7 @@ export const Forest: Locale[] = [
       F.createContainer(
         "Glovebox",
         `It's modest glovebox; it should be unlocked.`,
-        w([F.createLoot(1, "handwarmers", 1), F.createLoot(1, "flashlight", 1)])
+        w([F.createLoot(1, "handwarmers", 4), F.createLoot(1, "flashlight")])
       )
     ]),
     exits: w([
@@ -47,12 +47,12 @@ export const Forest: Locale[] = [
       F.createContainer(
         "Car trunk",
         `It's the trunk to your sedan.`,
-        w([F.createLoot(1, "crowbar", 1)])
+        w([F.createLoot(1, "crowbar")])
       ),
       F.createContainer(
         "Mailbox",
         `There's a simple, dark green mailbox here at the cusp of a driveway.`,
-        w([F.createLoot(1, "welcome_note", 1)])
+        w([F.createLoot(1, "welcome_note")])
       )
     ]),
     exits: w([
@@ -78,7 +78,7 @@ export const Forest: Locale[] = [
         "It's hard to see through your car's tinted windows."
       )
     ]),
-    spawns: w([F.createSpawn("wolf", 1)]),
+    // spawns: w([F.createSpawn("wolf", 1)]),
     temperature: w(Temperatures.Cold)
   }),
 
@@ -111,6 +111,18 @@ export const Forest: Locale[] = [
         12,
         `You saunter up the road toward your car and the obscured driveway.`,
         `The road is long and dark. Snow falls gently between the disarray of branches overhead.`
+      )
+    ]),
+    temperature: w(Temperatures.Cold)
+  }),
+
+  F.createLocale("steep_road", "Steep Road", 22, 0, 16, {
+    exits: w([
+      F.createExit(
+        Directions.East,
+        "mailbox",
+        8,
+        "You trudge down the steep, snowy road, ensuring safe footing as gravity aids you down the slope."
       )
     ]),
     temperature: w(Temperatures.Cold)

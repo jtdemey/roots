@@ -8,16 +8,26 @@ export const parseInput = (raw: string, currentTick: number): GameEvent[] => {
   let queuedEvents: GameEvent[] = [];
   const input: string[] = splitRawInput(raw);
   if (input.length < 1) return queuedEvents;
-  const keyword = input[0];
+
+  const keywords = [input[0]];
+  if (input.length > 1) {
+    keywords.push(input[1]);
+  }
+  console.log(keywords.join(" "));
+
   Object.keys(GameCommands).forEach((commandName: string) => {
     const currentCmd = GameCommands[commandName];
-    if (isAlias(commandName, keyword)) {
+    if (
+      isAlias(commandName, keywords[0]) ||
+      isAlias(commandName, keywords.join(" "))
+    ) {
       queuedEvents = collectEvents(
         queuedEvents,
         currentCmd.action(input, currentTick)
       );
     }
   });
+
   if (queuedEvents.length < 1) {
     queuedEvents.push(
       genGameEvent(currentTick, () => appendLine("I can't understand that."))

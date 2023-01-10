@@ -129,7 +129,7 @@ export const createItemMetadata = (
 export const createLoot = (
   probability: number,
   name: string,
-  amount: number | number[]
+  amount: number | number[] = 1
 ): Loot => ({
   probability,
   name,

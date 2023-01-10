@@ -1,5 +1,6 @@
-import { Temperatures } from "$lib/data/world/Temperatures";
 import { PlayerTemperatures } from "$lib/data/player/PlayerTemperatures";
+import { GameColors } from "$lib/data/ui/GameColors";
+import { Temperatures } from "$lib/data/world/Temperatures";
 
 export const fluxTemperature = (
   currentFlux: number,
@@ -16,6 +17,19 @@ export const fluxTemperature = (
     return currentFlux + fluxAmt;
   }
   return currentFlux;
+};
+
+export const getGameMapFill = (
+  isHazardous: boolean,
+  visits: number
+): string => {
+  if (isHazardous === true) {
+    return GameColors.gameMap.hazardous;
+  }
+  if (visits > 0) {
+    return GameColors.gameMap.inProgress;
+  }
+  return GameColors.gameMap.unvisited;
 };
 
 export const getTemperatureLevel = (fahrenheit: number): string => {
