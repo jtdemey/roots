@@ -22,6 +22,98 @@ const LocaleAliases: string[] = [
   "zone"
 ];
 
+const examineExit = (
+  queuedEvents: GameEvent[],
+  tickIndex: number,
+  currentLocale: Locale,
+  parsedDirection: string
+): number => {
+  const localeExits: Exit[] = get(currentLocale.exits);
+  let exitDescFound: boolean = false;
+
+  localeExits.forEach((exit: Exit) => {
+    if (
+      exit.direction.toLocaleLowerCase() === parsedDirection &&
+      exit.description !== ""
+    ) {
+      queueEventNow(queuedEvents, tickIndex, () =>
+        appendLine(exit.description)
+      );
+      tickIndex += 2;
+      exitDescFound = true;
+      return;
+    }
+  });
+
+  if (exitDescFound === false) {
+    const dir = parsedDirection.toLocaleLowerCase();
+    let suffix: string = `to the ${dir}`;
+    if (dir === "up") {
+      suffix = "above you";
+    }
+    if (dir === "down") {
+      suffix = "below you";
+    }
+    if (dir === "inside") {
+      suffix = "inside";
+    }
+    queueEventNow(queuedEvents, tickIndex, () =>
+      appendRandomLine([
+        `There's nothing notable ${suffix}.`,
+        `There's nothing remarkable ${suffix}.`,
+        `There is no passage ${suffix}.`
+      ])
+    );
+    tickIndex += 2;
+  }
+
+  return tickIndex;
+};
+
+const examineLocale = (
+  queuedEvents: GameEvent[],
+  tickIndex: number,
+  currentLocale: Locale
+): number => {
+  const notedExits: string[] = [];
+  const phrase: string = get(currentLocale.examinePhrase);
+  if (phrase) {
+    queueEventNow(queuedEvents, tickIndex, () => appendLine(phrase));
+    tickIndex += 2;
+  }
+
+  const localeExits: Exit[] = get(currentLocale.exits);
+  localeExits.forEach((exit: Exit) => {
+    if (exit.visibilityThreshold >= get(currentLocale.visibility)) {
+      notedExits.push(exit.direction);
+    }
+  });
+
+  if (notedExits.length === 0) {
+    queueEventNow(queuedEvents, tickIndex, () =>
+      appendLine("It's too dark to discern any exits.")
+    );
+    tickIndex += 2;
+  } else if (notedExits.length === 1) {
+    queueEventNow(queuedEvents, tickIndex, () =>
+      appendLine(`There's an exit to the ${notedExits[0]}.`)
+    );
+    tickIndex += 2;
+  } else if (notedExits.length > 1) {
+    const joinedExits: string = toColloquialList(notedExits);
+    queueEventNow(queuedEvents, tickIndex, () =>
+      appendRandomLine([
+        `There are exits to the ${joinedExits}.`,
+        `You can discern exits to the ${joinedExits}.`,
+        `You see exits to the ${joinedExits}.`,
+        `There is passage to the ${joinedExits}.`
+      ])
+    );
+    tickIndex += 2;
+  }
+  return tickIndex;
+};
+
 export const parseExamine = (
   input: string[],
   currentTick: number
@@ -53,82 +145,19 @@ export const parseExamine = (
     input.length === 1 ||
     LocaleAliases.some((alias: string) => alias === target)
   ) {
-    const notedExits: string[] = [];
-    const phrase: string = get(currentLocale.examinePhrase);
-    if (phrase) {
-      queueEventNow(queuedEvents, tickIndex, () => appendLine(phrase));
-      tickIndex += 2;
-    }
-    const localeExits: Exit[] = get(currentLocale.exits);
-    localeExits.forEach((exit: Exit) => {
-      if (exit.visibilityThreshold >= get(currentLocale.visibility)) {
-        notedExits.push(exit.direction);
-      }
-    });
-    if (notedExits.length === 0) {
-      queueEventNow(queuedEvents, tickIndex, () =>
-        appendLine("It's too dark to discern any exits.")
-      );
-      tickIndex += 2;
-    } else if (notedExits.length === 1) {
-      queueEventNow(queuedEvents, tickIndex, () =>
-        appendLine(`There's an exit to the ${notedExits[0]}.`)
-      );
-      tickIndex += 2;
-    } else if (notedExits.length > 1) {
-      const joinedExits: string = toColloquialList(notedExits);
-      queueEventNow(queuedEvents, tickIndex, () =>
-        appendRandomLine([
-          `There are exits to the ${joinedExits}.`,
-          `You can discern exits to the ${joinedExits}.`,
-          `You see exits to the ${joinedExits}.`,
-          `There is passage to the ${joinedExits}.`
-        ])
-      );
-      tickIndex += 2;
-    }
+    tickIndex = examineLocale(queuedEvents, tickIndex, currentLocale);
   }
 
   //Exits
   const parsedDirection: string = parseDirection(target);
   if (parsedDirection !== "") {
-    const localeExits: Exit[] = get(currentLocale.exits);
+    tickIndex = examineExit(
+      queuedEvents,
+      tickIndex,
+      currentLocale,
+      parsedDirection
+    );
     targetFound = true;
-    let exitDescFound: boolean = false;
-    localeExits.forEach((exit: Exit) => {
-      if (
-        exit.direction.toLocaleLowerCase() === parsedDirection &&
-        exit.description !== ""
-      ) {
-        queueEventNow(queuedEvents, tickIndex, () =>
-          appendLine(exit.description)
-        );
-        tickIndex += 2;
-        exitDescFound = true;
-        return;
-      }
-    });
-    if (exitDescFound === false) {
-      const dir = parsedDirection.toLocaleLowerCase();
-      let suffix: string = `to the ${dir}`;
-      if (dir === "up") {
-        suffix = "above you";
-      }
-      if (dir === "down") {
-        suffix = "below you";
-      }
-      if (dir === "inside") {
-        suffix = "inside";
-      }
-      queueEventNow(queuedEvents, tickIndex, () =>
-        appendRandomLine([
-          `There's nothing notable ${suffix}.`,
-          `There's nothing remarkable ${suffix}.`,
-          `There is no passage ${suffix}.`
-        ])
-      );
-      tickIndex += 2;
-    }
   }
 
   //Features

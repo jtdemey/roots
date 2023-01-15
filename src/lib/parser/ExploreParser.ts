@@ -13,14 +13,21 @@ export const parseInput = (raw: string, currentTick: number): GameEvent[] => {
   if (input.length > 1) {
     keywords.push(input[1]);
   }
-  console.log(keywords.join(" "));
 
   Object.keys(GameCommands).forEach((commandName: string) => {
     const currentCmd = GameCommands[commandName];
-    if (
-      isAlias(commandName, keywords[0]) ||
-      isAlias(commandName, keywords.join(" "))
-    ) {
+
+    // Two word keywords eg. "look at"
+    if (isAlias(commandName, keywords.join(" "))) {
+      const arrangedInput: string[] = [
+        `${input[0]} ${input[1]}`,
+        ...input.slice(2, input.length)
+      ];
+      queuedEvents = collectEvents(
+        queuedEvents,
+        currentCmd.action(arrangedInput, currentTick)
+      );
+    } else if (isAlias(commandName, keywords[0])) {
       queuedEvents = collectEvents(
         queuedEvents,
         currentCmd.action(input, currentTick)

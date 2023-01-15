@@ -1,3 +1,4 @@
+import type { Exit } from "../../../models/Exit";
 import { PlayerTemperatures } from "$lib/data/player/PlayerTemperatures";
 import { GameColors } from "$lib/data/ui/GameColors";
 import { Temperatures } from "$lib/data/world/Temperatures";
@@ -32,6 +33,16 @@ export const getGameMapFill = (
   return GameColors.gameMap.unvisited;
 };
 
+export const getPlayerTemperatureLevel = (fahrenheit: number): string => {
+  let tempLvl: string = "Dead";
+  Object.keys(PlayerTemperatures).forEach((temperatureLvl: string) => {
+    if (fahrenheit >= PlayerTemperatures[temperatureLvl]) {
+      tempLvl = temperatureLvl;
+    }
+  });
+  return tempLvl;
+};
+
 export const getTemperatureLevel = (fahrenheit: number): string => {
   let tempLvl: string = "Glacial";
   Object.keys(Temperatures).forEach((temperatureLvl: string) => {
@@ -42,15 +53,8 @@ export const getTemperatureLevel = (fahrenheit: number): string => {
   return tempLvl;
 };
 
-export const getPlayerTemperatureLevel = (fahrenheit: number): string => {
-  let tempLvl: string = "Dead";
-  Object.keys(PlayerTemperatures).forEach((temperatureLvl: string) => {
-    if (fahrenheit >= PlayerTemperatures[temperatureLvl]) {
-      tempLvl = temperatureLvl;
-    }
-  });
-  return tempLvl;
-};
+export const getVisibleExits = (exits: Exit[], visibility: number): Exit[] =>
+  exits.filter((exit: Exit) => exit.visibilityThreshold >= visibility);
 
 export const toFahrenheit = (celsius: number): number => celsius * 1.8 + 32;
 
