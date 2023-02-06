@@ -14,7 +14,6 @@ import {
   playerFlags,
   runWhileExitingLocale
 } from "$lib/stores/player/PlayerStore";
-import { Directions } from "$lib/data/world/Directions";
 import { DirectionAliases } from "$lib/data/world/DirectionAliases";
 import { PlayerFlags } from "$lib/data/player/PlayerFlags";
 import {
@@ -25,7 +24,7 @@ import {
 import { getLocale } from "$lib/utils/selectors/WorldSelectors";
 import { getVisibleExits } from "$lib/utils/world/WorldUtils";
 
-const RunningAliases: string[] = [
+export const RunningAliases: string[] = [
   "dart",
   "gallop",
   "race",
@@ -42,7 +41,6 @@ const exitLocale = (
   currentLocale: Locale,
   currentTick: number,
   isRunning: boolean,
-  input: string[],
   directionInput: string = targetExit.direction
 ) => {
   playerFlags.update((currentFlags: PlayerFlags[]) =>
@@ -61,7 +59,6 @@ const exitLocale = (
     );
   }
 
-  isRunning = isRunAlias(input[0]);
   const exitDuration: number = isRunning
     ? currentTick + targetExit.duration / 2
     : currentTick + targetExit.duration;
@@ -131,7 +128,7 @@ const handleRunningWhileExiting = (
   return isRunning;
 };
 
-const isRunAlias = (str: string): boolean =>
+export const isRunAlias = (str: string): boolean =>
   RunningAliases.some((alias: string) => alias === str.toLocaleLowerCase());
 
 export const parseDirection = (dirInput: string): string => {
@@ -190,8 +187,7 @@ export const parseGo = (input: string[], currentTick: number): GameEvent[] => {
       queuedEvents,
       currentLocale,
       currentTick,
-      isRunning,
-      input
+      isRunning
     );
     return queuedEvents;
   }
@@ -229,7 +225,6 @@ export const parseGo = (input: string[], currentTick: number): GameEvent[] => {
     currentLocale,
     currentTick,
     isRunning,
-    input,
     directionInput
   );
   return queuedEvents;

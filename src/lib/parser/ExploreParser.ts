@@ -16,18 +16,24 @@ export const parseInput = (raw: string, currentTick: number): GameEvent[] => {
 
   Object.keys(GameCommands).forEach((commandName: string) => {
     const currentCmd = GameCommands[commandName];
+    let cmdFound: boolean = false;
 
     // Two word keywords eg. "look at"
-    if (isAlias(commandName, keywords.join(" "))) {
-      const arrangedInput: string[] = [
-        `${input[0]} ${input[1]}`,
-        ...input.slice(2, input.length)
-      ];
-      queuedEvents = collectEvents(
-        queuedEvents,
-        currentCmd.action(arrangedInput, currentTick)
-      );
-    } else if (isAlias(commandName, keywords[0])) {
+    if (keywords.length > 1) {
+      const joinedKeywords = keywords.join(" ");
+      if (isAlias(commandName, joinedKeywords)) {
+        const arrangedInput: string[] = [
+          `${input[0]} ${input[1]}`,
+          ...input.slice(2, input.length)
+        ];
+        queuedEvents = collectEvents(
+          queuedEvents,
+          currentCmd.action(arrangedInput, currentTick)
+        );
+        cmdFound = true;
+      }
+    }
+    if (!cmdFound && isAlias(commandName, keywords[0])) {
       queuedEvents = collectEvents(
         queuedEvents,
         currentCmd.action(input, currentTick)

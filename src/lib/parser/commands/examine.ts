@@ -138,7 +138,6 @@ export const parseExamine = (
   const currentLocale: Locale = getLocale(get(locale));
   let targetFound: boolean = false;
   let tickIndex: number = currentTick;
-  console.log(target);
 
   //Locale
   if (

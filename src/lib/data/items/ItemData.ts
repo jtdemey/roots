@@ -28,6 +28,12 @@ export const ItemData: IItemData = {
     "This is a metal tool that can be used for many purposes, some more blunt than others."
   ),
 
+  notebook: createItemMetadata(
+    "Notebook",
+    [ItemFlags.Equipable],
+    "It's a small hardcover journal with a fraying spine."
+  ),
+
   //Writing
   welcome_note: createItemMetadata(
     "Note",
