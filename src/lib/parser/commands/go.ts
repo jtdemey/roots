@@ -23,6 +23,7 @@ import {
 } from "$lib/utils/GameEventUtils";
 import { getLocale } from "$lib/utils/selectors/WorldSelectors";
 import { getVisibleExits } from "$lib/utils/world/WorldUtils";
+import { GameColors } from "$lib/data/ui/GameColors";
 
 export const RunningAliases: string[] = [
   "dart",
@@ -179,18 +180,7 @@ export const parseGo = (input: string[], currentTick: number): GameEvent[] => {
   const currentLocale: Locale = getLocale(localeName);
   const localeExits: Exit[] = get(currentLocale.exits);
   const localeVisibility: number = get(currentLocale.visibility);
-
   const visibleExits: Exit[] = getVisibleExits(localeExits, localeVisibility);
-  if (visibleExits.length === 1) {
-    exitLocale(
-      visibleExits[0],
-      queuedEvents,
-      currentLocale,
-      currentTick,
-      isRunning
-    );
-    return queuedEvents;
-  }
 
   if (directionInput === "") {
     queueEventNow(queuedEvents, currentTick, () =>
@@ -204,7 +194,7 @@ export const parseGo = (input: string[], currentTick: number): GameEvent[] => {
     return queuedEvents;
   }
 
-  const intendedExits: Exit[] = localeExits.filter(
+  const intendedExits: Exit[] = visibleExits.filter(
     (exit: Exit) => exit.direction === directionInput
   );
   if (intendedExits.length < 1) {
@@ -212,9 +202,9 @@ export const parseGo = (input: string[], currentTick: number): GameEvent[] => {
       appendRandomLine([
         `You can't go that way.`,
         `There's no exit in that direction.`,
-        `There's no exit to the ${directionInput.toLocaleLowerCase()}.`,
-        `There is no passage to the ${directionInput.toLocaleLowerCase()}.`
-      ])
+        `There's no exit ${directionInput.toLocaleLowerCase()}.`,
+        `There is no passage ${directionInput.toLocaleLowerCase()}.`
+      ], GameColors.console.system)
     );
     return queuedEvents;
   }

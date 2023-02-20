@@ -55,8 +55,10 @@ export const GameCommands: any = {
     (input: string[], currentTick: number) => parseExamine(input, currentTick),
     [
       "gander",
-      "look at",
       "look",
+      "look about",
+      "look around",
+      "look at",
       "perceive",
       "peruse",
       "search",

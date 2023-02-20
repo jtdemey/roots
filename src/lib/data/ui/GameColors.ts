@@ -3,6 +3,28 @@ export const GameColors: any = {
     cooldown: "hsl(210, 30%, 25%)",
     health: "hsl(0, 58%, 25%)"
   },
+  console: {
+    fear: {
+      color: "hsl(350, 60%, 50%)",
+      prefix: "%f"
+    },
+    standard: {
+      color: "hsl(0, 0%, 96%)",
+      prefix: null
+    },
+    system: {
+      color: "hsl(45, 100%, 80%)",
+      prefix: "%s" 
+    },
+    thought: {
+      color: "hsl(128, 26%, 52%)",
+      prefix: "%th"
+    },
+    tutorial: {
+      color: "hsl(192, 80%, 76%)",
+      prefix: "%tu"
+    }
+  },
   gameMap: {
     unvisited: "hsl(220, 15%, 43%)",
     inProgress: "hsl(37, 98%, 45%)",

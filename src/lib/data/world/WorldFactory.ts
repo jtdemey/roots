@@ -115,13 +115,15 @@ export const createItemMetadata = (
   display: string,
   baseFlags: ItemFlags[],
   description: string,
+  interactions: { [key: string]: Function } = {},
   overrides: any = {}
 ): ItemMetadata =>
   Object.assign(
     {
       baseFlags,
       display,
-      description
+      description,
+      interactions
     },
     overrides
   );

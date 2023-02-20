@@ -11,7 +11,7 @@ export const isAlias = (commandName: string, comparator: string): boolean =>
   (GameCommands[commandName] !== undefined &&
     GameCommands[commandName].aliases.indexOf(comparator) > -1);
 
-export const removeWords = (input: string, words: string[]) => input.filter((word: string) => words.indexOf(word) < 0);
+export const removeWords = (input: string[], words: string[]) => input.filter((word: string) => words.indexOf(word) < 0);
 
 export const splitRawInput = (raw: string): string[] =>
   raw

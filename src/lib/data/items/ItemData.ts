@@ -37,7 +37,10 @@ export const ItemData: IItemData = {
   //Writing
   welcome_note: createItemMetadata(
     "Note",
-    [],
-    "It seems to be a dingy, water-damaged slip of paper with a note scribbled upon it."
+    [ItemFlags.Usable],
+    "It seems to be a dingy, water-damaged slip of paper with a note scribbled upon it.",
+    {
+      onUse: () => {}
+    }
   )
 };

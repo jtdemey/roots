@@ -4,4 +4,5 @@ export interface ItemMetadata {
   baseFlags: ItemFlags[];
   display: string;
   description: string;
+  interactions?: { [key: string]: Function };
 }

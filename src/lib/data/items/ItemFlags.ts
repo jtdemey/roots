@@ -4,5 +4,6 @@ export enum ItemFlags {
   Equipable,
   Flammable,
   Stackable,
-  Throwable
+  Throwable,
+  Usable
 }

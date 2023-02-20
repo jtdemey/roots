@@ -4,6 +4,7 @@ import type { GameEvent } from "../../../models/GameEvent";
 import { get, writable } from "svelte/store";
 import { goto } from "$app/navigation";
 import { GameStates } from "$lib/data/game/GameStates";
+import { GameColors } from "$lib/data/ui/GameColors";
 import { Temperatures } from "$lib/data/world/Temperatures";
 import {
   appendCombatEnterPhrase,
@@ -33,12 +34,17 @@ export const paused = writable<boolean>(true);
 export const temperatureFlux = writable<number>(0);
 export const tick = writable<number>(0);
 
-export const appendLine = (text: string): void =>
-  consoleText.update((lines: string[]) => lines.concat([text]));
+export const appendLine = (
+  text: string,
+  lineColor: { color: string; prefix: string } = GameColors.console.standard
+): void =>
+  consoleText.update((lines: string[]) =>
+    lines.concat([lineColor.prefix ? `${lineColor.prefix}${text}` : text])
+  );
 
-export const appendRandomLine = (texts: string[]): void => {
+export const appendRandomLine = (texts: string[], lineColor: { color: string; prefix: string } = GameColors.console.standard): void => {
   const selectedTextIndex = Math.floor(Math.random() * texts.length);
-  appendLine(texts[selectedTextIndex] || "");
+  appendLine(texts[selectedTextIndex] || "", lineColor);
 };
 
 export const endCombat = (enemy: Enemy): void => {
@@ -77,7 +83,7 @@ export const executeGameEvents = (
     }
   });
   const activatedEvents = currentEvents.filter(
-    (gameEvent: GameEvent, i: number) => executedIndices.indexOf(i) < 0
+    (_: GameEvent, i: number) => executedIndices.indexOf(i) < 0
   );
   gameEvents.set(activatedEvents);
 };
