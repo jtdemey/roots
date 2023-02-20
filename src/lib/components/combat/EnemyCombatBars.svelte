@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import type { Enemy } from "../../../models/Enemy";
   import { onMount, onDestroy } from "svelte";
   import { linear } from "svelte/easing";

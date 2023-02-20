@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
 	export let abbreviation: string = "";
 	export let maximumValue: number = 100;
   export let statuses: any = {};

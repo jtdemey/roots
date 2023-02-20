@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import { onDestroy, onMount } from "svelte";
   import { quartOut } from "svelte/easing";
   import { tweened } from "svelte/motion";

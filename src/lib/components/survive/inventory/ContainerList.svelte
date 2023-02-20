@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import type { Writable } from "svelte/store";
   import type { Container } from "../../../../models/Container";
   import { onDestroy } from "svelte";

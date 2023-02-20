@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
 	import { onMount } from "svelte";
   import { fly } from "svelte/transition";
 	import { parseCombat } from "$lib/parser/CombatParser";

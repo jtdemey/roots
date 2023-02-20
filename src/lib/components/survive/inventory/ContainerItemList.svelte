@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import type { Item } from "../../../../models/Item";
   import type { Locale } from "../../../../models/Locale";
   import { onDestroy } from "svelte";

@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import type { ItemBtn } from "../../../../models/ui/ItemBtn";
   import { fade } from "svelte/transition";
 

@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
 	export let alt: string;
 	export let iconSrc: any;
 	export let width: number = 32;

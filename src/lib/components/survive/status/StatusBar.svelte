@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
 	import GameClock from "../GameClock.svelte";
 	import TemperatureStatus from "./TemperatureStatus.svelte";
 </script>

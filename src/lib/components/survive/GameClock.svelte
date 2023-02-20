@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import { fly } from "svelte/transition";
 	import { formatTime, getTimeFromTick } from "$lib/utils/DateUtils";
 	import { tick } from "$lib/stores/game/GameStore";

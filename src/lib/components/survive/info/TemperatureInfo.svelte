@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import { PlayerTemperatures } from "$lib/data/player/PlayerTemperatures";
   import { temperature } from "$lib/stores/player/PlayerStore";
 

@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import { onMount } from "svelte";
   import { GameStates } from "$lib/data/game/GameStates";
   import { GameStateRoutes } from "$lib/data/game/GameStateRoutes";

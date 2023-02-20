@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import type {
     CombatKeyframe,
     CombatAnimation

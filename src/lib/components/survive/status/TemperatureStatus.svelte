@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import { fly } from "svelte/transition";
   import { environmentTemperature } from "$lib/stores/game/GameStore";
   import { usingFahrenheit } from "$lib/stores/settings/SettingsStore";

@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import { onMount, onDestroy } from "svelte";
   import { linear } from "svelte/easing";
   import { tweened, type Tweened } from "svelte/motion";

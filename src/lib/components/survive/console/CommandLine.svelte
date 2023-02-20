@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
 	import { onMount } from "svelte";
 	import { parseInput } from "$lib/parser/ExploreParser";
 	import { registerGameEvents, tick } from "$lib/stores/game/GameStore";

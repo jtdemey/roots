@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import type { Locale } from "../../../../models/Locale";
   import type { MapLocale } from "../../../../models/ui/MapLocale";
   import { onDestroy, onMount } from "svelte";

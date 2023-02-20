@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import NavBtn from "./NavBtn.svelte";
   import ConsoleImg from "$lib/assets/nav/console.svg";
   import InventoryImg from "$lib/assets/nav/inventory.svg";

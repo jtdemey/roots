@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import type { MapLocale } from "../../../../models/ui/MapLocale";
   import GameMapPath from "./GameMapPath.svelte";
 

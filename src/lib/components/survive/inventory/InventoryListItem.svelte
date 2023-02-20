@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import { tweened } from "svelte/motion";
   import { fly } from "svelte/transition";
   import { GameColors } from "$lib/data/ui/GameColors";

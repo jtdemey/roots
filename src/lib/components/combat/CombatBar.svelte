@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import { tweened, type Tweened } from "svelte/motion";
   import { cubicOut, linear } from "svelte/easing";
   import { GameColors } from "$lib/data/ui/GameColors";

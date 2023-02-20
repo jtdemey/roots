@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import { fly } from "svelte/transition";
 
 	export let alt: string = "A navigation button";

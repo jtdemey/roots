@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import type { Enemy } from "../../../models/Enemy";
   import type { DelayedEffect, Move } from "../../../models/Move";
   import { onMount } from "svelte";
