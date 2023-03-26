@@ -8,6 +8,7 @@ import { items } from "$lib/stores/player/PlayerStore";
 import { disableForFlags, queueEventNow } from "$lib/utils/GameEventUtils";
 import { removeWords } from "$lib/utils/ParserUtils";
 import { appendRandomLine } from "$lib/stores/game/GameStore";
+import { GameColors } from "$lib/data/ui/GameColors";
 
 /**
  * Syntaxes
@@ -18,13 +19,18 @@ import { appendRandomLine } from "$lib/stores/game/GameStore";
  */
 
 const useItem = (item: Item): void => {
-  const hasFlag = (flag: ItemFlags): boolean => item.flags.some((f: ItemFlags) => f === flag);
+  const hasFlag = (flag: ItemFlags): boolean =>
+    item.flags.some((f: ItemFlags) => f === flag);
   // TODO
-  if (item.flags.some((flag: ItemFlags) => flag === ItemFlags.Equipable)) {
+  if (hasFlag(ItemFlags.Usable)) {
     // Equip item
     return;
   }
-  if (item.flags.some((flag: ItemFlags) => flag === ItemFlags.Consumable)) {
+  if (hasFlag(ItemFlags.Equipable)) {
+    // Equip item
+    return;
+  }
+  if (hasFlag(ItemFlags.Consumable)) {
     // Consume item
     return;
   }
@@ -33,35 +39,37 @@ const useItem = (item: Item): void => {
 export const parseUse = (input: string[], currentTick: number): GameEvent[] => {
   const queuedEvents: GameEvent[] = [];
 
-  const allowed: boolean = disableForFlags(
-    [PlayerFlags.Exiting, PlayerFlags.Running],
-    queuedEvents,
-    currentTick
-  );
-  if (!allowed) return queuedEvents;
-
   if (input.length === 1) {
     queueEventNow(
       queuedEvents,
       currentTick,
       () =>
-        appendRandomLine([
-          "What would you like to use?",
-          "Use what?",
-          "Specify what you would like to use."
-        ]),
-      [GameEventFlags.Exit]);
+        appendRandomLine(
+          [
+            "What would you like to use?",
+            "Use what?",
+            "Specify what you would like to use."
+          ],
+          GameColors.console.system
+        ),
+      [GameEventFlags.Exit]
+    );
   }
 
   const purgedInput: string[] = removeWords(input, ["on", "to"]);
   const target: string = purgedInput[1];
 
-  //Inventory
+  // Inventory
   const inventory: Item[] = get(items);
-  const inventoryMatch: Item = inventory.find((item: Item) => item.name === target);
+  const inventoryMatch: Item | undefined = inventory.find(
+    (item: Item) => item.name === target
+  );
   if (inventoryMatch !== undefined) {
-    
+    useItem(inventoryMatch);
+    return queuedEvents;
   }
+
+  // Locale
 
   return queuedEvents;
 };

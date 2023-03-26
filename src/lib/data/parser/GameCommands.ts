@@ -2,6 +2,8 @@ import type { GameCommand } from "../../../models/GameCommand";
 import { parseExamine } from "$lib/parser/commands/examine";
 import { parseGo } from "$lib/parser/commands/go";
 import { DirectionAliases } from "../world/DirectionAliases";
+import { PlayerFlags } from "../player/PlayerFlags";
+import { parseUse } from "$lib/parser/commands/use";
 
 //Direction shorthands for GO command
 const directionShorthands: string[] = [];
@@ -16,12 +18,14 @@ export const genGameCommand = (
   name: string,
   action: Function,
   aliases: string[],
-  cancels: any[] = []
+  cancels: any[] = [],
+  disabledForFlags: PlayerFlags[] = []
 ): GameCommand => ({
   name,
   action,
   aliases,
-  cancels
+  cancels,
+  disabledForFlags
 });
 
 export const GameCommands: any = {
@@ -93,7 +97,9 @@ export const GameCommands: any = {
       "travel",
       "trot",
       "walk"
-    ].concat(directionShorthands)
+    ].concat(directionShorthands),
+    [],
+    [PlayerFlags.Exiting]
   ),
 
   throw: genGameCommand(
@@ -117,5 +123,13 @@ export const GameCommands: any = {
       "volley",
       "yeet"
     ]
+  ),
+
+  use: genGameCommand(
+    "use",
+    (input: string[], currentTick: number) => parseUse(input, currentTick),
+    ["interact with"],
+    [],
+    [PlayerFlags.Exiting, PlayerFlags.Running]
   )
 };

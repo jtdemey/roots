@@ -1,10 +1,8 @@
 {
-	"arrowParens": "avoid",
-	"singleQuote": false,
+  "arrowParens": "avoid",
+  "singleQuote": false,
   "tabWidth": 2,
-	"trailingComma": "none",
+  "trailingComma": "none",
   "useTabs": false,
-  "plugins": [
-    "prettier-plugin-svelte"
-  ]
+  "plugins": ["prettier-plugin-svelte"]
 }

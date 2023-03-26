@@ -6,7 +6,7 @@
 
   export let animationStagger: number = 0;
   export let color: string = GameColors.grayscales.green[1];
-	export let clickFunc: Function = () => false;
+  export let clickFunc: Function = () => false;
   export let text: string = "...";
   export let iconAlt: string = "An image";
   export let iconSrc: any = undefined;
@@ -17,15 +17,16 @@
   const lightColor: string = color;
 
   const btnScale = tweened(1, {
-    duration: 10 
+    duration: 10
   });
 
   const handleClick = () => {
-    btnScale.set(0.95)
-			.then(() => btnScale.set(1, {
-				duration: 100 
-			}));
-		clickFunc();
+    btnScale.set(0.95).then(() =>
+      btnScale.set(1, {
+        duration: 100
+      })
+    );
+    clickFunc();
   };
 </script>
 
@@ -36,7 +37,7 @@
     duration: 190,
     x: 8
   }}
-	on:click={handleClick}
+  on:click={handleClick}
   style="background: linear-gradient(145deg, {lightColor}, {darkColor}); transform: scale({$btnScale});"
 >
   {text}

@@ -156,13 +156,6 @@ export const parseDirection = (dirInput: string): string => {
 export const parseGo = (input: string[], currentTick: number): GameEvent[] => {
   const queuedEvents: GameEvent[] = [];
 
-  const allowed = disableForFlags(
-    [PlayerFlags.Running],
-    queuedEvents,
-    currentTick
-  );
-  if (!allowed) return queuedEvents;
-
   const currentPlayerFlags: PlayerFlags[] = get(playerFlags);
   let isRunning: boolean = isRunAlias(input[0]);
 

@@ -14,7 +14,7 @@
   import { getContainers } from "$lib/utils/selectors/WorldSelectors";
   import { sortObjectsByPropName } from "$lib/utils/SortUtils";
 
-	export let getItemBtns: Function = () => [];
+  export let getItemBtns: Function = () => [];
   export let localeName: string = "car";
   export let selectedItemId: string = "";
   export let setSelectedItemId: Function = () => false;
@@ -27,9 +27,10 @@
     containersStore = getContainers(localeName);
     unsubContainers = containersStore.subscribe((c: Container[]) => {
       const newContainers = sortObjectsByPropName(c, "name");
-      containers = c.sort(
-        (containerA: Container, containerB: Container) => containerB.name[0] - containerA.name[0]
-      )
+      containers = newContainers.sort(
+        (containerA: Container, containerB: Container) =>
+          containerB.name[0] - containerA.name[0]
+      );
     });
   }
 
@@ -77,7 +78,7 @@
     {#if isOpen(container)}
       <ContainerItemList
         containerId={container.entityId}
-				{getItemBtns}
+        {getItemBtns}
         {localeName}
         {selectedItemId}
         {setSelectedItemId}
