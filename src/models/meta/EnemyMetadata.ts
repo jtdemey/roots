@@ -7,7 +7,7 @@ export interface EnemyMetadata {
   baseSpeed: number;
   combatEnterPhrase: string | string[];
   deathPhrase: string | string[];
-	display: string;
+  display: string;
   maxHealth: number | number[];
   moves: Move[];
 }

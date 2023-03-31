@@ -14,7 +14,7 @@ export const GameColors: any = {
     },
     system: {
       color: "hsl(45, 100%, 80%)",
-      prefix: "%s" 
+      prefix: "%s"
     },
     thought: {
       color: "hsl(128, 26%, 52%)",

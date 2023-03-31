@@ -12,7 +12,7 @@ export interface Locale {
   name: string;
   comments: Writable<Comment[]>;
   containers: Writable<Container[]>;
-	display: Writable<string>;
+  display: Writable<string>;
   enemies: Writable<Enemy[]>;
   enterPhrase: Writable<string>;
   examinePhrase: Writable<string>;
@@ -20,10 +20,10 @@ export interface Locale {
   exits: Writable<Exit[]>;
   features: Writable<Feature[]>;
   items: Writable<Item[]>;
-	loot: Writable<Loot[]>;
-	region: Writable<string>;
-	spawns: Writable<Spawn[]>;
-	visits: Writable<number>;
-	temperature: Writable<number>;
-	visibility: Writable<number>;
+  loot: Writable<Loot[]>;
+  region: Writable<string>;
+  spawns: Writable<Spawn[]>;
+  visits: Writable<number>;
+  temperature: Writable<number>;
+  visibility: Writable<number>;
 }

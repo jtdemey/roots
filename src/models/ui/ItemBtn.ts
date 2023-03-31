@@ -1,5 +1,5 @@
 export interface ItemBtn {
-	color?: string;
-	text: string;
-	action: Function;
+  color?: string;
+  text: string;
+  action: Function;
 }

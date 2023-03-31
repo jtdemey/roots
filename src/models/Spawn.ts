@@ -1,4 +1,4 @@
 export interface Spawn {
-	name: string;
-	probability: number;
+  name: string;
+  probability: number;
 }

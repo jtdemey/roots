@@ -158,6 +158,9 @@ export const parseGo = (input: string[], currentTick: number): GameEvent[] => {
 
   const currentPlayerFlags: PlayerFlags[] = get(playerFlags);
   let isRunning: boolean = isRunAlias(input[0]);
+  if (!isRunning && !disableForFlags(currentPlayerFlags, queuedEvents, currentTick)) {
+    return queuedEvents;
+  }
 
   if (
     isRunning &&
@@ -192,12 +195,15 @@ export const parseGo = (input: string[], currentTick: number): GameEvent[] => {
   );
   if (intendedExits.length < 1) {
     queueEventNow(queuedEvents, currentTick, () =>
-      appendRandomLine([
-        `You can't go that way.`,
-        `There's no exit in that direction.`,
-        `There's no exit ${directionInput.toLocaleLowerCase()}.`,
-        `There is no passage ${directionInput.toLocaleLowerCase()}.`
-      ], GameColors.console.system)
+      appendRandomLine(
+        [
+          `You can't go that way.`,
+          `There's no exit in that direction.`,
+          `There's no exit ${directionInput.toLocaleLowerCase()}.`,
+          `There is no passage ${directionInput.toLocaleLowerCase()}.`
+        ],
+        GameColors.console.system
+      )
     );
     return queuedEvents;
   }

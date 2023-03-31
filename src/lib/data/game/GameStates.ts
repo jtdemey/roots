@@ -1,10 +1,10 @@
 export enum GameStates {
-	MainMenu,
-	Explore,
-	Combat,
-	PauseMenu,
-	OptionsMenu,
-	Dialogue,
-	Cinematic,
-	Death
+  MainMenu,
+  Explore,
+  Combat,
+  PauseMenu,
+  OptionsMenu,
+  Dialogue,
+  Cinematic,
+  Death
 }

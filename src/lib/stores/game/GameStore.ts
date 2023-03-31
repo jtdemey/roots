@@ -42,7 +42,10 @@ export const appendLine = (
     lines.concat([lineColor.prefix ? `${lineColor.prefix}${text}` : text])
   );
 
-export const appendRandomLine = (texts: string[], lineColor: { color: string; prefix: string } = GameColors.console.standard): void => {
+export const appendRandomLine = (
+  texts: string[],
+  lineColor: { color: string; prefix: string } = GameColors.console.standard
+): void => {
   const selectedTextIndex = Math.floor(Math.random() * texts.length);
   appendLine(texts[selectedTextIndex] || "", lineColor);
 };

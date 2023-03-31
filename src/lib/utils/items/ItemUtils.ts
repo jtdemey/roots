@@ -1,5 +1,5 @@
 import type { Item } from "../../../models/Item";
-import type {ItemFlags} from "$lib/data/items/ItemFlags";
+import type { ItemFlags } from "$lib/data/items/ItemFlags";
 import type { Loot } from "../../../models/Loot";
 import { createItem } from "$lib/data/world/WorldFactory";
 import { getItemFlags, getItemMetadata } from "../selectors/ItemSelectors";

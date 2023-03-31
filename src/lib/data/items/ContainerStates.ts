@@ -1,6 +1,6 @@
 export enum ContainerStates {
-	Unknown,
-	Unlocked,
-	Locked,
-	Open
+  Unknown,
+  Unlocked,
+  Locked,
+  Open
 }

@@ -99,7 +99,7 @@ export const GameCommands: any = {
       "walk"
     ].concat(directionShorthands),
     [],
-    [PlayerFlags.Exiting]
+    []
   ),
 
   throw: genGameCommand(

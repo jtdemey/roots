@@ -15,7 +15,12 @@ const genAnim = (
   opacity: number = 1.0,
   easing: any = cubicOut,
   delay: number = 0
-): CombatKeyframe => ({ x, y, opacity, tweenConfig: { delay, duration, easing } });
+): CombatKeyframe => ({
+  x,
+  y,
+  opacity,
+  tweenConfig: { delay, duration, easing }
+});
 
 export const CombatAnimationData: ICombatAnimationData = {
   death: {
@@ -37,17 +42,9 @@ export const CombatAnimationData: ICombatAnimationData = {
     ]
   },
   lunge: {
-    keyframes: [
-      genAnim(18, -12, 100),
-      genAnim(-2, 2, 80),
-      genAnim(0, 0, 200)
-    ]
+    keyframes: [genAnim(18, -12, 100), genAnim(-2, 2, 80), genAnim(0, 0, 200)]
   },
   reverselunge: {
-    keyframes: [
-      genAnim(-21, 14, 100),
-      genAnim(-4, -2, 80),
-      genAnim(0, 0, 200)
-    ]
-  },
+    keyframes: [genAnim(-21, 14, 100), genAnim(-4, -2, 80), genAnim(0, 0, 200)]
+  }
 };

@@ -97,9 +97,11 @@ export const parseAttackMove = (
 
       moveData.delayedEffects.forEach((delayedEffect: DelayedEffect) => {
         const delay: number = delayedEffect.delay || moveData.cooldown;
-        queueEventNow(queuedEvents, currentTick + delay, () => delayedEffect.effect());
+        queueEventNow(queuedEvents, currentTick + delay, () =>
+          delayedEffect.effect()
+        );
       });
-      
+
       return queuedEvents;
     }
 

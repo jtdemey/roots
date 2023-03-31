@@ -24,7 +24,8 @@ export const CombatCommands: ICombatCommands = {
 
   block: genGameCommand(
     "block",
-    (input: string[], currentTick: number, enemy: Enemy) => parseAttackMove(input, currentTick, enemy),
+    (input: string[], currentTick: number, enemy: Enemy) =>
+      parseAttackMove(input, currentTick, enemy),
     [
       "barricade",
       "catch",
@@ -71,7 +72,8 @@ export const CombatCommands: ICombatCommands = {
 
   elbow: genGameCommand(
     "elbow",
-    (input: string[], currentTick: number, enemy: Enemy) => parseAttackMove(input, currentTick, enemy),
+    (input: string[], currentTick: number, enemy: Enemy) =>
+      parseAttackMove(input, currentTick, enemy),
     []
   ),
 
@@ -97,13 +99,15 @@ export const CombatCommands: ICombatCommands = {
 
   headbutt: genGameCommand(
     "headbutt",
-    (input: string[], currentTick: number, enemy: Enemy) => parseAttackMove(input, currentTick, enemy),
+    (input: string[], currentTick: number, enemy: Enemy) =>
+      parseAttackMove(input, currentTick, enemy),
     ["dome", "head", "headslam"]
   ),
 
   jab: genGameCommand(
     "jab",
-    (input: string[], currentTick: number, enemy: Enemy) => parseAttackMove(input, currentTick, enemy),
+    (input: string[], currentTick: number, enemy: Enemy) =>
+      parseAttackMove(input, currentTick, enemy),
     ["clip", "thump"]
   ),
 
@@ -116,7 +120,8 @@ export const CombatCommands: ICombatCommands = {
 
   punch: genGameCommand(
     "punch",
-    (input: string[], currentTick: number, enemy: Enemy) => parseAttackMove(input, currentTick, enemy),
+    (input: string[], currentTick: number, enemy: Enemy) =>
+      parseAttackMove(input, currentTick, enemy),
     [
       "bash",
       "biff",
@@ -139,7 +144,8 @@ export const CombatCommands: ICombatCommands = {
 
   slap: genGameCommand(
     "slap",
-    (input: string[], currentTick: number, enemy: Enemy) => parseAttackMove(input, currentTick, enemy),
+    (input: string[], currentTick: number, enemy: Enemy) =>
+      parseAttackMove(input, currentTick, enemy),
     [
       "blip",
       "palm",

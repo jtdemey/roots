@@ -1,6 +1,6 @@
 import type { EnemyMetadata } from "../../../models/meta/EnemyMetadata";
 import type { Move } from "../../../models/Move";
-import {EnemyMoveData} from "./EnemyMoveData";
+import { EnemyMoveData } from "./EnemyMoveData";
 
 interface IEnemyData {
   [key: string]: EnemyMetadata;

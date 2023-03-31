@@ -9,12 +9,10 @@ export const parseKick = (
   enemy: Enemy
 ): GameEvent[] => {
   const queuedEvents: GameEvent[] = [];
-  const moveData: Move = getCombatMoveData()
-  
+  const moveData: Move = getCombatMoveData();
+
   if (input.length === 1) {
-    queueEventNow(queuedEvents, currentTick, () => {
-      
-    });
+    queueEventNow(queuedEvents, currentTick, () => {});
   }
 
   return queuedEvents;
