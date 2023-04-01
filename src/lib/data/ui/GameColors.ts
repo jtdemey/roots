@@ -4,6 +4,10 @@ export const GameColors: any = {
     health: "hsl(0, 58%, 25%)"
   },
   console: {
+    combat: {
+      color: "hsl(44, 44%, 5%)",
+      prefix: "%c"
+    },
     fear: {
       color: "hsl(350, 60%, 50%)",
       prefix: "%f"

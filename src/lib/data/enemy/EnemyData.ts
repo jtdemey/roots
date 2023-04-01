@@ -55,6 +55,6 @@ export const EnemyData: IEnemyData = {
       `The wolf whines as life leaves its body.`,
       `The carcass of the wolf lies on the ground.`
     ],
-    [EnemyMoveData.bite]
+    [EnemyMoveData.bite, EnemyMoveData.claw]
   )
 };

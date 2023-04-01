@@ -18,7 +18,7 @@
   unsubHp = health.subscribe((hp: number) => {
     if (hp < 91) {
       showInjury = true;
-      const pct: number = (hp / $maxHealth) * 100;
+      const pct: number = (hp / $maxHealth) * 100 + 20;
       injuryTween
         .set(pct - 10)
         .then(() => injuryTween.set(pct, { duration: 2000 }));

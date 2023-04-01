@@ -8,6 +8,8 @@
     isCombatConsoleHeightSet
   } from "$lib/stores/ui/UIStore";
   import ConsoleLine from "../survive/console/ConsoleLine.svelte";
+  import { applyColorPrefix } from "$lib/utils/ColorUtils";
+  import { GameColors } from "$lib/data/ui/GameColors";
 
   let combatConsoleContainer: any = undefined;
   let consoleOutput: any = undefined;
@@ -61,7 +63,10 @@
   <div bind:this={consolePane} style="top: {$paneYPos}px;">
     <article bind:this={consoleOutput}>
       {#each $combatText as text, i}
-        <ConsoleLine opacity={getLineOpacity(i, $combatText.length)} {text} />
+        <ConsoleLine
+          opacity={getLineOpacity(i, $combatText.length)}
+          text={applyColorPrefix(text, GameColors.console.combat)}
+        />
       {/each}
     </article>
   </div>

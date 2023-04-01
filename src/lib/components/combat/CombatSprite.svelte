@@ -14,7 +14,7 @@
   export let endAnimationCallback: Function = () => false;
   export let flyConfig: object = { duration: 0, x: 0 };
   export let imgSrc: string = "/placeholder.webp";
-  export let width: number = 128;
+  export let width: number = 184;
 
   const tweenConfig = { duration: 500, easing: linear };
   const spritePos: Tweened<[number, number, number]> = tweened([0, 0, 1.0], tweenConfig);
@@ -54,10 +54,14 @@
 
 <style>
   picture {
-    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
   }
 
   img {
-    margin: 0.25rem;
+    margin: auto;
   }
 </style>

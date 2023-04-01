@@ -78,7 +78,7 @@ export const Forest: Locale[] = [
         "It's hard to see through your car's tinted windows."
       )
     ]),
-    // spawns: w([F.createSpawn("wolf", 1)]),
+    spawns: w([F.createSpawn("wolf", 1)]),
     temperature: w(Temperatures.Cold)
   }),
 
