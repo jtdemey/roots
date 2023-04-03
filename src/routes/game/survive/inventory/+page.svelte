@@ -7,9 +7,14 @@
   import { ItemData } from "$lib/data/items/ItemData";
   import { World } from "$lib/data/world/World";
   import { removeExcessLines } from "$lib/stores/game/GameStore";
-  import { examineItem, locale, pickUpItem } from "$lib/stores/player/PlayerStore";
+  import {
+    examineItem,
+    locale,
+    pickUpAllOfItem,
+    pickUpItem
+  } from "$lib/stores/player/PlayerStore";
   import { consoleHeight } from "$lib/stores/ui/UIStore";
-	import { makeItemBtnAction } from "$lib/utils/items/ItemUtils";
+  import { genItemBtn, makeItemBtnAction } from "$lib/utils/items/ItemUtils";
   import ContainerList from "$lib/components/survive/inventory/ContainerList.svelte";
   import LocaleItemList from "$lib/components/survive/inventory/LocaleItemList.svelte";
   import InventoryList from "$lib/components/survive/inventory/InventoryList.svelte";
@@ -22,9 +27,7 @@
   let unsubDisplayName: Function;
   const unsubLocaleName = locale.subscribe((loc: string) => {
     localeName = loc;
-    currentLocale = World.filter(
-      (loc: Locale) => loc.name === localeName 
-    )[0];
+    currentLocale = World.filter((loc: Locale) => loc.name === localeName)[0];
     unsubDisplayName = currentLocale.display.subscribe(
       (display: string) => (displayName = display)
     );
@@ -34,20 +37,36 @@
 
   const getItemBtns = (item: Item): ItemBtn[] => {
     const result: ItemBtn[] = [
-      {
-        color: "hsl(120, 18%, 22%)",
-        text: "Take",
-        action: makeItemBtnAction(() => pickUpItem(item.entityId, localeName), setSelectedItemId)
-      }
+      genItemBtn(
+        "hsl(120, 18%, 22%)",
+        "Take",
+        makeItemBtnAction(
+          () => pickUpItem(item.entityId, localeName),
+          setSelectedItemId
+        )
+      )
     ];
+
+    if (item.amount > 1) {
+      result.push(
+        genItemBtn(
+          "hsl(120, 22%, 26%)",
+          "Take all",
+          makeItemBtnAction(() => pickUpAllOfItem(item), setSelectedItemId)
+        )
+      );
+    }
+
     if (!item.name) return result;
     const meta = ItemData[item.name];
     if (meta.description) {
-      result.push({
-        color: "hsl(210, 18%, 28%)",
-        text: "Examine",
-        action: makeItemBtnAction(() => examineItem(item), setSelectedItemId)
-      });
+      result.push(
+        genItemBtn(
+          "hsl(210, 18%, 28%)",
+          "Examine",
+          makeItemBtnAction(() => examineItem(item), setSelectedItemId)
+        )
+      )
     }
     return result;
   };

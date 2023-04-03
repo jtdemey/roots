@@ -9,6 +9,7 @@ interface IEnemyMoveData {
 
 export const EnemyMoveData: IEnemyMoveData = {
   bite: genMoveData(
+    "bite",
     0.6,
     7,
     [

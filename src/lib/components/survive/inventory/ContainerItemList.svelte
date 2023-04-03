@@ -2,13 +2,13 @@
   import type { Item } from "../../../../models/Item";
   import type { Locale } from "../../../../models/Locale";
   import { onDestroy } from "svelte";
-	import { getItemDisplayName } from "$lib/utils/items/ItemUtils";
+  import { getItemDisplayName } from "$lib/utils/items/ItemUtils";
   import { getLocale } from "$lib/utils/selectors/WorldSelectors";
   import InventoryListItem from "./InventoryListItem.svelte";
   import ItemBtns from "./ItemBtns.svelte";
 
   export let containerId: string = "";
-	export let getItemBtns: Function = () => [];
+  export let getItemBtns: Function = () => [];
   export let localeName: string = "car";
   export let selectedItemId: string = "";
   export let setSelectedItemId: Function = () => false;
@@ -32,7 +32,7 @@
       ? setSelectedItemId("")
       : setSelectedItemId(entityId);
 
-  onDestroy(unsubItems);
+  onDestroy(() => unsubItems());
 </script>
 
 <div>

@@ -52,7 +52,7 @@ export const Forest: Locale[] = [
       F.createContainer(
         "Mailbox",
         `There's a simple, dark green mailbox here at the cusp of a driveway.`,
-        w([F.createLoot(1, "welcome_note")])
+        w([F.createLoot(1, "welcome_note"), F.createLoot(1, "notebook")])
       )
     ]),
     exits: w([
@@ -78,7 +78,7 @@ export const Forest: Locale[] = [
         "It's hard to see through your car's tinted windows."
       )
     ]),
-    spawns: w([F.createSpawn("wolf", 1)]),
+    // spawns: w([F.createSpawn("wolf", 1)]),
     temperature: w(Temperatures.Cold)
   }),
 

@@ -164,14 +164,39 @@ export const perish = (): void => {
 export const pickUpItem = (entityId: string, localeName: string): void => {
   const currentLocale = getLocale(localeName);
   const localeItems: Item[] = get(currentLocale.items);
-  localeItems.forEach((item: Item) => {
-    if (item.entityId === entityId) {
-      currentLocale.items.update((stuff: Item[]) =>
-        stuff.filter((i: Item) => i.entityId !== entityId)
-      );
-      addItemToInventory(item);
-    }
-  });
+
+  const matchingItem: Item | undefined = localeItems.find((item: Item) => item.entityId === entityId);
+  if (!matchingItem) return;
+
+  if (matchingItem.amount > 1) {
+    matchingItem.amount -= 1;
+    const newItem: Item = Object.assign({}, { ...matchingItem, amount: 1, containerId: undefined });
+    addItemToInventory(newItem);
+    currentLocale.items.update((stuff: Item[]) =>
+      stuff.filter((i: Item) => i.entityId !== entityId).concat([matchingItem])
+    );
+    return;
+  }
+
+  matchingItem.containerId = undefined;
+  currentLocale.items.update((stuff: Item[]) =>
+    stuff.filter((i: Item) => i.entityId !== entityId)
+  );
+  addItemToInventory(matchingItem);
+};
+
+export const pickUpAllOfItem = (entityId: string, localeName: string): void => {
+  const currentLocale = getLocale(localeName);
+  const localeItems: Item[] = get(currentLocale.items);
+
+  const matchingItem: Item | undefined = localeItems.find((item: Item) => item.entityId === entityId);
+  if (!matchingItem) return;
+
+  matchingItem.containerId = undefined;
+  currentLocale.items.update((stuff: Item[]) =>
+    stuff.filter((i: Item) => i.entityId !== entityId)
+  );
+  addItemToInventory(matchingItem);
 };
 
 export const playerHasFlag = (flag: PlayerFlags): boolean =>

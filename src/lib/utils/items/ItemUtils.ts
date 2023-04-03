@@ -1,8 +1,19 @@
 import type { Item } from "../../../models/Item";
+import type { ItemBtn } from "../../../models/ui/ItemBtn";
 import type { ItemFlags } from "$lib/data/items/ItemFlags";
 import type { Loot } from "../../../models/Loot";
 import { createItem } from "$lib/data/world/WorldFactory";
 import { getItemFlags, getItemMetadata } from "../selectors/ItemSelectors";
+
+export const genItemBtn = (
+  color: string,
+  text: string,
+  action: Function
+): ItemBtn => ({
+  color,
+  text,
+  action
+});
 
 export const getItemDisplayName = (item: Item): string => {
   const displayName = getItemMetadata(item.name).display;
