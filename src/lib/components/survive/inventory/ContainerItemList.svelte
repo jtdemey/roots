@@ -17,6 +17,7 @@
   let items: Item[] = [];
   let unsubItems: Function = () => false;
 
+  // TODO add sort
   $: {
     currentLocale = getLocale(localeName);
     unsubItems = currentLocale.items.subscribe(

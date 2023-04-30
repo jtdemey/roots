@@ -105,7 +105,7 @@
 	
 	When performed, a move can produce an \textit{instant effect}, \textit{active effect}, or both. Instant effects occur instantly after a move is performed, while active effects continue to occur until the move's cooldown is fully depleted. An example of an instant effect would be the blunt damage dealt by the PC bashing an enemy with a shovel. On the other hand, the "dodge" move yields no instant effect, but has an active effect of increasing the chance the active enemy misses their attack for the entire duration of the move's cooldown.
 	
-	Combat moves can be classified as either \textit{attack} or \textit{special}. Attacks yield instant damage and set the PC into cooldown, encapsulating moves such as punching, kicking, or headbutting. "Specials" do not necessarily yield immediate damage, but instead produce a special effect for the duration of the cooldown, including moves like dodging, blocking, or grappling.
+	Combat moves can be classified as either \textit{attack} or \textit{maneuver}. Attacks yield instant damage and set the PC into cooldown, encapsulating moves such as punching, kicking, or headbutting. Maneuvers do not necessarily yield immediate damage, but instead produce a special effect for the duration of the cooldown, including moves like dodging, blocking, or grappling.
 	
 	\textbf{Attacks}
 	
@@ -177,7 +177,11 @@ interface Locale {
 	
 	The game is separated into three regions which are each a collection of locales. Each region has its own physical characteristics as well as its own boss.
 	
-	The \textit{forest} is the region in which player starts. This region is a stretch boreal woods characterized by rough natural terrain with rapid elevation changes. The enemies encountered in this area are predatory wildlife and mythical beasts.
+	The \textit{forest} is the region in which player starts. This region is a stretch of boreal woods characterized by rough natural terrain with rapid elevation changes and dense, thorny underbrush. The enemies encountered in this area are predatory wildlife and mythical beasts.
+	
+	The \textit{mansion} is a lavish but decrepit estate built on the summit of a hill in the \textit{forest}. Fallen to disarray and rummaged over the years, the interior is a poor respite from the cold, adorned with ornamental furniture whose intricacies and integrity have withered to time and neglect. Aside from rats, nightmarish beings lurk in the shadows as the \textit{Hunter} prowls its premises.
+	
+	The \textit{cemetery} is the somber resting place for thousands of corpses, some graves simple and effaced, others tucked deep within mausoleums and crypts. Wrought iron fences and intricately carved statues divide the area, which teems with the festering, restless souls whose bodies have rotted below.
 	
 	\subsection{NPCs}
 	
@@ -254,6 +258,7 @@ interface Locale {
 	\begin{itemize}
 		\item Nightmare
 		\item Abomination
+		\item Torment
 	\end{itemize}
 
 	\textbf{Cemetery}
@@ -291,7 +296,15 @@ interface Locale {
 	
 	\subsection{Bosses}
 	
-	Each region has one boss that serves as a primary antagonistic force that keeps the player on their guard and on the move. Each boss moves around the game world independently of the player, either guarding an area or hunting the player.
+	Each region has one boss that serves as a primary antagonistic force that keeps the player on their guard and on the move. Each boss moves around the game world independently of the player, either guarding an area or hunting the player.\newline
+	
+	The forest is inhabited by the \textbf{Hulking Horror}, known by the past locals as Kuolema, the deity that upholds the boundaries of Caledonia Forest. It was originally an angel, permanently disfigured throughout its centuries of benevolently containing the demonic presence in Caledonia Forest. Its sacrifices have led it to become diseased and delusional, unable to distinguish between good or evil. Its only remaining motivation is to uphold the scarred boundary of the forest, assuring no supernatural presences drift into the mortal world and cause irreparable damage.\newline
+	
+	The mansion is home to the \textbf{Hunter}: whatever is left of the poor Amaya Basma. Amaya is an embodiment of anxiety, even in her afterlife. Having lived through an unfortunate childhood, she learned to trust no one. She never understood the state of carefree happiness others seemed to possess in life, and secretly wished for a disaster to strike her entire life. She became very religious and recluse, anticipating the end of times and stockpiling a bunker near Caledonia Forest. Her only companions are her two hunting dogs: Lohi and Prophet.
+
+	It wasn't until a fateful day, at the age of 46, that she traveled into the forest's bounds to hunt and forage, only to find the disaster she sought for. Luckily, she had ample hunting gear and a predisposition for surviving. Some of her struggles are documented in journal pages scattered around the mansion, but she gradually lost sentience as she harnessed supernatural practices to survive and recover from grievous injuries. Throughout her struggles, she lost Lohi, but she was able to keep Prophet alive through the same heinous means as herself. Now her only modus operandi is to defend the mansion and her supernaturally prolonged life as long as she can.\newline
+	
+	The graveyard houses the \textbf{Red Wraith}, an embodiment of incomprehensible torment. Unspeakable suffering was incurred to open the rift under Caledonia Forest. Hundreds of souls who have experienced hellish deaths haunt the graveyard with sheer hatred at the absolute worst that humanity can be.
 	
 	\subsection{Items}
 	
@@ -308,19 +321,26 @@ interface Locale {
 		\item Combat ends and the player loots the locale of its valuables.
 		\item The player consumes some handwarmers to improve their decreasing body temperature.
 		\item The player examines the features in the field and discovers a recently-sealed hole in the soil.
-		\item The player uses a shovel to dig up an item that was buried.
+		\item The player uses a shovel to dig up an item that was buried which allows travel to a new location.
 	\end{itemize}
 	
 	\subsection{First hour of play}
 	
 	\begin{itemize}
-		\item\textbf{First minute}: Get frightened and intrigued by the introduction cinematic.
+		\item\textbf{First minute}: Get intrigued by the introduction cinematic and learn how to type commands.
 		\item\textbf{5 mins}: Navigate around the starting zone, collect rudimentary equipment, and survive the first combat encounter.
 		\item\textbf{10 mins}: Find better gear and successfully subdue an enemy in combat.
 		\item\textbf{30 mins}: Discover a new region.
 		\item\textbf{1 hour}: Encounter a boss.
 	\end{itemize}
 
+	\subsection{Progression}
+	
+	The map is arranged into \textit{zones} constrained by obstacles that require items, abilities, or special knowledge, referred to as \textit{keys} to overcome. These terms are not conveyed to the player, and are used for design purposes.
+	
+	\textbf{Zone A: Center}
+	\textit{Keys}
+	
 	\section{User Interface}
 	
 	\textit{TDF}'s graphical user interface consists of several distinct views. Some views share elements, but each is distinct in functionality.
